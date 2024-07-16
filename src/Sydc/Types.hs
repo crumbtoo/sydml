@@ -3,27 +3,24 @@
 module Sydc.Types
   where
 --------------------------------------------------------------------------------
+import GHC.Generics
 import SydPrelude
 --------------------------------------------------------------------------------
 
 newtype Ident = Ident Text
+  deriving (Show, Generic)
 
 newtype Namespace = Namespace (List Ident)
+  deriving (Show, Generic)
 
 data Name = Qualified Namespace Ident
-
-data ErrorKind = ParseError
-               | TypeError
-               | InternalError
+  deriving (Show, Generic)
 
 data Span = Span
   { }
+  deriving (Show, Generic)
 
-data SydError = SydError
-  { modulePath :: Maybe Namespace
-  , kind       :: ErrorKind
-  , span       :: Maybe Span
-  , text       :: ErrorText
-  , sourceCtx  :: Maybe SourceCtx
-  }
+-- temp definition.
+data SourceCtx = SourceCtx
+  deriving (Show, Generic)
 

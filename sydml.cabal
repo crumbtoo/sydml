@@ -23,14 +23,21 @@ common extensions
         DeriveGeneric
         DuplicateRecordFields
         FlexibleContexts
-        NoMonomorphismRestriction
+        -- NoMonomorphismRestriction
         TypeApplications
+        OverloadedStrings
+        PatternSynonyms
+    ghc-options: -fdefer-typed-holes
 
 library
     import:           warnings, extensions
     exposed-modules:  Sydc.Types
                     , Sydc.Error
+                    , Sydc.Monad
+                    , Sydc
                     , Sydc.Language
+                    , Language.Scheme.Syntax
+                    , Language.Scheme.Parse
                     , Language.Scheme.Spec
                     , SydPrelude
     -- other-modules:
@@ -40,6 +47,10 @@ library
                     , lens >=5.0.0 && <=6.0.0
                     , recursion-schemes >=5.0.0 && <=6.0.0
                     , text ^>=2.0.0
+                    , s-cargot
+                    , megaparsec
+                    , parsec
+                    , mtl
     hs-source-dirs:   src
     default-language: GHC2021
 
