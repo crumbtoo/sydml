@@ -1,0 +1,3 @@
+packages: ./sydml.cabal
+allow-newer: monadic-recursion-schemes:base
+

@@ -26,7 +26,18 @@ common extensions
         -- NoMonomorphismRestriction
         TypeApplications
         OverloadedStrings
+        PartialTypeSignatures
         PatternSynonyms
+        GADTs
+        StandaloneDeriving
+        DerivingVia
+        DuplicateRecordFields
+        GeneralisedNewtypeDeriving
+        LambdaCase
+        BlockArguments
+        DeriveTraversable
+        TypeFamilies
+        OverloadedLabels
     ghc-options: -fdefer-typed-holes
 
 library
@@ -36,9 +47,13 @@ library
                     , Sydc.Monad
                     , Sydc
                     , Sydc.Language
+                    , Data.Sexp
                     , Language.Scheme.Syntax
-                    , Language.Scheme.Parse
                     , Language.Scheme.Spec
+                    , Language.Scheme.Eval
+                    , Language.Scheme
+                    , Language.TreeIL
+                    , Language.TreeIL.Syntax
                     , SydPrelude
     -- other-modules:
     -- other-extensions:
@@ -46,22 +61,36 @@ library
                     , generic-lens ^>=2.2.0.0
                     , lens >=5.0.0 && <=6.0.0
                     , recursion-schemes >=5.0.0 && <=6.0.0
+                    , monadic-recursion-schemes
+                    , data-fix
                     , text ^>=2.0.0
                     , s-cargot
                     , megaparsec
                     , parsec
                     , mtl
+                    , hashable
+                    , unordered-containers
+                    , containers
     hs-source-dirs:   src
     default-language: GHC2021
 
 executable sydc
-    import:           warnings
+    import:           warnings, extensions
     main-is:          Main.hs
     -- other-modules:
     -- other-extensions:
-    build-depends:
-        base ^>=4.19.1.0,
-        sydml
+    build-depends: base ^>=4.19.1.0
+                 , sydml
+                 , generic-lens ^>=2.2.0.0
+                 , lens >=5.0.0 && <=6.0.0
+                 , recursion-schemes >=5.0.0 && <=6.0.0
+                 , rock >=0.3.1.0 && <=0.4.0.0
+                 , hashable
+                 , text ^>=2.0.0
+                 , some
+                 , dependent-sum-template ^>=0.2.0.1
+                 , climb ^>=0.5.0
+                 , lsp
 
     hs-source-dirs:   app
     default-language: GHC2021

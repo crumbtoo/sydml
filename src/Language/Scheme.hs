@@ -1,12 +1,13 @@
-module Sydc
-  ( module Sydc.Monad
-  , module Sydc.Types
-  , module Sydc.Error
+module Language.Scheme
+  ( parse
+  , module Language.Scheme.Syntax
+  , module Language.Scheme.Eval
   )
   where
 --------------------------------------------------------------------------------
-import Sydc.Monad
-import Sydc.Types
-import Sydc.Error
+import Language.Scheme.Syntax
+import Language.Scheme.Eval
 --------------------------------------------------------------------------------
+
+parse = _
 
