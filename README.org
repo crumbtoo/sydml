@@ -1,0 +1,151 @@
+#+title: sydml
+#+author: madeleine sydney slaga
+
+* Motivation
+** Demonstrate that I've learned from last year's failures
+The entire project collapsed at the last minute, likely as a result of the
+following points.
+
+*** Very poor planning.
+A lack of thorough planning led to extreme unstability, ultimately leaving me
+with a broken compiler days before the project was due.
+
+To prevent this, I intend to /thoroughly/ architect the compiler and each pass
+beforehand, down to the individual signatures of key components. This plan would
+be sure to account for not only high-level passes, but also
+- where errors are thrown and caught,
+- how line and column information is retained,
+*** Not enough testing.
+The volatile codebase did not mesh will with my tests against internal APIs. The
+few tests that I had could not keep up with the rapidly-changing code, and often
+didn't even compile.
+
+To address this, tests will be written against a stable command-line interface,
+treating the entire compiler as a black box.
+
+- I plan on following a /Golden testing/ model.
+- For source–to-machine-code compilations, this is a straightforward check that
+  an example input matches an output file, bit-for-bit.
+- Testing other functions, such as type-checking, will require serialisation to
+  (JSON|S-expressions), which is useful feature for debugging in any case.
+- Github CI/CD.
+** New goals
+While last year's compiler was primarily language-focused, I now intend to focus
+on compiler techniques.
+*** IRs — ANF and SSA
+* Progress
+|                  | Parser | Type-checker | ->ANF | ->SSA | ->QBE |
+|------------------+--------+--------------+-------+-------+-------|
+| Empty module     |        |              |       |       |       |
+| Int literal decl |        |              |       |       |       |
+| The identity fn  |        |              |       |       |       |
+|------------------+--------+--------------+-------+-------+-------|
+* Resources
+** Reference projects
+*** [[https://github.com/ollef/sixten][sixten]]/[[https://github.com/ollef/sixty][sixty]]
+- the latter is a rewrite of the former.
+- the leading example of demand-driven compilers.
+- implemented in glorious haskell.
+*** [[https://github.com/Kleidukos/boreal][boreal]]
+- parses with tree-sitter.
+- ANF-based IR.
+- demand-driven.
+- haskell-like source language.
+- client-server.
+- targets lua.
+- implemented in glorious haskell.
+*** [[https://github.com/elm/compiler][elm]]
+- targets JS.
+- haskell-like.
+- written by a moron. 💔
+- implemented in glorious haskell.
+*** [[https://github.com/purescript/purescript][purescript]]
+- haskell-like.
+- implemented in glorious haskell.
+*** [[http://mlton.org/CompilerOverview][MLton]]
+- many different IRs.
+- whole-program optimising.
+- [[http://mlton.org/CompilerOverview][pretty decent documentation]].
+- implemented in SML.
+*** [[https://github.com/jdreaver/amy][amy]]
+- targets LLVM.
+- ANF-based IR.
+- strict.
+- otherwise haskell-like.
+- implemented in glorious haskell.
+** Parsing
+*** [[https://www.researchgate.net/profile/Sl-Graham/publication/2377179_Efficient_and_Flexible_Incremental_Parsing/links/004635294e13f23ef1000000/Efficient-and-Flexible-Incremental-Parsing.pdf)][Efficient and Flexible Incremental Parsing]]
+*** [[https://www.pc-freak.net/blog/files/NCR_ATM_terminals/www.thecorememory.com/Incremental_analyzis_of_RPL.pdf][Incremental Analysis of Real Programming Languages]]
+*** [[https://what-when-how.com/compiler-writing/bottom-up-parsing-compiler-writing-part-13/)][Error Detection and Recovery in LR Parsers]]
+*** [[https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.129.7206&rep=rep1&type=pdf)][Automatic Error Recovery for LR Parsers]]
+*** [[https://www.youtube.com/watch?v=Jes3bD6P0To][Treesitter]] :TALK:
+*** [[https://www.youtube.com/watch?v=a1rC79DHpmY][Treesitter]] :TALK:
+*** [[https://www.youtube.com/watch?v=0CGzC_iss-8][Treesitter]] :TALK:
+** IRs — SSA, ANF, and CPS
+*** SSA vs ANF: [[Https://github.com/jacobstanley/ssa-anf][source code]], [[http://code.ouroborus.net/fp-syd/past/2015/2015-07-Stanley-SSAvsANF.pdf][slides]].
+*** [[https://www.cs.indiana.edu/~achauhan/Teaching/B629/2006-Fall/CourseMaterial/1998-notices-appel-ssa_fnprog.pdf][SSA is Functional Programming ]]
+*** [[https://news.ycombinator.com/item?id=7150095][How to compile with continuations ]]
+*** [[ftp://ftp.cs.princeton.edu/techreports/1988/183.pdf][Appel — Continuation Passing, Closure Passing Style]]
+*** [[http://manticore.cs.uchicago.edu/papers/ml16-cwc-llvm.pdf][Compiling with Continuations and LLVM ]]
+*** [[https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/compiling-without-continuations.pdf][Compiling without continuations]]
+Describes ANF and join points as used in GHC.
+*** [[https://www.microsoft.com/en-us/research/wp-content/uploads/2007/10/compilingwithcontinuationscontinued.pdf][Compiling with Continuations, Continued ]]
+*** [[http://code.ouroborus.net/fp-syd/past/2014/2014-08-Sloane-CPS.pdf][Slides implementing Compiling with Continuations, Continued ]]
+*** [[https://jozefg.bitbucket.io/posts/2015-04-30-cps.html][Compiling with CPS]]
+*** [[https://slang.soe.ucsc.edu/cormac/papers/pldi93.pdf][Original ANF paper: The Essence of Compiling with Continuations]]
+*** [[http://mlton.org/pipermail/mlton/2003-January/023054.html][Email discussing MLton's IR and some history]]
+*** [[https://www.jantar.org/talks/zadarnowski03languages.pdf][Comparing CPS, ANF, and SSA for compiling functional languages]]
+*** [[https://www.jantar.org/papers/chakravarty03perspective.pdf][A Functional Perspective on SSA Optimisation Algorithms]]
+*** [[http://www.ccs.neu.edu/home/matthias/369-s10/Transcript/anf-vs-cps.pdf][The CPS/ANF saga]]
+*** [[http://www.dtic.mil/dtic/tr/fulltext/u2/a326493.pdf][Tarditi — Design and Implementation of Code Optimiziations for a Type-Directed Compiler for Standard ML (ANF)]]
+This thesis emphasizes a "pay as you go" compilation strategy
+where simple, monorphic code should not be slower simply because the language
+supports higher-level code. Also, monomorphic functions should get specialized
+to machine-type functions. C compilers focus on loops, so functional compilers
+should focus on recursive functions. Explains lots of optimizations with a
+lambda calculus IR
+*** [[https://pdfs.semanticscholar.org/55bc/5ceee768223f4b233de568a7181297eb2c4d.pdf][Paper summarizing the Tarditi thesis]]
+*** [[ftp://mumble.net/~kelsey/papers/cps-ssa.ps.gz][A Correspondence between CPS and SSA]]
+** Compiler Architecture
+*** [[https://rustc-dev-guide.rust-lang.org/query.html][rustc demand-driven-compilation]]
+*** [[https://ollef.github.io/blog/posts/query-based-compilers.html)][Query-based compiler architectures]]
+*** [[https://rust-analyzer.github.io/blog/2020/07/20/three-architectures-for-responsive-ide.html][Three Architectures for a Responsive IDE]]
+*** [[https://www2.eecs.berkeley.edu/Pubs/TechRpts/1997/CSD-97-946.pdf][Practical Algorithms for Incremental Software Development Environments]]
+*** [[https://youtu.be/3D-ngGIP4fQ][Query-based compiler architectures]] :TALK:
+*** [[https://www.youtube.com/watch?v=DSuX-LIAU-I][A journey through incremental computation]] :TALK:
+*** [[https://www.youtube.com/watch?v=S2dK5lLFD_0][Making Fast Incremental Compiler for Huge Codebase]] :TALK:
+*** [[https://www.youtube.com/watch?v=vVFEROmdCkQ][How to load 1m lines of Ruby in 5s]] :TALK:
+*** [[https://www.youtube.com/watch?v=WxyyJyB_Ssc)][Compilers are Databases]] :TALK:
+*** [[https://www.youtube.com/watch?v=wSdV1M7n4gQ)][Anders Hejlsberg on Modern Compiler Construction]] :TALK:
+*** [[https://www.youtube.com/watch?v=N6b44kMS6OM))][Responsive compilers]] :TALK:
+** Miscellaneous
+*** [[https://borretti.me/article/lessons-writing-compiler#err][Lessons from Writing a Compiler]]
+*** [[https://www.stephendiehl.com/llvm/][Implementing a JIT Compiled Language with Haskell and LLVM]]
+*** [[https://www.cambridge.org/core/services/aop-cambridge-core/content/view/097CE52C750E69BD16B78C318754C7A4/S0956796820000088a.pdf/div-class-title-build-systems-a-la-carte-theory-and-practice-div.pdf][Build systems à la carte: Theory and Practice]]
+*** [[https://www.reddit.com/r/ProgrammingLanguages/comments/8ggx2n/comment/dybo3rl/][A Reddit thread about functional IRs]] 
+Nearly all of their linked resources are included in this document.
+* Project structure
+** =app=
+** =src=
+** =test=
+** =tree-sitter-sydml=
+* Milestones
+#+BEGIN: clocktable :scope subtree :maxlevel 2
+#+CAPTION: Clock summary at [2024-08-27 Tue 10:34]
+| Headline   | Time |
+|------------+------|
+| *Total time* | *0:00* |
+#+END:
+
+** TODO 1 Preemptive Planning [1/6]
+SCHEDULED: <2024-08-27 Tue>
+:LOGBOOK:
+CLOCK: [2024-08-27 Tue 10:40]
+:END:
+DEADLINE: <2024-09-03 Tue>
+- [ ] MLton-esque overview.
+- [X] Create a skeleton project.
+- [ ] Milestone table.
+- [ ] Define a CLI.
+- [ ] Tests for empty files.
+- [ ] Define Mileston 2.

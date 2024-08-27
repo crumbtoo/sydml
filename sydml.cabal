@@ -1,0 +1,116 @@
+cabal-version:      3.0
+name:               sydml
+version:            0.1.0.0
+synopsis: A compiler for a language with Haskell syntax and ML semantics
+description: A compiler for a language with Haskell syntax and ML semantics
+license:            GPL-3.0-only
+license-file:       LICENSE
+author:             crumbtoo
+maintainer:         lomiskiam@gmail.com
+-- copyright:
+category:           Language
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+-- extra-source-files:
+
+common common
+  ghc-options:
+    -- -Wall
+    -Wno-typed-holes
+
+  default-extensions:
+    BlockArguments
+    DataKinds
+    DeriveGeneric
+    DeriveTraversable
+    DerivingVia
+    FlexibleContexts
+    GADTs
+    GeneralisedNewtypeDeriving
+    LambdaCase
+    NoFieldSelectors
+    OverloadedLabels
+    OverloadedStrings
+    PartialTypeSignatures
+    PatternSynonyms
+    StandaloneDeriving
+    TypeApplications
+    TypeFamilies
+    MultiWayIf
+
+  ghc-options:
+    -fdefer-typed-holes
+
+library
+  import:           common
+  -- cabal-fmt: expand src/ -Main
+  exposed-modules:
+    Data.Located
+    Data.PrettyP
+    Sydc
+    Sydc.Driver
+    Sydc.Error
+    Sydc.Monad
+    Sydc.Query
+    Sydc.Types
+    SydPrelude
+
+  include-dirs: tree-sitter-sydml/src
+  includes:     tree_sitter/parser.h
+  install-includes: tree_sitter/parser.h
+  cxx-sources: tree-sitter-sydml/src/parser.c
+  build-depends:
+    , base ^>=4.19.1.0
+    , bytestring
+    , comonad
+    , containers
+    , data-fix
+    , dependent-sum-template     ^>=0.2.0.1
+    , deriving-compat
+    , filepath
+    , free
+    , generic-lens               ^>=2.2.0.0
+    , hashable
+    , lens                       >=5.0.0     && <6.0.0.0
+    , lsp
+    , monadic-recursion-schemes
+    , mtl
+    , parser-combinators
+    , pretty-simple
+    , prettyprinter
+    , qbe
+    , recursion-schemes          >=5.0.0     && <6.0.0.0
+    , rock                       >=0.3.1.0   && <0.4.0.0.0
+    , semigroupoids
+    , some
+    , text                       ^>=2.0.0
+    , these
+    , transformers
+    , tree-sitter
+    , unordered-containers
+    , witherable
+  hs-source-dirs:   src
+  default-language: GHC2021
+
+executable sydc
+    import:           common
+    main-is:          Main.hs
+    -- other-modules:
+    -- other-extensions:
+    build-depends:
+      , base ^>=4.19.1.0
+      , sydml
+      , optparse-applicative
+
+    hs-source-dirs:   app
+    default-language: GHC2021
+
+test-suite sydml-test
+    import:           common
+    default-language: GHC2021
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test
+    main-is:          Main.hs
+    build-depends:
+      , base ^>=4.19.1.0
+      , sydml

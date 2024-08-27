@@ -1,0 +1,12 @@
+packages: ./*.cabal, ./vendor/*/*.cabal
+
+source-repository-package
+    type: git
+    location: https://github.com/eayus/qbe-hs
+    tag: 4566b7ab095236e1a9f53d0623892c5894fef306
+
+allow-newer:
+    monadic-recursion-schemes:base
+    , qbe:base
+    , qbe:deepseq
+    , qbe:bytestring
