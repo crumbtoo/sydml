@@ -3,6 +3,8 @@
 module Sydc.Types
   where
 --------------------------------------------------------------------------------
+import Data.Hashable
+import Data.HashSet qualified as H
 import GHC.Generics
 import SydPrelude
 --------------------------------------------------------------------------------
@@ -20,3 +22,14 @@ data Name = Qualified Namespace Ident
 data SourceCtx = SourceCtx
   deriving (Show, Generic)
 
+data SydOptions = SydOptions
+  {
+  }
+
+data SydCompileOptions = SydCompileOptions
+  { debugFlags :: DebugFlags
+  }
+
+--------------------------------------------------------------------------------
+
+newtype DebugFlags = DebugFlags (H.HashSet Text)

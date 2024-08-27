@@ -33,13 +33,65 @@ treating the entire compiler as a black box.
 While last year's compiler was primarily language-focused, I now intend to focus
 on compiler techniques.
 *** IRs — ANF and SSA
-* Progress
-|                  | Parser | Type-checker | ->ANF | ->SSA | ->QBE |
-|------------------+--------+--------------+-------+-------+-------|
-| Empty module     |        |              |       |       |       |
-| Int literal decl |        |              |       |       |       |
-| The identity fn  |        |              |       |       |       |
-|------------------+--------+--------------+-------+-------+-------|
+* Project structure
+** =app=
+** =doc=
+** =src=
+** =test=
+** =tree-sitter-sydml=
+* Compiler overview
+| *Pass*            | *Produced IL*       |
+|-----------------+-------------------|
+| Sydc            |                   |
+|-----------------+-------------------|
+|                 | Source            |
+| Parse           | Tree-sitter AST   |
+| Reparse         | AST               |
+| Elaborate       | Core              |
+| Type-check      | Typed Core        |
+| Rename          | Typed Unique Core |
+| Closure-convert | Typed Unique Core |
+| Hoist           | Typed Unique Core |
+| LowerANF        | ANF               |
+| LowerSSA        | SSA               |
+| ToQBE           | QBE               |
+| RenderQBE       | Text              |
+|-----------------+-------------------|
+| External        |                   |
+|-----------------+-------------------|
+| qbe             | Assembly          |
+| cc              | Machine           |
+* Milestones
+| *Milestone*        | Parser | Elab | Type-checker | Closure-conv. | Hoist | ->ANF | ->SSA | ->QBE |
+|------------------+--------+------+--------------+---------------+-------+-------+-------+-------|
+| Empty module     |        |      |              |               |       |       |       |       |
+| Int literal decl |        |      |              |               |       |       |       |       |
+| The identity fn  |        |      |              |               |       |       |       |       |
+|------------------+--------+------+--------------+---------------+-------+-------+-------+-------|
+
+#+BEGIN: clocktable :scope subtree :maxlevel 2
+#+CAPTION: Clock summary at [2024-08-27 Tue 13:47]
+| Headline                        | Time |      |
+|---------------------------------+------+------|
+| *Total time*                      | *2:36* |      |
+|---------------------------------+------+------|
+| Milestones                      | 2:36 |      |
+| \_  0 Preemptive Planning [3/6] |      | 2:36 |
+#+END:
+
+** TODO 0 Preemptive Planning [3/6]
+SCHEDULED: <2024-08-27 Tue>
+:LOGBOOK:
+CLOCK: [2024-08-27 Tue 13:22]--[2024-08-27 Tue 13:47] =>  0:25
+CLOCK: [2024-08-27 Tue 10:40]--[2024-08-27 Tue 12:51] =>  2:11
+:END:
+DEADLINE: <2024-09-03 Tue>
+- [X] MLton-esque overview.
+- [X] Create a skeleton project.
+- [X] Milestone table.
+- [ ] Define a CLI.
+- [ ] Tests for empty files.
+- [ ] Define Milestone 2.
 * Resources
 ** Reference projects
 *** [[https://github.com/ollef/sixten][sixten]]/[[https://github.com/ollef/sixty][sixty]]
@@ -122,30 +174,5 @@ lambda calculus IR
 *** [[https://borretti.me/article/lessons-writing-compiler#err][Lessons from Writing a Compiler]]
 *** [[https://www.stephendiehl.com/llvm/][Implementing a JIT Compiled Language with Haskell and LLVM]]
 *** [[https://www.cambridge.org/core/services/aop-cambridge-core/content/view/097CE52C750E69BD16B78C318754C7A4/S0956796820000088a.pdf/div-class-title-build-systems-a-la-carte-theory-and-practice-div.pdf][Build systems à la carte: Theory and Practice]]
-*** [[https://www.reddit.com/r/ProgrammingLanguages/comments/8ggx2n/comment/dybo3rl/][A Reddit thread about functional IRs]] 
+*** [[https://www.reddit.com/r/ProgrammingLanguages/comments/8ggx2n/comment/dybo3rl/][A Reddit thread about functional IRs]]
 Nearly all of their linked resources are included in this document.
-* Project structure
-** =app=
-** =src=
-** =test=
-** =tree-sitter-sydml=
-* Milestones
-#+BEGIN: clocktable :scope subtree :maxlevel 2
-#+CAPTION: Clock summary at [2024-08-27 Tue 10:34]
-| Headline   | Time |
-|------------+------|
-| *Total time* | *0:00* |
-#+END:
-
-** TODO 1 Preemptive Planning [1/6]
-SCHEDULED: <2024-08-27 Tue>
-:LOGBOOK:
-CLOCK: [2024-08-27 Tue 10:40]
-:END:
-DEADLINE: <2024-09-03 Tue>
-- [ ] MLton-esque overview.
-- [X] Create a skeleton project.
-- [ ] Milestone table.
-- [ ] Define a CLI.
-- [ ] Tests for empty files.
-- [ ] Define Mileston 2.
