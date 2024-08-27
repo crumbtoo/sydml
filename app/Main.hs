@@ -1,13 +1,21 @@
+{-# LANGUAGE ApplicativeDo #-}
 module Main where
 --------------------------------------------------------------------------------
 import Options.Applicative
+import SydPrelude
 import Sydc
+import Command.Batch qualified as Batch
 --------------------------------------------------------------------------------
 
-data Command = Compile SydCompileOptions
+data Command = CmdBatch SydBatchOptions
 
-parser :: Parser SydOptions
-parser = _
+-- parser :: Parser SydOptions
+-- parser = subparser . mconcat $
+--   [ batchCommand
+--   ]
+
+opts :: Parser (IO ())
+opts = subparser Batch.batchCommand
 
 main :: IO ()
-main = putStrLn "hello, worms."
+main = join $ execParser (info opts idm)

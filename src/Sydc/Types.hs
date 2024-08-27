@@ -23,12 +23,13 @@ data SourceCtx = SourceCtx
   deriving (Show, Generic)
 
 data SydOptions = SydOptions
-  {
-  }
-
-data SydCompileOptions = SydCompileOptions
   { debugFlags :: DebugFlags
   }
+
+data SydBatchOptions = SydBatchOptions
+  { files :: List FilePath
+  }
+  deriving (Generic)
 
 --------------------------------------------------------------------------------
 
