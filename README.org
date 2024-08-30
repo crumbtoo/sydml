@@ -95,6 +95,9 @@ DEADLINE: <2024-09-03 Tue>
 - [X] Milestone table.
 - [X] Define a CLI.
 - [ ] Write tests for empty files.
+  Current blocker: I'm not sure how to uniformly run tests both against
+  black-box executables, as well as typical unit tests. Ideally, both would be
+  run by =cabal test=.
 - [ ] Define Milestone 2.
 * Resources
 ** Reference projects
