@@ -61,7 +61,21 @@ on compiler techniques.
 |-----------------+-------------------|
 | qbe             | Assembly          |
 | cc              | Machine           |
-* Milestones
+* Time-tracking
+#+BEGIN: clocktable :scope subtree :maxlevel 3
+#+CAPTION: Clock summary at [2024-09-01 Sun 10:38]
+| Headline                          | Time |      |      |
+|-----------------------------------+------+------+------|
+| *Total time*                        | *9:14* |      |      |
+|-----------------------------------+------+------+------|
+| Time-tracking                     | 9:14 |      |      |
+| \_  Milestones                    |      | 4:27 |      |
+| \_    0 Preemptive Planning [4/6] |      |      | 4:27 |
+| \_  Other                         |      | 4:47 |      |
+| \_    Nix setup                   |      |      | 4:47 |
+#+END:
+
+** Milestones
 | *Milestone*        | Parser | Elab | Type-checker | Closure-conv. | Hoist | ->ANF | ->SSA | ->QBE |
 |------------------+--------+------+--------------+---------------+-------+-------+-------+-------|
 | Empty module     |        |      |              |               |       |       |       |       |
@@ -69,17 +83,7 @@ on compiler techniques.
 | The identity fn  |        |      |              |               |       |       |       |       |
 |------------------+--------+------+--------------+---------------+-------+-------+-------+-------|
 
-#+BEGIN: clocktable :scope subtree :maxlevel 2
-#+CAPTION: Clock summary at [2024-08-28 Wed 13:21]
-| Headline                        | Time |      |
-|---------------------------------+------+------|
-| *Total time*                      | *3:25* |      |
-|---------------------------------+------+------|
-| Milestones                      | 3:25 |      |
-| \_  0 Preemptive Planning [3/6] |      | 3:25 |
-#+END:
-
-** TODO 0 Preemptive Planning [4/6]
+*** TODO 0 Preemptive Planning [4/6]
 SCHEDULED: <2024-08-27 Tue>
 :LOGBOOK:
 CLOCK: [2024-08-29 Thu 19:14]--[2024-08-29 Thu 19:46] =>  0:32
@@ -110,6 +114,14 @@ main :: IO ()
 +   ...
     #+end_src
 - [ ] Define Milestone 2.
+** Other
+These are tasks that I am not convinced should count towards "work time," but I
+am logging them nonetheless.
+*** Nix setup
+:LOGBOOK:
+CLOCK: [2024-08-31 Sat 23:21]--[2024-09-01 Sun 0:35] =>  1:14
+CLOCK: [2024-09-01 Sun 7:02]--[2024-09-01 Sun 10:35] =>  3:33
+:END:
 * Resources
 ** Reference projects
 *** [[https://github.com/ollef/sixten][sixten]]/[[https://github.com/ollef/sixty][sixty]]
@@ -192,7 +204,7 @@ lambda calculus IR
 *** [[https://www.youtube.com/watch?v=wSdV1M7n4gQ)][Anders Hejlsberg on Modern Compiler Construction]] :TALK:
 *** [[https://www.youtube.com/watch?v=N6b44kMS6OM))][Responsive compilers]] :TALK:
 ** Miscellaneous
-*** [[https://borretti.me/article/lessons-writing-compiler#err][Lessons from Writing a Compiler]]
+*** [#A] [[https://borretti.me/article/lessons-writing-compiler#err][Lessons from Writing a Compiler]]
 *** [[https://www.stephendiehl.com/llvm/][Implementing a JIT Compiled Language with Haskell and LLVM]]
 *** [[https://www.cambridge.org/core/services/aop-cambridge-core/content/view/097CE52C750E69BD16B78C318754C7A4/S0956796820000088a.pdf/div-class-title-build-systems-a-la-carte-theory-and-practice-div.pdf][Build systems à la carte: Theory and Practice]]
 *** [[https://www.reddit.com/r/ProgrammingLanguages/comments/8ggx2n/comment/dybo3rl/][A Reddit thread about functional IRs]]
