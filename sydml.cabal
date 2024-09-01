@@ -1,8 +1,8 @@
 cabal-version:      3.0
 name:               sydml
 version:            0.1.0.0
-synopsis: A compiler for a language with Haskell syntax and ML semantics
-description: A compiler for a language with Haskell syntax and ML semantics
+synopsis: A compiler for an ML in Haskell's clothes.
+description: A compiler for an ML in Haskell's clothes.
 license:            GPL-3.0-only
 license-file:       LICENSE
 author:             crumbtoo
@@ -53,6 +53,10 @@ library
     Sydc.Monad
     Sydc.Query
     Sydc.Types
+    Presydc.Lam.Syntax
+    Presydc.ANF
+    Presydc.SSA
+    Presydc.Lam.Parse
     SydPrelude
 
   include-dirs: tree-sitter-sydml/src
@@ -61,6 +65,7 @@ library
   cxx-sources: tree-sitter-sydml/src/parser.c
   build-depends:
     , base ^>=4.19.1.0
+    , effectful
     , bytestring
     , comonad
     , containers
@@ -89,6 +94,7 @@ library
     , tree-sitter
     , unordered-containers
     , witherable
+    , megaparsec
   hs-source-dirs:   src
   default-language: GHC2021
 
@@ -115,6 +121,12 @@ test-suite sydml-test
     type:             exitcode-stdio-1.0
     hs-source-dirs:   test
     main-is:          Main.hs
+    other-modules:
+      SydmlTests.PreemptivePlanning
     build-depends:
       , base ^>=4.19.1.0
+      , tasty-hunit ^>=0.10
+      , tasty-golden ^>=2.3
+      , tasty-program >=1.1 && <=1.2
+      , tasty >=1.2.2 && <1.6
       , sydml

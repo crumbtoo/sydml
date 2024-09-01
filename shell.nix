@@ -9,6 +9,9 @@ let
 in hs-pkgs.shellFor {
   packages = p: [ # p.sydml
                 ];
+  buildInputs = with pkgs;
+    [ qbe
+    ];
   nativeBuildInputs = with pkgs;
     [ ghc
       cabal-install
@@ -18,7 +21,8 @@ in hs-pkgs.shellFor {
     ++ lib.optional devTools
       [ niv
         hlint
-        ormolu
+        fourmolu
+        cabal-fmt
         (haskell-language-server.override { supportedGhcVersions = [ "98" ]; })
         # (ghc.withPackages (p: [ p.haskell-language-server.override { supportedGhcVersions = [ "98" ]; } ]))
         # hs-pkgs.haskell-language-server

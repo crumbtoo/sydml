@@ -1,12 +1,14 @@
-module Main (main) where
+module SydmlTests.EmptyInput
+  ( tests
+  )
+  where
 --------------------------------------------------------------------------------
 import Test.Tasty
 import Test.Tasty.HUnit
-import SydmlTests.EmptyInput qualified as EmptyInput
 --------------------------------------------------------------------------------
 
-main :: IO ()
-main = defaultMain tests
-
 tests :: TestTree
-tests = SydmlTests.tests
+tests = testGroup "Empty input"
+  [ testCase "1 + 1 = 2" $
+      1 + 1 == 2 @?= True
+  ]

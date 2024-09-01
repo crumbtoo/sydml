@@ -63,16 +63,17 @@ on compiler techniques.
 | cc              | Machine           |
 * Time-tracking
 #+BEGIN: clocktable :scope subtree :maxlevel 3
-#+CAPTION: Clock summary at [2024-09-01 Sun 10:38]
-| Headline                          | Time |      |      |
-|-----------------------------------+------+------+------|
-| *Total time*                        | *9:14* |      |      |
-|-----------------------------------+------+------+------|
-| Time-tracking                     | 9:14 |      |      |
-| \_  Milestones                    |      | 4:27 |      |
-| \_    0 Preemptive Planning [4/6] |      |      | 4:27 |
-| \_  Other                         |      | 4:47 |      |
-| \_    Nix setup                   |      |      | 4:47 |
+#+CAPTION: Clock summary at [2024-09-01 Sun 22:37]
+| Headline                          | Time  |       |      |
+|-----------------------------------+-------+-------+------|
+| *Total time*                        | *18:42* |       |      |
+|-----------------------------------+-------+-------+------|
+| Time-tracking                     | 18:42 |       |      |
+| \_  Milestones                    |       | 13:55 |      |
+| \_    0 Preemptive Planning [6/6] |       |       | 7:40 |
+| \_    1 Research Toys [3/8]       |       |       | 6:15 |
+| \_  Other                         |       |  4:47 |      |
+| \_    Nix setup                   |       |       | 4:47 |
 #+END:
 
 ** Milestones
@@ -83,27 +84,30 @@ on compiler techniques.
 | The identity fn  |        |      |              |               |       |       |       |       |
 |------------------+--------+------+--------------+---------------+-------+-------+-------+-------|
 
-*** TODO 0 Preemptive Planning [4/6]
+*** TODO 0 Preemptive Planning [6/6]
 SCHEDULED: <2024-08-27 Tue>
 :LOGBOOK:
+CLOCK: [2024-09-01 Sun 16:03]--[2024-09-01 Sun 16:22] =>  0:19
+CLOCK: [2024-09-01 Sun 12:32]--[2024-09-01 Sun 13:15] =>  0:43
 CLOCK: [2024-08-29 Thu 19:14]--[2024-08-29 Thu 19:46] =>  0:32
 CLOCK: [2024-08-29 Thu 18:24]--[2024-08-29 Thu 18:54] =>  0:30
 CLOCK: [2024-08-28 Wed 12:49]--[2024-08-28 Wed 13:21] =>  0:32
 CLOCK: [2024-08-28 Wed 09:52]--[2024-08-28 Wed 10:09] =>  0:17
 CLOCK: [2024-08-27 Tue 13:22]--[2024-08-27 Tue 13:47] =>  0:25
 CLOCK: [2024-08-27 Tue 10:40]--[2024-08-27 Tue 12:51] =>  2:11
+CLOCK: [2024-08-27 Tue 10:40]--[2024-08-27 Tue 12:51] =>  2:11
 :END:
 DEADLINE: <2024-09-03 Tue>
-- [X] MLton-esque overview.
-- [X] Create a skeleton project.
-- [X] Milestone table.
-- [X] Define a CLI.
-- [ ] Write tests for empty files.
-  - Current blocker: I'm not sure how to uniformly run tests both against
-    black-box executables, as well as typical unit tests. Ideally, both would be
-    run by =cabal test=.
-  - Potential solution:
-    #+begin_src diff
+**** DONE MLton-esque overview.
+**** DONE Create a skeleton project.
+**** DONE Milestone table.
+**** DONE Define a CLI.
+**** DONE Write tests for empty files.
+- Current blocker: I'm not sure how to uniformly run tests both against
+  black-box executables, as well as typical unit tests. Ideally, both would be
+  run by =cabal test=.
+- Potential solution:
+  #+begin_src diff
 main :: IO ()
 - main = ...
 + main = getArgs >>= main'
@@ -112,15 +116,29 @@ main :: IO ()
 + main' xs = do
 +   opts <- execParserPure _ _
 +   ...
-    #+end_src
-- [ ] Define Milestone 2.
+  #+end_src
+**** DONE Define Milestone 2.
+*** TODO 1 Research Toys [3/8]
+:LOGBOOK:
+CLOCK: [2024-09-01 Sun 16:22]--[2024-09-01 Sun 22:37] =>  6:15
+:END:
+Implement the core algorithms as toys with toothpick scaffolding.
+**** DONE λ→
+- Augmented with tuples.
+**** DONE Rename
+**** DONE LowerANF
+**** STRT Closure-convert
+**** TODO Hoist
+**** TODO LowerSSA
+**** TODO ToQBE
+**** TODO RenderQBE
 ** Other
 These are tasks that I am not convinced should count towards "work time," but I
 am logging them nonetheless.
 *** Nix setup
 :LOGBOOK:
-CLOCK: [2024-08-31 Sat 23:21]--[2024-09-01 Sun 0:35] =>  1:14
-CLOCK: [2024-09-01 Sun 7:02]--[2024-09-01 Sun 10:35] =>  3:33
+CLOCK: [2024-08-31 Sat 23:21]--[2024-09-01 Sun 00:35] =>  1:14
+CLOCK: [2024-09-01 Sun 07:02]--[2024-09-01 Sun 10:35] =>  3:33
 :END:
 * Resources
 ** Reference projects
@@ -129,8 +147,8 @@ CLOCK: [2024-09-01 Sun 7:02]--[2024-09-01 Sun 10:35] =>  3:33
 - the leading example of demand-driven compilers.
 - implemented in glorious haskell.
 *** [[https://github.com/Kleidukos/boreal][boreal]]
-- parses with tree-sitter.
-- ANF-based IR.
+- [[https://github.com/Kleidukos/boreal/tree/main/boreal-daemon/tree-sitter-boreal][parses with tree-sitter]].
+- [[https://github.com/Kleidukos/boreal/blob/main/boreal-daemon/compiler/Boreal/IR/ANFCore/Types.hs][ANF-based IR]].
 - demand-driven.
 - haskell-like source language.
 - client-server.
@@ -158,6 +176,8 @@ CLOCK: [2024-09-01 Sun 7:02]--[2024-09-01 Sun 10:35] =>  3:33
 *** [[https://github.com/idris-lang/Idris2/][Idris 2]]
 - Elegantly supports multiple and third-party backends.
 - [[https://github.com/idris-lang/Idris2/blob/main/src/Compiler/ANF.idr][Uses ANF]].
+*** [[https://github.com/IUCompilerCourse/Essentials-of-Compilation?tab=readme-ov-file][Essentials of Compilation]]
+- A book about compiling Racket and Python to x86-64 assembly.
 ** Parsing
 *** [[https://www.researchgate.net/profile/Sl-Graham/publication/2377179_Efficient_and_Flexible_Incremental_Parsing/links/004635294e13f23ef1000000/Efficient-and-Flexible-Incremental-Parsing.pdf)][Efficient and Flexible Incremental Parsing]]
 *** [[https://www.pc-freak.net/blog/files/NCR_ATM_terminals/www.thecorememory.com/Incremental_analyzis_of_RPL.pdf][Incremental Analysis of Real Programming Languages]]
@@ -168,6 +188,7 @@ CLOCK: [2024-09-01 Sun 7:02]--[2024-09-01 Sun 10:35] =>  3:33
 *** [[https://www.youtube.com/watch?v=0CGzC_iss-8][Treesitter]] :TALK:
 ** IRs — SSA, ANF, and CPS
 *** SSA vs ANF: [[Https://github.com/jacobstanley/ssa-anf][source code]], [[http://code.ouroborus.net/fp-syd/past/2015/2015-07-Stanley-SSAvsANF.pdf][slides]].
+*** [[https://matt.might.net/articles/a-normalization/][A-Normalization: Why and How]]
 *** [[https://www.cs.indiana.edu/~achauhan/Teaching/B629/2006-Fall/CourseMaterial/1998-notices-appel-ssa_fnprog.pdf][SSA is Functional Programming ]]
 *** [[https://news.ycombinator.com/item?id=7150095][How to compile with continuations ]]
 *** [[ftp://ftp.cs.princeton.edu/techreports/1988/183.pdf][Appel — Continuation Passing, Closure Passing Style]]
@@ -191,6 +212,7 @@ should focus on recursive functions. Explains lots of optimizations with a
 lambda calculus IR
 *** [[https://pdfs.semanticscholar.org/55bc/5ceee768223f4b233de568a7181297eb2c4d.pdf][Paper summarizing the Tarditi thesis]]
 *** [[ftp://mumble.net/~kelsey/papers/cps-ssa.ps.gz][A Correspondence between CPS and SSA]]
+*** [[https://compiler.club/compiling-lambda-calculus/][Colin — Compiling the λ-calculus]]
 ** Compiler Architecture
 *** [[https://rustc-dev-guide.rust-lang.org/query.html][rustc demand-driven-compilation]]
 *** [[https://ollef.github.io/blog/posts/query-based-compilers.html)][Query-based compiler architectures]]

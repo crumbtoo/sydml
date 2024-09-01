@@ -5,6 +5,7 @@ import Options.Applicative
 import SydPrelude
 import Sydc
 import Command.Batch qualified as Batch
+import System.Environment (getArgs)
 --------------------------------------------------------------------------------
 
 data Command = CmdBatch SydBatchOptions
@@ -14,8 +15,14 @@ data Command = CmdBatch SydBatchOptions
 --   [ batchCommand
 --   ]
 
-opts :: Parser (IO ())
-opts = subparser Batch.batchCommand
+parser :: ParserInfo (IO ())
+parser = info (helper <*> opts) idm
+  where
+    opts = subparser Batch.batchCommand
 
 main :: IO ()
-main = join $ execParser (info opts idm)
+-- main = join $ execParser (info parser idm)
+main = getArgs >>= main'
+
+main' :: List String -> IO ()
+main' = join . handleParseResult . execParserPure (prefs mempty) parser
