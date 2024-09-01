@@ -95,9 +95,20 @@ DEADLINE: <2024-09-03 Tue>
 - [X] Milestone table.
 - [X] Define a CLI.
 - [ ] Write tests for empty files.
-  Current blocker: I'm not sure how to uniformly run tests both against
-  black-box executables, as well as typical unit tests. Ideally, both would be
-  run by =cabal test=.
+  - Current blocker: I'm not sure how to uniformly run tests both against
+    black-box executables, as well as typical unit tests. Ideally, both would be
+    run by =cabal test=.
+  - Potential solution:
+    #+begin_src diff
+main :: IO ()
+- main = ...
++ main = getArgs >>= main'
+
++ main' :: List String -> IO ()
++ main' xs = do
++   opts <- execParserPure _ _
++   ...
+    #+end_src
 - [ ] Define Milestone 2.
 * Resources
 ** Reference projects
@@ -186,3 +197,4 @@ lambda calculus IR
 *** [[https://www.cambridge.org/core/services/aop-cambridge-core/content/view/097CE52C750E69BD16B78C318754C7A4/S0956796820000088a.pdf/div-class-title-build-systems-a-la-carte-theory-and-practice-div.pdf][Build systems à la carte: Theory and Practice]]
 *** [[https://www.reddit.com/r/ProgrammingLanguages/comments/8ggx2n/comment/dybo3rl/][A Reddit thread about functional IRs]]
 Nearly all of their linked resources are included in this document.
+*** [#A] [[https://simonmar.github.io/bib/papers/eval-apply.pdf][Making a Fast Curry: Push/Enter vs. Eval/Apply for Higher-order Languages]]
