@@ -120,7 +120,8 @@ DEADLINE: <2024-09-03 Tue>
 **** DONE Define Milestone 2.
 *** TODO 1 Research Toys [3/8]
 :LOGBOOK:
-CLOCK: [2024-09-02 Mon 10:24]
+CLOCK: [2024-09-02 Mon 13:57]--[2024-09-02 Mon 14:12] =>  0:15
+CLOCK: [2024-09-02 Mon 10:24]--[2024-09-02 Mon 13:14] =>  2:50
 CLOCK: [2024-09-02 Mon 08:18]--[2024-09-02 Mon 09:45] =>  1:27
 CLOCK: [2024-09-01 Sun 16:22]--[2024-09-01 Sun 22:37] =>  6:15
 :END:
@@ -154,7 +155,7 @@ CLOCK: [2024-09-01 Sun 07:02]--[2024-09-01 Sun 10:35] =>  3:33
 - the latter is a rewrite of the former.
 - the leading example of demand-driven compilers.
 - implemented in glorious haskell.
-*** [[https://github.com/Kleidukos/boreal][boreal]]
+*** [[https://github.com/Kleidukos/boreal][Hécate — boreal]]
 - [[https://github.com/Kleidukos/boreal/tree/main/boreal-daemon/tree-sitter-boreal][parses with tree-sitter]].
 - [[https://github.com/Kleidukos/boreal/blob/main/boreal-daemon/compiler/Boreal/IR/ANFCore/Types.hs][ANF-based IR]].
 - demand-driven.
@@ -196,6 +197,7 @@ CLOCK: [2024-09-01 Sun 07:02]--[2024-09-01 Sun 10:35] =>  3:33
 *** [[https://www.youtube.com/watch?v=0CGzC_iss-8][Treesitter]] :TALK:
 ** IRs — SSA, ANF, and CPS
 *** SSA vs ANF: [[Https://github.com/jacobstanley/ssa-anf][source code]], [[http://code.ouroborus.net/fp-syd/past/2015/2015-07-Stanley-SSAvsANF.pdf][slides]].
+*** [[https://www.reddit.com/r/Compilers/s/rBZDFjXHwl][Reddit discussion about ANF between Hécate and Colin]]
 *** [[https://matt.might.net/articles/a-normalization/][Matt Might — A-Normalization: Why and How]]
 *** [[https://www.cs.indiana.edu/~achauhan/Teaching/B629/2006-Fall/CourseMaterial/1998-notices-appel-ssa_fnprog.pdf][SSA is Functional Programming ]]
 *** [[https://news.ycombinator.com/item?id=7150095][How to compile with continuations ]]

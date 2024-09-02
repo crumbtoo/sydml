@@ -5,8 +5,7 @@ let
   hs-pkgs = pkgs.haskell.packages.ghc98
     .override {
       overrides = final: prev: {
-        base = prev.callHackage
-          "base" "4.19.1.0" {};
+        qbe = hlib.doJailbreak prev.qbe;
       };
     };
 in

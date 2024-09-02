@@ -1,11 +1,11 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Presydc.ANF
-  ( Value(..)
-  , Term(..)
-  , Unique, fresh, mkFresh, runUnique
-  , renameProgram, rename
-  , anfTermF, anfTerm, anfProgram
-  )
+  -- ( Value(..)
+  -- , Term(..)
+  -- , Unique, fresh, mkFresh, runUnique
+  -- , renameProgram, rename
+  -- , anfTermF, anfTerm, anfProgram
+  -- )
   where
 --------------------------------------------------------------------------------
 import Data.Data
@@ -33,12 +33,11 @@ examplePsProgram = Program
      _)
   ]
 
-exampleAnfAdd :: Term
-exampleAnfAdd =
-  Let "add" (Lam "x" $ Lam "y" $ Prim $ PrimAdd (Var "x") (Var "y")) $
-  Let "add3" (App (Var "add") (IntVal 3)) $
-  App (Var "add3") (IntVal 2)
-
+-- exampleAnfAdd :: Term
+-- exampleAnfAdd =
+--   Let "add" (Lam "x" $ Lam "y" $ Prim $ PrimAdd (Var "x") (Var "y")) $
+--   Let "add3" (App (Var "add") (IntVal 3)) $
+--   App (Var "add3") (IntVal 2)
 
 --------------------------------------------------------------------------------
 -- ANF AST
@@ -46,31 +45,32 @@ exampleAnfAdd =
 data Value = IntVal Int
            | Var Name
            | Global Name
+           | LamVal Name Term
+           | Tuple (List Value)
            deriving (Show, Generic, Data)
 
-data Term = App Value Value
-          | Let Name Term Term
-          | Lam Name Term
+data Term = LetApp Name Value Value Term
+          | LetVal Name Value Term
           | Val Value
-          | Prim (PrimOp Value)
           | IfThenElse Value Term Term
-          | Tuple (List Value)
-          | Proj Int Value
           deriving (Show, Generic, Data)
 
 instance Plated Term
 
+pattern Lam :: Name -> Term -> Term
+pattern Lam x m = Val (LamVal x m)
+
 makeBaseFunctor ''Term
 
-values :: Traversal' Term Value
-values k (App f x)          = App <$> k f <*> k x
-values k (Let x e m)        = Let x <$> values k e <*> values k m
-values k (Lam x m)          = Lam x <$> values k m
-values k (Val v)            = Val <$> k v
-values k (Prim p)           = Prim <$> traverse k p
-values k (IfThenElse c t f) = IfThenElse <$> k c <*> values k t <*> values k f
-values k (Tuple xs)         = Tuple <$> traverse k xs
-values k (Proj n v)         = Proj n <$> k v
+-- values :: Traversal' Term Value
+-- values k (App f x)          = App <$> k f <*> k x
+-- -- values k (Let x e m)        = Let x <$> values k e <*> values k m
+-- values k (Lam x m)          = Lam x <$> values k m
+-- values k (Val v)            = Val <$> k v
+-- values k (Prim p)           = Prim <$> traverse k p
+-- values k (IfThenElse c t f) = IfThenElse <$> k c <*> values k t <*> values k f
+-- values k (Tuple xs)         = Tuple <$> traverse k xs
+-- values k (Proj n v)         = Proj n <$> k v
 
 --------------------------------------------------------------------------------
 -- Rename
@@ -116,79 +116,78 @@ rename g e = plate (rename g) e
 --------------------------------------------------------------------------------
 -- LowerANF
 
-anfProgram :: Program Lam.Term -> Program Term
-anfProgram = runPureEff . runUnique . traverse anfTerm
-
-anfTerm :: (Unique :> es) => Lam.Term -> Eff es Term
-anfTerm = cataM anfTermF
-
--- TODO: document
-float :: (Unique :> es) => Term -> Eff es (Term -> Term, Value)
-float (Val v) = pure (id, v)
-float x = do { nm <- fresh; pure (Let nm x, Var nm) }
-
-anfTermF :: forall es. (Unique :> es) => Lam.TermF Term -> Eff es Term
-
-anfTermF (Lam.VarF x) = pure . Val . Var $ x
-anfTermF (Lam.IntValF n) = pure . Val . IntVal $ n
-
-anfTermF (Lam.AppF f x) = do
-  (f̂, f') <- float f
-  (x̂, x') <- float x
-  pure (f̂ . x̂ $ App f' x')
-
-anfTermF (Lam.IfThenElseF c t f) = do
-  (ĉ, c') <- float c
-  pure (ĉ $ IfThenElse c' t f)
-
-anfTermF (Lam.PrimF p) =
-    fmap app . getCompose . traverse float' $ p
+anfTerm :: (Unique :> es) => Term -> Eff es Term
+anfTerm = go Val
   where
-    app (endo,pv) = appEndo endo (Prim pv)
-    -- beautiful... }:3
-    float' :: Term -> Compose (Eff es) ((,) (Endo Term)) Value
-    float' = Compose . fmap (first Endo) . float
+    go = _
 
-anfTermF (Lam.LamF x m) = pure $ Lam x m
+-- --------------------------------------------------------------------------------
+-- -- Closure-conversion
 
-anfTermF (Lam.LetF x e m) = pure $ Let x e m
+-- freeVars :: Term -> HS.HashSet Name
+-- freeVars (Lam x m)   = HS.delete x (freeVars m)
+-- freeVars (Let x e m) = HS.delete x (freeVars m <> freeVars e)
+-- freeVars xs          = foldMapOf (values . #Var) HS.singleton xs
 
---------------------------------------------------------------------------------
--- Closure-conversion
+-- convert :: (Unique :> es) => Term -> Eff es Term
+-- convert f@(Lam x m) = do
+--   let fvs = HS.toList . freeVars $ f
+--   f' <- mkFresh "lam"
+--   envAndX <- mkFresh "envAndX"
+--   env <- mkFresh "env"
+--   let projEnv (i,y) = Let y (Proj i (Var env))
+--   m' <- convert m
+--   let m'' = Let env (Proj 0 (Var envAndX)) $
+--             Let x (Proj 1 (Var envAndX)) $
+--             foldr projEnv m' ([1..] `zip` fvs)
+--   let code = Lam envAndX m''
+--   pure $ Let f' code (Tuple (Var <$> f' : fvs))
 
-freeVars :: Term -> HS.HashSet Name
-freeVars (Lam x m)   = HS.delete x (freeVars m)
-freeVars (Let x e m) = HS.delete x (freeVars m <> freeVars e)
-freeVars xs          = foldMapOf (values . #Var) HS.singleton xs
+-- convert (App f x) = do
+--   code <- mkFresh "code"
+--   arg <- mkFresh "args"
+--   pure $
+--     Let code (Proj 0 f) $
+--     Let arg (Tuple [f, x]) $
+--     App (Var code) (Var arg)
 
-convert :: (Unique :> es) => Term -> Eff es Term
-convert f@(Lam x m) = do
-  let fvs = HS.toList . freeVars $ f
-  f' <- mkFresh "lam"
-  envAndX <- mkFresh "envAndX"
-  env <- mkFresh "env"
-  let projEnv (i,y) = Let y (Proj i (Var env))
-  m' <- convert m
-  let m'' = Let env (Proj 0 (Var envAndX)) $
-            Let x (Proj 1 (Var envAndX)) $
-            foldr projEnv m' ([1..] `zip` fvs)
-  let code = Lam envAndX m''
-  pure $ Let f' code (Tuple (Var <$> f' : fvs))
+-- convert e = traverseOf plate convert e
+-- -- convertF :: (Unique :> es) => TermF Term -> Eff es Term
+-- -- convertF f@(LamF x m) =
 
-convert (App f x) = do
-  code <- mkFresh "code"
-  arg <- mkFresh "args"
-  pure $
-    Let code (Proj 0 f) $
-    Let arg (Tuple [f, x]) $
-    App (Var code) (Var arg)
+-- --------------------------------------------------------------------------------
+-- -- ANF interpreter
 
-convert e = traverseOf plate convert e
--- convertF :: (Unique :> es) => TermF Term -> Eff es Term
--- convertF f@(LamF x m) =
+-- type Ctx = H.HashMap Name Term
 
---------------------------------------------------------------------------------
--- ANF interpreter
+-- evalAnf :: Ctx -> Term -> Term
 
-type Ctx = H.HashMap Name Value
+-- evalAnf g (Proj i v) =
+--   case evalAnfVal g v of
+--     Tuple vs -> Val $ vs !! i
+--     e -> error $ "Proj'd: " <> show e
 
+-- evalAnf g (Val v) = evalAnfVal g v
+
+-- evalAnf g (App f y) =
+--   case evalAnfVal g f of
+--     Lam x m -> evalAnf g' m
+--       where g' = g & H.insert x (evalAnfVal g y)
+--     e -> error $ "applied: " <> show e
+
+-- evalAnf g (Let x e m) = evalAnf g' m
+--   where
+--     g' = g & H.insert x (evalAnf g e)
+
+-- evalAnf _ e@(Tuple vs) = e
+-- evalAnf _ e@(Lam _ _) = e
+
+-- evalAnf g (Prim p) =
+--   case evalAnfVal g <$> p of
+--     PrimAdd (Val (IntVal x)) (Val (IntVal y)) -> Val $ IntVal (x + y)
+
+-- evalAnf _ e = error $ show e
+
+-- evalAnfVal :: Ctx -> Value -> Term
+-- evalAnfVal g (Var x) = unsafeLookup x g
+-- evalAnfVal _ v       = Val v

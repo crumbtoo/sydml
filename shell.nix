@@ -7,7 +7,7 @@ let
     });
 
 in hs-pkgs.shellFor {
-  packages = p: [ # p.sydml
+  packages = p: [ p.sydml
                 ];
   buildInputs = with pkgs;
     [ qbe
