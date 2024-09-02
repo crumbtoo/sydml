@@ -108,7 +108,7 @@ DEADLINE: <2024-09-03 Tue>
   run by =cabal test=.
 - Potential solution:
   #+begin_src diff
-main :: IO ()
+  main :: IO ()
 - main = ...
 + main = getArgs >>= main'
 
@@ -120,10 +120,18 @@ main :: IO ()
 **** DONE Define Milestone 2.
 *** TODO 1 Research Toys [3/8]
 :LOGBOOK:
+CLOCK: [2024-09-02 Mon 10:24]
+CLOCK: [2024-09-02 Mon 08:18]--[2024-09-02 Mon 09:45] =>  1:27
 CLOCK: [2024-09-01 Sun 16:22]--[2024-09-01 Sun 22:37] =>  6:15
 :END:
 Implement the core algorithms as toys with toothpick scaffolding.
-**** DONE λ→
+
+- After implementing closure-conversion, I think it may be a good idea to
+  initially work uncurried by default, à la SML, and implement the necessary
+  optimisations for curry-heavy code later.
+- The value of statically-typed IRs is not to be undermined.
+
+**** DONE The Untyped λ-calculus
 - Augmented with tuples.
 **** DONE Rename
 **** DONE LowerANF
@@ -188,7 +196,7 @@ CLOCK: [2024-09-01 Sun 07:02]--[2024-09-01 Sun 10:35] =>  3:33
 *** [[https://www.youtube.com/watch?v=0CGzC_iss-8][Treesitter]] :TALK:
 ** IRs — SSA, ANF, and CPS
 *** SSA vs ANF: [[Https://github.com/jacobstanley/ssa-anf][source code]], [[http://code.ouroborus.net/fp-syd/past/2015/2015-07-Stanley-SSAvsANF.pdf][slides]].
-*** [[https://matt.might.net/articles/a-normalization/][A-Normalization: Why and How]]
+*** [[https://matt.might.net/articles/a-normalization/][Matt Might — A-Normalization: Why and How]]
 *** [[https://www.cs.indiana.edu/~achauhan/Teaching/B629/2006-Fall/CourseMaterial/1998-notices-appel-ssa_fnprog.pdf][SSA is Functional Programming ]]
 *** [[https://news.ycombinator.com/item?id=7150095][How to compile with continuations ]]
 *** [[ftp://ftp.cs.princeton.edu/techreports/1988/183.pdf][Appel — Continuation Passing, Closure Passing Style]]
@@ -227,6 +235,8 @@ lambda calculus IR
 *** [[https://www.youtube.com/watch?v=N6b44kMS6OM))][Responsive compilers]] :TALK:
 ** Miscellaneous
 *** [#A] [[https://borretti.me/article/lessons-writing-compiler#err][Lessons from Writing a Compiler]]
+Covers a lot of topics that textbooks miss.
+*** [[https://matt.might.net/articles/closure-conversion/][Matt Might — Closure Conversion]]
 *** [[https://www.stephendiehl.com/llvm/][Implementing a JIT Compiled Language with Haskell and LLVM]]
 *** [[https://www.cambridge.org/core/services/aop-cambridge-core/content/view/097CE52C750E69BD16B78C318754C7A4/S0956796820000088a.pdf/div-class-title-build-systems-a-la-carte-theory-and-practice-div.pdf][Build systems à la carte: Theory and Practice]]
 *** [[https://www.reddit.com/r/ProgrammingLanguages/comments/8ggx2n/comment/dybo3rl/][A Reddit thread about functional IRs]]

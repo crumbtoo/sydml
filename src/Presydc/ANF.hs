@@ -8,12 +8,13 @@ module Presydc.ANF
   )
   where
 --------------------------------------------------------------------------------
+import Data.Data
 import Data.HashSet qualified as HS
 import Data.Monoid
 import Control.Lens
 import SydPrelude
 import Presydc.Lam.Syntax qualified as Lam
-import Presydc.Lam.Syntax (Program(..), Name, PrimOp)
+import Presydc.Lam.Syntax (Program(..), Name, PrimOp(..))
 import Data.Functor.Foldable.Monadic
 import Data.Text qualified as T
 import Data.HashMap.Strict qualified as H
@@ -32,23 +33,32 @@ examplePsProgram = Program
      _)
   ]
 
+exampleAnfAdd :: Term
+exampleAnfAdd =
+  Let "add" (Lam "x" $ Lam "y" $ Prim $ PrimAdd (Var "x") (Var "y")) $
+  Let "add3" (App (Var "add") (IntVal 3)) $
+  App (Var "add3") (IntVal 2)
+
+
 --------------------------------------------------------------------------------
 -- ANF AST
 
 data Value = IntVal Int
            | Var Name
            | Global Name
-           deriving (Show, Generic)
+           deriving (Show, Generic, Data)
 
 data Term = App Value Value
-          | Let Text Term Term
+          | Let Name Term Term
           | Lam Name Term
           | Val Value
           | Prim (PrimOp Value)
           | IfThenElse Value Term Term
           | Tuple (List Value)
           | Proj Int Value
-          deriving (Show, Generic)
+          deriving (Show, Generic, Data)
+
+instance Plated Term
 
 makeBaseFunctor ''Term
 
@@ -152,4 +162,33 @@ freeVars (Let x e m) = HS.delete x (freeVars m <> freeVars e)
 freeVars xs          = foldMapOf (values . #Var) HS.singleton xs
 
 convert :: (Unique :> es) => Term -> Eff es Term
-convert (Lam x m) = pure $ _
+convert f@(Lam x m) = do
+  let fvs = HS.toList . freeVars $ f
+  f' <- mkFresh "lam"
+  envAndX <- mkFresh "envAndX"
+  env <- mkFresh "env"
+  let projEnv (i,y) = Let y (Proj i (Var env))
+  m' <- convert m
+  let m'' = Let env (Proj 0 (Var envAndX)) $
+            Let x (Proj 1 (Var envAndX)) $
+            foldr projEnv m' ([1..] `zip` fvs)
+  let code = Lam envAndX m''
+  pure $ Let f' code (Tuple (Var <$> f' : fvs))
+
+convert (App f x) = do
+  code <- mkFresh "code"
+  arg <- mkFresh "args"
+  pure $
+    Let code (Proj 0 f) $
+    Let arg (Tuple [f, x]) $
+    App (Var code) (Var arg)
+
+convert e = traverseOf plate convert e
+-- convertF :: (Unique :> es) => TermF Term -> Eff es Term
+-- convertF f@(LamF x m) =
+
+--------------------------------------------------------------------------------
+-- ANF interpreter
+
+type Ctx = H.HashMap Name Value
+
