@@ -1,6 +1,16 @@
-#+title: sydml
-#+author: madeleine sydney slaga
+#+title: SydML
+#+author: Madeleine Sydney Ślaga
+#+setupfile: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
+#+options: tags
+#+options: pri
+#+export_file_name: docs/index.html
 
+* About
+SydML is currently planned to be a functional programming language with strict
+semantics.
+
+Github renders this document very poorly, which conflicts with my style of
+organisation. See the rendered HTML [[https://crumbtoo.github.io/sydml][here]].
 * Motivation
 ** Demonstrate that I've learned from last year's failures
 The entire project collapsed at the last minute, likely as a result of the
@@ -61,19 +71,20 @@ on compiler techniques.
 |-----------------+-------------------|
 | qbe             | Assembly          |
 | cc              | Machine           |
-* Time-tracking
+* Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
-#+CAPTION: Clock summary at [2024-09-01 Sun 22:37]
-| Headline                          | Time  |       |      |
-|-----------------------------------+-------+-------+------|
-| *Total time*                        | *18:42* |       |      |
-|-----------------------------------+-------+-------+------|
-| Time-tracking                     | 18:42 |       |      |
-| \_  Milestones                    |       | 13:55 |      |
-| \_    0 Preemptive Planning [6/6] |       |       | 7:40 |
-| \_    1 Research Toys [3/8]       |       |       | 6:15 |
-| \_  Other                         |       |  4:47 |      |
-| \_    Nix setup                   |       |       | 4:47 |
+#+CAPTION: Clock summary at [2024-09-03 Tue 11:38]
+| Headline                          | Time    |       |       |
+|-----------------------------------+---------+-------+-------|
+| *Total time*                        | *1d 0:18* |       |       |
+|-----------------------------------+---------+-------+-------|
+| Progress                          | 1d 0:18 |       |       |
+| \_  Milestones                    |         | 18:27 |       |
+| \_    0 Preemptive Planning [6/6] |         |       |  7:40 |
+| \_    1 Research Toys [3/8]       |         |       | 10:47 |
+| \_  Other                         |         |  5:51 |       |
+| \_    Nix setup                   |         |       |  4:47 |
+| \_    README Fancifying           |         |       |  1:04 |
 #+END:
 
 ** Milestones
@@ -142,12 +153,16 @@ Implement the core algorithms as toys with toothpick scaffolding.
 **** TODO ToQBE
 **** TODO RenderQBE
 ** Other
-These are tasks that I am not convinced should count towards "work time," but I
-am logging them nonetheless.
+I am not convinced that some of these tasks should count towards "work time;"
+regardless, I choose to log them.
 *** Nix setup
 :LOGBOOK:
 CLOCK: [2024-08-31 Sat 23:21]--[2024-09-01 Sun 00:35] =>  1:14
 CLOCK: [2024-09-01 Sun 07:02]--[2024-09-01 Sun 10:35] =>  3:33
+:END:
+*** README Fancifying
+:LOGBOOK:
+CLOCK: [2024-09-03 Tue 10:32]--[2024-09-03 Tue 11:36] =>  1:04
 :END:
 * Resources
 ** Reference projects
