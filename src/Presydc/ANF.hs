@@ -8,27 +8,29 @@ module Presydc.ANF
   -- )
   where
 --------------------------------------------------------------------------------
-import Data.Data
+import Data.Sequence qualified as Seq
+import           Data.Data
 import Data.HashSet qualified as HS
-import Data.Monoid
-import Control.Lens
-import SydPrelude
+import           Data.Monoid
+import           Control.Lens
+import           SydPrelude hiding (hoist)
 import Presydc.Lam.Syntax qualified as Lam
-import Presydc.Lam.Syntax (Program(..), Name, PrimOp(..))
-import Data.Functor.Foldable.Monadic
+import           Presydc.Lam.Syntax (Program(..), Name, PrimOp(..))
+import           Data.Functor.Foldable.Monadic
 import Data.Text qualified as T
 import Data.HashMap.Strict qualified as H
-import Effectful
-import Effectful.Dispatch.Dynamic
-import Effectful.State.Static.Local
-import Data.Hashable (Hashable)
-import Debug.Trace
+import           Effectful
+import           Effectful.Dispatch.Dynamic
+import           Effectful.State.Static.Local
+import           Data.Hashable (Hashable)
+import           Debug.Trace
 import Data.List.NonEmpty qualified as List1
-import Control.Monad.Cont
-import Data.Foldable
-import Data.Functor.Reverse
-import Prettyprinter
+import           Control.Monad.Cont
+import           Data.Foldable
+import           Data.Functor.Reverse
+import           Prettyprinter
 import qualified Presydc.Lam.Syntax as Lam
+import           Data.Sequence (Seq, (><))
 --------------------------------------------------------------------------------
 
 examplePsProgram :: Program Lam.Term
@@ -171,17 +173,20 @@ type RnEnv = H.HashMap Name Name
 unsafeLookup :: (Show k, Eq k, Hashable k) => k -> H.HashMap k v -> v
 unsafeLookup k = fromMaybe (error $ "unsafeLookup: " <> show k) . H.lookup k
 
-rename :: (Unique :> es) => RnEnv -> Lam.Term -> Eff es Lam.Term
-rename g (Lam.Var x) = pure . Lam.Var $ unsafeLookup x g
-rename g (Lam.Lam x m) = do
+rename :: (Unique :> es) => Lam.Term -> Eff es Lam.Term
+rename = renameWithEnv mempty
+
+renameWithEnv :: (Unique :> es) => RnEnv -> Lam.Term -> Eff es Lam.Term
+renameWithEnv g (Lam.Var x) = pure . Lam.Var $ unsafeLookup x g
+renameWithEnv g (Lam.Lam x m) = do
   x' <- mkFresh x
   let g' = H.insert x x' g
-  Lam.Lam x' <$> rename g' m
-rename g (Lam.Let x e m) = do
+  Lam.Lam x' <$> renameWithEnv g' m
+renameWithEnv g (Lam.Let x e m) = do
   x' <- mkFresh x
   let g' = H.insert x x' g
-  Lam.Let x' e <$> rename g' m
-rename g e = plate (rename g) e
+  Lam.Let x' e <$> renameWithEnv g' m
+renameWithEnv g e = plate (renameWithEnv g) e
 
 --------------------------------------------------------------------------------
 -- LowerANF
@@ -263,8 +268,63 @@ convert (LetApp r f xs m) = do
 
 convert e = traverseOf plate convert e
 
--- -- convertF :: (Unique :> es) => TermF Term -> Eff es Term
--- -- convertF f@(LamF x m) =
+--------------------------------------------------------------------------------
+-- Hoist
+
+data Join = Join Name (Maybe Name) Term
+
+data Lam = Lam Name (List1 Name) Join (List Join)
+
+data Hoisted a = Hoisted !(Seq Lam) !(Seq Join) a
+  deriving (Functor)
+
+instance Applicative Hoisted where
+  pure = Hoisted mempty mempty
+  Hoisted fs js f <*> Hoisted fs' js' a = Hoisted (fs <> fs') (js <> js') (f a)
+
+hoist :: forall es. (Unique :> es) => Term -> Eff es (List1 Lam)
+hoist = go >=> finalise
+ where
+   finalise (Hoisted fs js t) = do
+     (dummy,entry) <- each mkFresh ("dummy","entry")
+     let jn = Join entry Nothing t
+         main = Lam "main" (List1.singleton dummy) jn (toList js)
+     pure $ main :| toList fs
+
+   go :: Term -> Eff es (Hoisted Term)
+   go (LetLam f xs n m) = do
+     Hoisted fs js n' <- go n
+     Hoisted fs' js' m' <- go m
+     entry <- mkFresh "entry"
+     let fn = Lam f xs (Join entry Nothing n') (toList js)
+     pure $ Hoisted (fs >< fs' >< Seq.singleton fn) js' m'
+
+   go (LetJoin j p n m) = do
+     Hoisted fs js n' <- go n
+     Hoisted fs' js' m' <- go m
+     let jn = Join j p n'
+     pure $ Hoisted (fs >< fs') (Seq.singleton jn >< js >< js') m'
+
+   go e = getCompose $ traverseOf plate (Compose . go) e
+
+instance Pretty Join where
+  pretty (Join j p m) = align . parens . vsep $
+    [ "define-join" <+> pretty j <+> foldMap pretty p
+    , indent 2 $ pretty m
+    ]
+
+instance Pretty Lam where
+  pretty (Lam f xs j js) = align . parens . vsep $
+      [ "define" <+> pars
+      , indent 2 $ pretty j
+      , indent 2 js'
+      ]
+    where
+      pars = Lam.asList $ pretty f : (pretty <$> List1.toList xs)
+      js' = Lam.asList $ "joins" : (pretty <$> js)
+
+instance Pretty a => Pretty (Hoisted a) where
+  pretty = _
 
 -- --------------------------------------------------------------------------------
 -- -- ANF interpreter
