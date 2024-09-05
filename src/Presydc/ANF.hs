@@ -284,32 +284,41 @@ instance Applicative Hoisted where
 
 hoist :: forall es. (Unique :> es) => Term -> Eff es (List1 Lam)
 hoist = go >=> finalise
- where
-   finalise (Hoisted fs js t) = do
-     (dummy,entry) <- each mkFresh ("dummy","entry")
-     let jn = Join entry Nothing t
-         main = Lam "main" (List1.singleton dummy) jn (toList js)
-     pure $ main :| toList fs
+  where
+    finalise (Hoisted fs js t) = do
+      (dummy,entry) <- each mkFresh ("dummy","entry")
+      let jn = Join entry Nothing t
+          main = Lam "main" (List1.singleton dummy) jn (toList js)
+      pure $ main :| toList fs
 
-   go :: Term -> Eff es (Hoisted Term)
-   go (LetLam f xs n m) = do
-     Hoisted fs js n' <- go n
-     Hoisted fs' js' m' <- go m
-     entry <- mkFresh "entry"
-     let fn = Lam f xs (Join entry Nothing n') (toList js)
-     pure $ Hoisted (fs >< fs' >< Seq.singleton fn) js' m'
+    go :: Term -> Eff es (Hoisted Term)
+    go (LetLam f xs n m) = do
+      Hoisted fs js n' <- go n
+      Hoisted fs' js' m' <- go m
+      entry <- mkFresh "entry"
+      let fn = Lam f xs (Join entry Nothing n') (toList js)
+      pure $ Hoisted (fs >< fs' >< Seq.singleton fn) js' m'
 
-   go (LetJoin j p n m) = do
-     Hoisted fs js n' <- go n
-     Hoisted fs' js' m' <- go m
-     let jn = Join j p n'
-     pure $ Hoisted (fs >< fs') (Seq.singleton jn >< js >< js') m'
+    go (LetJoin j p n m) = do
+      Hoisted fs js n' <- go n
+      Hoisted fs' js' m' <- go m
+      let jn = Join j p n'
+      pure $ Hoisted (fs >< fs') (Seq.singleton jn >< js >< js') m'
 
-   go e = getCompose $ traverseOf plate (Compose . go) e
+    go (IfThenElse c t f) = do
+      Hoisted fs js t' <- go t
+      Hoisted fs' js' t' <- go f
+      (th,el) <- each mkFresh ("then","else")
+      let bt = Join th Nothing t
+          bf = Join el Nothing t
+      pure $ Hoisted (fs >< fs') (Seq.fromList [bt,bf] >< js >< js') $
+        IfThenElse c (Jump th Nothing) (Jump el Nothing)
+
+    go e = getCompose $ traverseOf plate (Compose . go) e
 
 instance Pretty Join where
   pretty (Join j p m) = align . parens . vsep $
-    [ "define-join" <+> pretty j <+> foldMap pretty p
+    [ "define-join" <+> pretty j <+> maybe "()" (parens . pretty) p
     , indent 2 $ pretty m
     ]
 
