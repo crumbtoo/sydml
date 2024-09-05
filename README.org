@@ -129,8 +129,9 @@ DEADLINE: <2024-09-03 Tue>
 +   ...
   #+end_src
 **** DONE Define Milestone 2.
-*** TODO 1 Research Toys [3/9]
+*** TODO 1 Research Toys [4/9]
 :LOGBOOK:
+CLOCK: [2024-09-05 Thu 11:17]
 CLOCK: [2024-09-05 Thu 00:09]--[2024-09-05 Thu 01:32] =>  1:23
 CLOCK: [2024-09-04 Wed 18:28]--[2024-09-04 Wed 21:30] =>  3:02
 CLOCK: [2024-09-04 Wed 17:40]--[2024-09-04 Wed 18:03] =>  0:23
@@ -151,8 +152,9 @@ Implement the core algorithms as toys with toothpick scaffolding.
 - Augmented with tuples.
 **** DONE Rename
 **** DONE LowerANF
-**** STRT Closure-convert
-**** TODO Hoist
+**** DONE Closure-convert
+CLOSED: [2024-09-05 Thu 11:50]
+**** STRT Hoist
 **** TODO LowerSSA
 **** TODO ToQBE
 **** TODO RenderQBE
@@ -172,7 +174,7 @@ CLOCK: [2024-09-03 Tue 10:32]--[2024-09-03 Tue 11:36] =>  1:04
 :END:
 *** GitHub Pages action
 :LOGBOOK:
-CLOCK: [2024-09-05 Thu 02:28]
+CLOCK: [2024-09-05 Thu 02:28]--[2024-09-05 Thu 03:03] =>  0:35
 :END:
 * Resources
 ** Reference projects

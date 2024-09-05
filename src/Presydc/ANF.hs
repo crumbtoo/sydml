@@ -117,10 +117,8 @@ instance Pretty Term where
   pretty (LetLam r xs n m) =
       prettyLet "let" r m lam
     where
-      lam = group . align . parens $ "lambda" <+> pars
-            -- REVIEW: really?
-            -- REVIEW: erm... cleanup on line 103!
-            <> softline <> flatAlt (indent 2 n') n'
+      lam = align . parens $ vsep [ "lambda" <+> pars
+                                  , indent 2 n' ]
       pars = Lam.asList (pretty <$> List1.toList xs)
       n' = pretty n
   pretty (LetPrim r p m) = prettyLet "let" r m (pretty p)
@@ -156,7 +154,7 @@ fresh :: (Unique :> es) => Eff es Text
 fresh = send Fresh
 
 mkFresh :: (Unique :> es) => Name -> Eff es Name
-mkFresh x = (\n -> x <> "_" <> n) <$> fresh
+mkFresh x = (\n -> x <> "__" <> n) <$> fresh
 
 runUnique :: Eff (Unique ': es) a -> Eff es a
 runUnique = reinterpret (evalState (0 :: Int)) $ const $ \case
@@ -243,26 +241,25 @@ freeVars xs                = foldMapOf plate freeVars xs
 
 convert :: (Unique :> es) => Term -> Eff es Term
 convert (LetLam f xs n m) = do
-    env <- mkFresh "env"
-    n' <- convert n
-    m' <- fromEnv env fvs <$> convert m
-    let closure = LetTuple f (Global f : (Var <$> fvs)) n'
-    pure $ LetLam f (List1.cons env xs) closure m'
+    (env,fRaw) <- each mkFresh ("env",f <> "_unclosed")
+    n' <- fromEnv env fvs <$> convert n
+    m' <- convert m
+    let closure = LetTuple f (Global fRaw : (Var <$> fvs)) m'
+    pure $ LetLam fRaw (List1.cons env xs) n' closure
   where
     fvs = HS.toList $ freeVars n `HS.difference` HS.fromList (List1.toList xs)
     fromEnv :: Name -> List Name -> Term -> Term
-    fromEnv env fvs mm = fst $ foldr f (mm,0) fvs
+    fromEnv env fvs e0 = fst $ foldr g (e0,1) fvs
       where
-        f nm (e,n) = (LetProj nm n env e, n+1)
+        g nm (e,n) = (LetProj nm n env e, n+1)
 
 convert (LetApp r f xs m) = do
   code <- mkFresh "code"
-  arg <- mkFresh "args"
-  r <- mkFresh "r"
+  m' <- convert m
   pure $
     LetProj code 0 f $
     LetApp r code (Var f `List1.cons` xs) $
-    Val (Var r)
+    m'
 
 convert e = traverseOf plate convert e
 

@@ -30,3 +30,5 @@ cabal.project.local~
 tree-sitter-sydml/*
 !tree-sitter-sydml/grammar.js
 !tree-sitter-sydml/test
+
+result/
