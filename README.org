@@ -73,18 +73,18 @@ on compiler techniques.
 | cc              | Machine           |
 * Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
-#+CAPTION: Clock summary at [2024-09-03 Tue 11:38]
-| Headline                          | Time    |       |       |
-|-----------------------------------+---------+-------+-------|
-| *Total time*                        | *1d 0:18* |       |       |
-|-----------------------------------+---------+-------+-------|
-| Progress                          | 1d 0:18 |       |       |
-| \_  Milestones                    |         | 18:27 |       |
-| \_    0 Preemptive Planning [6/6] |         |       |  7:40 |
-| \_    1 Research Toys [3/8]       |         |       | 10:47 |
-| \_  Other                         |         |  5:51 |       |
-| \_    Nix setup                   |         |       |  4:47 |
-| \_    README Fancifying           |         |       |  1:04 |
+#+CAPTION: Clock summary at [2024-09-05 Thu 01:32]
+| Headline                          | Time    |         |       |
+|-----------------------------------+---------+---------+-------|
+| *Total time*                        | *1d 7:23* |         |       |
+|-----------------------------------+---------+---------+-------|
+| Progress                          | 1d 7:23 |         |       |
+| \_  Milestones                    |         | 1d 1:05 |       |
+| \_    0 Preemptive Planning [6/6] |         |         |  7:40 |
+| \_    1 Research Toys [3/9]       |         |         | 17:25 |
+| \_  Other                         |         |    6:18 |       |
+| \_    Nix setup                   |         |         |  5:14 |
+| \_    README Fancifying           |         |         |  1:04 |
 #+END:
 
 ** Milestones
@@ -129,9 +129,10 @@ DEADLINE: <2024-09-03 Tue>
 +   ...
   #+end_src
 **** DONE Define Milestone 2.
-*** TODO 1 Research Toys [3/8]
+*** TODO 1 Research Toys [3/9]
 :LOGBOOK:
-CLOCK: [2024-09-04 Wed 18:28]
+CLOCK: [2024-09-05 Thu 00:09]--[2024-09-05 Thu 01:32] =>  1:23
+CLOCK: [2024-09-04 Wed 18:28]--[2024-09-04 Wed 21:30] =>  3:02
 CLOCK: [2024-09-04 Wed 17:40]--[2024-09-04 Wed 18:03] =>  0:23
 CLOCK: [2024-09-04 Wed 14:13]--[2024-09-04 Wed 16:03] =>  1:50
 CLOCK: [2024-09-02 Mon 13:57]--[2024-09-02 Mon 14:12] =>  0:15
@@ -155,6 +156,7 @@ Implement the core algorithms as toys with toothpick scaffolding.
 **** TODO LowerSSA
 **** TODO ToQBE
 **** TODO RenderQBE
+**** TODO Demo
 ** Other
 I am not convinced that some of these tasks should count towards "work time;"
 regardless, I choose to log them.

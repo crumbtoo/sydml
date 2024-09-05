@@ -9,6 +9,7 @@ import Data.Data.Lens (uniplate)
 import Language.LSP.Protocol.Lens (HasLanguage(language))
 import Data.String (IsString (fromString))
 import Data.Text qualified as T
+import Prettyprinter
 --------------------------------------------------------------------------------
 
 data Term = App Term Term
@@ -30,6 +31,25 @@ instance Plated Term where
 data PrimOp a = PrimAdd a a
               | PrimPrint a
               deriving (Show, Functor, Foldable, Traversable, Data)
+
+instance Each (PrimOp a) (PrimOp b) a b
+
+instance Pretty a => Pretty (PrimOp a) where
+  pretty p = asFunction $ name : (pretty <$> p ^.. each)
+    where
+      name = case p of
+        PrimAdd _ _ -> "add#"
+        PrimPrint _ -> "print#"
+
+asFunction :: List (Doc ann) -> Doc ann
+asFunction [] = "()"
+asFunction (x : xs) =
+  group . align . parens $
+    x <> softline
+      <> flatAlt (indent 2 . align . vsep $ xs) (hsep xs)
+
+asList :: List (Doc ann) -> Doc ann
+asList = parens . group . align . vsep
 
 type Name = Text
 

@@ -25,6 +25,10 @@ import Data.Hashable (Hashable)
 import Debug.Trace
 import Data.List.NonEmpty qualified as List1
 import Control.Monad.Cont
+import Data.Foldable
+import Data.Functor.Reverse
+import Prettyprinter
+import qualified Presydc.Lam.Syntax as Lam
 --------------------------------------------------------------------------------
 
 examplePsProgram :: Program Lam.Term
@@ -35,6 +39,8 @@ examplePsProgram = Program
      _)
   ]
 
+exampleLamTerm :: Lam.Term
+exampleLamTerm = Lam.Lam "x" $ Lam.Lam "y" $ Lam.Prim $ PrimAdd (Lam.Var "x") (Lam.Var "y")
 -- exampleAnfAdd :: Term
 -- exampleAnfAdd =
 --   Let "add" (Lam "x" $ Lam "y" $ Prim $ PrimAdd (Var "x") (Var "y")) $
@@ -55,7 +61,7 @@ data Term = LetApp Name Name (List1 Value) Term
           | LetTuple Name (List Value) Term
           | LetProj Name Natural Name Term
           | IfThenElse Value Term Term
-          | Join Name (Maybe Name) Term Term
+          | LetJoin Name (Maybe Name) Term Term
           | Jump Name (Maybe Value)
           | Val Value
           deriving (Show, Generic, Data)
@@ -73,6 +79,70 @@ makeBaseFunctor ''Term
 -- values k (IfThenElse c t f) = IfThenElse <$> k c <*> values k t <*> values k f
 -- values k (Tuple xs)         = Tuple <$> traverse k xs
 -- values k (Proj n v)         = Proj n <$> k v
+
+--------------------------------------------------------------------------------
+-- Pretty-print
+
+instance Pretty Value where
+  pretty = \case
+    IntVal n -> viaShow n
+    Var n -> pretty n
+    Global n -> parens $ "global" <+> pretty n
+
+prettyLet :: Name -> Name -> Term -> Doc ann -> Doc ann
+prettyLet kw x m e = align . parens $
+  vsep [ pretty kw <+> brackets (pretty x <+> e)
+       , indent 2 (pretty m)
+       ]
+
+asFunction :: (Pretty a, Pretty b, Foldable t) => a -> t b -> Doc ann
+asFunction f xs = Lam.asFunction $ pretty f : xs ^.. folded . to pretty
+
+toSubscript :: Char -> Char
+toSubscript = \case
+  '1' -> '₁'
+  '2' -> '₂'
+  '3' -> '₃'
+  '4' -> '₄'
+  '5' -> '₅'
+  '6' -> '₆'
+  '7' -> '₇'
+  '8' -> '₈'
+  '9' -> '₉'
+  '0' -> '₀'
+  x   -> x
+
+instance Pretty Term where
+  pretty (LetApp r f xs m) = prettyLet "let" r m (asFunction f xs)
+  pretty (LetLam r xs n m) =
+      prettyLet "let" r m lam
+    where
+      lam = group . align . parens $ "lambda" <+> pars
+            -- REVIEW: really?
+            -- REVIEW: erm... cleanup on line 103!
+            <> softline <> flatAlt (indent 2 n') n'
+      pars = Lam.asList (pretty <$> List1.toList xs)
+      n' = pretty n
+  pretty (LetPrim r p m) = prettyLet "let" r m (pretty p)
+  pretty (LetTuple r xs m) = prettyLet "let" r m call
+    where call = asFunction ("list" :: Text) xs
+  pretty (LetProj r n x m) = prettyLet "let" r m call
+    where call = asFunction ("proj" <> T.pack (toSubscript <$> show n)) [x]
+  pretty (IfThenElse c t f) =
+    parens . align . vsep $
+      [ "if" <+> pretty c
+      , indent 3 $ pretty t
+      , indent 3 $ pretty f
+      ]
+  pretty (LetJoin r mx n m) = prettyLet "let" r m call
+    where
+      call = Lam.asFunction $ ["join"] <> foldMap ((:[]) . pretty) mx <> [pretty n]
+  pretty (Jump l mx) =
+    Lam.asFunction $ ["jump"] <> [pretty l] <> foldMap ((:[]) . pretty) mx
+  pretty (Val v) = pretty v
+
+prettyApp :: Name -> List Value -> Doc ann
+prettyApp f xs = group . parens . hsep $ pretty f : (pretty <$> xs)
 
 --------------------------------------------------------------------------------
 -- Rename
@@ -93,7 +163,7 @@ runUnique = reinterpret (evalState (0 :: Int)) $ const $ \case
   Fresh -> do
    n <- get @Int
    modify @Int (+1)
-   pure (("x__"<>) . T.pack . show $ n)
+   pure . T.pack . show $ n
 
 renameProgram :: (Unique :> es) => Program Lam.Term -> Eff es (Program Lam.Term)
 renameProgram = _
@@ -118,22 +188,12 @@ rename g e = plate (rename g) e
 --------------------------------------------------------------------------------
 -- LowerANF
 
-newtype Kendo m a = Kendo { appKendo :: a -> m a }
-
-appKendo (Kendo r) = r
-
-instance Monad m => Semigroup (Kendo m a) where
-  (<>) = Kendo .: (<=<) `on` appKendo
-
-instance Monad m => Monoid (Kendo m a) where
-  mempty = Kendo pure
-
 anfTerm :: forall es. (Unique :> es) => Lam.Term -> Eff es Term
 anfTerm = flip go (pure . Val)
   where
     go :: Lam.Term -> (Value -> Eff es Term) -> Eff es Term
     go (Lam.IntVal n) k = k $ IntVal n
-    go (Lam.Var x) k  = k $ Var x
+    go (Lam.Var x) k = k $ Var x
 
     go (Lam.App f x) k =
       go f \case
@@ -147,7 +207,7 @@ anfTerm = flip go (pure . Val)
       go c \c' -> do
         (r,j,p) <- each mkFresh ("r","j","p")
         let jn = pure . Jump j . Just
-        Join j (Just p) <$> k (Var p) <*> (IfThenElse c' <$> go t jn <*> go f jn)
+        LetJoin j (Just p) <$> k (Var p) <*> (IfThenElse c' <$> go t jn <*> go f jn)
 
     go (Lam.Prim p) k =
       -- lol?
@@ -155,42 +215,57 @@ anfTerm = flip go (pure . Val)
         r <- mkFresh "r"
         LetPrim r p' <$> k (Var r)
 
-    go (Lam.Lam x m) k =
-      go m \m' -> do
-        r <- mkFresh "r"
-        LetLam r (List1.singleton x) (Val m') <$> k (Var r)
+    go (Lam.Lam x m) k = do
+      r <- mkFresh "r"
+      m' <- go m (pure . Val)
+      LetLam r (List1.singleton x) m' <$> k (Var r)
 
 -- --------------------------------------------------------------------------------
 -- -- Closure-conversion
 
--- freeVars :: Term -> HS.HashSet Name
--- freeVars (Lam x m)   = HS.delete x (freeVars m)
--- freeVars (Let x e m) = HS.delete x (freeVars m <> freeVars e)
--- freeVars xs          = foldMapOf (values . #Var) HS.singleton xs
+toHashSetOf :: Hashable a => Getting (HS.HashSet a) s a -> s -> HS.HashSet a
+toHashSetOf l s = getConst (l (Const . HS.singleton) s)
 
--- convert :: (Unique :> es) => Term -> Eff es Term
--- convert f@(Lam x m) = do
---   let fvs = HS.toList . freeVars $ f
---   f' <- mkFresh "lam"
---   envAndX <- mkFresh "envAndX"
---   env <- mkFresh "env"
---   let projEnv (i,y) = Let y (Proj i (Var env))
---   m' <- convert m
---   let m'' = Let env (Proj 0 (Var envAndX)) $
---             Let x (Proj 1 (Var envAndX)) $
---             foldr projEnv m' ([1..] `zip` fvs)
---   let code = Lam envAndX m''
---   pure $ Let f' code (Tuple (Var <$> f' : fvs))
+freeVars :: Term -> HS.HashSet Name
+freeVars (LetApp x f ys m) = toHashSetOf (each . #Var) ys
+                          <> (freeVars m & HS.delete x)
+freeVars (LetLam x ys n m) = (freeVars n `HS.difference` toHashSetOf each ys)
+                          <> (freeVars m & HS.delete x)
+freeVars (LetPrim x vs m)  = toHashSetOf (each . #Var) vs
+                          <> (freeVars m & HS.delete x)
+freeVars (LetTuple x vs m)  = toHashSetOf (each . #Var) vs
+                          <> (freeVars m & HS.delete x)
+freeVars (LetProj x i y m) = HS.singleton y
+                          <> (freeVars m & HS.delete x)
+freeVars (LetJoin x p r m) = freeVars m & HS.delete x
+freeVars (Val (Var x))     = HS.singleton x
+freeVars xs                = foldMapOf plate freeVars xs
 
--- convert (App f x) = do
---   code <- mkFresh "code"
---   arg <- mkFresh "args"
---   pure $
---     Let code (Proj 0 f) $
---     Let arg (Tuple [f, x]) $
---     App (Var code) (Var arg)
+convert :: (Unique :> es) => Term -> Eff es Term
+convert (LetLam f xs n m) = do
+    env <- mkFresh "env"
+    n' <- convert n
+    m' <- fromEnv env fvs <$> convert m
+    let closure = LetTuple f (Global f : (Var <$> fvs)) n'
+    pure $ LetLam f (List1.cons env xs) closure m'
+  where
+    fvs = HS.toList $ freeVars n `HS.difference` HS.fromList (List1.toList xs)
+    fromEnv :: Name -> List Name -> Term -> Term
+    fromEnv env fvs mm = fst $ foldr f (mm,0) fvs
+      where
+        f nm (e,n) = (LetProj nm n env e, n+1)
 
--- convert e = traverseOf plate convert e
+convert (LetApp r f xs m) = do
+  code <- mkFresh "code"
+  arg <- mkFresh "args"
+  r <- mkFresh "r"
+  pure $
+    LetProj code 0 f $
+    LetApp r code (Var f `List1.cons` xs) $
+    Val (Var r)
+
+convert e = traverseOf plate convert e
+
 -- -- convertF :: (Unique :> es) => TermF Term -> Eff es Term
 -- -- convertF f@(LamF x m) =
 
