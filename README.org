@@ -131,6 +131,9 @@ DEADLINE: <2024-09-03 Tue>
 **** DONE Define Milestone 2.
 *** TODO 1 Research Toys [3/8]
 :LOGBOOK:
+CLOCK: [2024-09-04 Wed 18:28]
+CLOCK: [2024-09-04 Wed 17:40]--[2024-09-04 Wed 18:03] =>  0:23
+CLOCK: [2024-09-04 Wed 14:13]--[2024-09-04 Wed 16:03] =>  1:50
 CLOCK: [2024-09-02 Mon 13:57]--[2024-09-02 Mon 14:12] =>  0:15
 CLOCK: [2024-09-02 Mon 10:24]--[2024-09-02 Mon 13:14] =>  2:50
 CLOCK: [2024-09-02 Mon 08:18]--[2024-09-02 Mon 09:45] =>  1:27
@@ -157,6 +160,7 @@ I am not convinced that some of these tasks should count towards "work time;"
 regardless, I choose to log them.
 *** Nix setup
 :LOGBOOK:
+CLOCK: [2024-09-04 Wed 12:38]--[2024-09-04 Wed 13:05] =>  0:27
 CLOCK: [2024-08-31 Sat 23:21]--[2024-09-01 Sun 00:35] =>  1:14
 CLOCK: [2024-09-01 Sun 07:02]--[2024-09-01 Sun 10:35] =>  3:33
 :END:
@@ -218,7 +222,7 @@ CLOCK: [2024-09-03 Tue 10:32]--[2024-09-03 Tue 11:36] =>  1:04
 *** [[https://news.ycombinator.com/item?id=7150095][How to compile with continuations ]]
 *** [[ftp://ftp.cs.princeton.edu/techreports/1988/183.pdf][Appel — Continuation Passing, Closure Passing Style]]
 *** [[http://manticore.cs.uchicago.edu/papers/ml16-cwc-llvm.pdf][Compiling with Continuations and LLVM ]]
-*** [[https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/compiling-without-continuations.pdf][Compiling without continuations]]
+*** [#A] [[https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/compiling-without-continuations.pdf][Compiling without continuations]]
 Describes ANF and join points as used in GHC.
 *** [[https://www.microsoft.com/en-us/research/wp-content/uploads/2007/10/compilingwithcontinuationscontinued.pdf][Compiling with Continuations, Continued ]]
 *** [[http://code.ouroborus.net/fp-syd/past/2014/2014-08-Sloane-CPS.pdf][Slides implementing Compiling with Continuations, Continued ]]

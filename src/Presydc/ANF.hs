@@ -23,6 +23,8 @@ import Effectful.Dispatch.Dynamic
 import Effectful.State.Static.Local
 import Data.Hashable (Hashable)
 import Debug.Trace
+import Data.List.NonEmpty qualified as List1
+import Control.Monad.Cont
 --------------------------------------------------------------------------------
 
 examplePsProgram :: Program Lam.Term
@@ -45,20 +47,20 @@ examplePsProgram = Program
 data Value = IntVal Int
            | Var Name
            | Global Name
-           | LamVal Name Term
-           | Tuple (List Value)
            deriving (Show, Generic, Data)
 
-data Term = LetApp Name Value Value Term
-          | LetVal Name Value Term
-          | Val Value
+data Term = LetApp Name Name (List1 Value) Term
+          | LetLam Name (List1 Name) Term Term
+          | LetPrim Name (PrimOp Value) Term
+          | LetTuple Name (List Value) Term
+          | LetProj Name Natural Name Term
           | IfThenElse Value Term Term
+          | Join Name (Maybe Name) Term Term
+          | Jump Name (Maybe Value)
+          | Val Value
           deriving (Show, Generic, Data)
 
 instance Plated Term
-
-pattern Lam :: Name -> Term -> Term
-pattern Lam x m = Val (LamVal x m)
 
 makeBaseFunctor ''Term
 
@@ -116,10 +118,47 @@ rename g e = plate (rename g) e
 --------------------------------------------------------------------------------
 -- LowerANF
 
-anfTerm :: (Unique :> es) => Term -> Eff es Term
-anfTerm = go Val
+newtype Kendo m a = Kendo { appKendo :: a -> m a }
+
+appKendo (Kendo r) = r
+
+instance Monad m => Semigroup (Kendo m a) where
+  (<>) = Kendo .: (<=<) `on` appKendo
+
+instance Monad m => Monoid (Kendo m a) where
+  mempty = Kendo pure
+
+anfTerm :: forall es. (Unique :> es) => Lam.Term -> Eff es Term
+anfTerm = flip go (pure . Val)
   where
-    go = _
+    go :: Lam.Term -> (Value -> Eff es Term) -> Eff es Term
+    go (Lam.IntVal n) k = k $ IntVal n
+    go (Lam.Var x) k  = k $ Var x
+
+    go (Lam.App f x) k =
+      go f \case
+        Var f' ->
+          go x \x' -> do
+            r <- mkFresh "r"
+            LetApp r f' (List1.singleton x') <$> k (Var r)
+        _ -> error "must apply a named value"
+
+    go (Lam.IfThenElse c t f) k =
+      go c \c' -> do
+        (r,j,p) <- each mkFresh ("r","j","p")
+        let jn = pure . Jump j . Just
+        Join j (Just p) <$> k (Var p) <*> (IfThenElse c' <$> go t jn <*> go f jn)
+
+    go (Lam.Prim p) k =
+      -- lol?
+      runContT (traverse (ContT . go) p) \p' -> do
+        r <- mkFresh "r"
+        LetPrim r p' <$> k (Var r)
+
+    go (Lam.Lam x m) k =
+      go m \m' -> do
+        r <- mkFresh "r"
+        LetLam r (List1.singleton x) (Val m') <$> k (Var r)
 
 -- --------------------------------------------------------------------------------
 -- -- Closure-conversion

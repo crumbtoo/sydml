@@ -4,6 +4,7 @@ module SydPrelude
   ( T.Text
   , Void, void
   , Type
+  , Natural
   -- ** Lists
   , List, List1, NE.NonEmpty((:|))
   -- * Classes
@@ -70,6 +71,7 @@ import GHC.Generics
 import Prettyprinter
 import Text.Pretty.Simple
 import Debug.Trace
+import Numeric.Natural
 --------------------------------------------------------------------------------
 
 type List1 = NE.NonEmpty

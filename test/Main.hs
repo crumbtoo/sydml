@@ -9,4 +9,4 @@ main :: IO ()
 main = defaultMain tests
 
 tests :: TestTree
-tests = SydmlTests.tests
+tests = EmptyInput.tests
