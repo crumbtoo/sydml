@@ -73,18 +73,19 @@ on compiler techniques.
 | cc              | Machine           |
 * Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
-#+CAPTION: Clock summary at [2024-09-05 Thu 01:32]
-| Headline                          | Time    |         |       |
-|-----------------------------------+---------+---------+-------|
-| *Total time*                        | *1d 7:23* |         |       |
-|-----------------------------------+---------+---------+-------|
-| Progress                          | 1d 7:23 |         |       |
-| \_  Milestones                    |         | 1d 1:05 |       |
-| \_    0 Preemptive Planning [6/6] |         |         |  7:40 |
-| \_    1 Research Toys [3/9]       |         |         | 17:25 |
-| \_  Other                         |         |    6:18 |       |
-| \_    Nix setup                   |         |         |  5:14 |
-| \_    README Fancifying           |         |         |  1:04 |
+#+CAPTION: Clock summary at [2024-09-05 Thu 15:28]
+| Headline                          | Time     |         |       |
+|-----------------------------------+----------+---------+-------|
+| *Total time*                        | *1d 10:56* |         |       |
+|-----------------------------------+----------+---------+-------|
+| Progress                          | 1d 10:56 |         |       |
+| \_  Milestones                    |          | 1d 4:12 |       |
+| \_    0 Preemptive Planning [6/6] |          |         |  7:40 |
+| \_    1 Research Toys [5/9]       |          |         | 20:32 |
+| \_  Other                         |          |    6:44 |       |
+| \_    Nix setup                   |          |         |  5:14 |
+| \_    README Fancifying           |          |         |  1:04 |
+| \_    GitHub Pages action         |          |         |  0:26 |
 #+END:
 
 ** Milestones
@@ -131,6 +132,7 @@ DEADLINE: <2024-09-03 Tue>
 **** DONE Define Milestone 2.
 *** TODO 1 Research Toys [5/9]
 :LOGBOOK:
+CLOCK: [2024-09-06 Fri 11:12]
 CLOCK: [2024-09-05 Thu 11:17]--[2024-09-05 Thu 14:24] =>  3:07
 CLOCK: [2024-09-05 Thu 00:09]--[2024-09-05 Thu 01:32] =>  1:23
 CLOCK: [2024-09-04 Wed 18:28]--[2024-09-04 Wed 21:30] =>  3:02
@@ -174,8 +176,7 @@ CLOCK: [2024-09-03 Tue 10:32]--[2024-09-03 Tue 11:36] =>  1:04
 :END:
 *** GitHub Pages action
 :LOGBOOK:
-CLOCK: [2024-09-05 Thu 15:02]
-CLOCK: [2024-09-05 Thu 02:28]--[2024-09-05 Thu 15:01] => 12:33
+CLOCK: [2024-09-05 Thu 15:02]--[2024-09-05 Thu 15:28] =>  0:26
 :END:
 * Resources
 ** Reference projects
@@ -233,6 +234,10 @@ CLOCK: [2024-09-05 Thu 02:28]--[2024-09-05 Thu 15:01] => 12:33
 *** [[http://manticore.cs.uchicago.edu/papers/ml16-cwc-llvm.pdf][Compiling with Continuations and LLVM ]]
 *** [#A] [[https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/compiling-without-continuations.pdf][Compiling without continuations]]
 Describes ANF and join points as used in GHC.
+- [[https://youtu.be/LMTr8yw0Gk4][talk]]
+- Formalises join points with typing, operational semantics, and syntax.
+- Describes heavyweight optimisations for join points.
+- The paper's implementation allows for /recursive/ join points.
 *** [[https://www.microsoft.com/en-us/research/wp-content/uploads/2007/10/compilingwithcontinuationscontinued.pdf][Compiling with Continuations, Continued ]]
 *** [[http://code.ouroborus.net/fp-syd/past/2014/2014-08-Sloane-CPS.pdf][Slides implementing Compiling with Continuations, Continued ]]
 *** [[https://jozefg.bitbucket.io/posts/2015-04-30-cps.html][Compiling with CPS]]

@@ -31,6 +31,7 @@ import           Data.Functor.Reverse
 import           Prettyprinter
 import qualified Presydc.Lam.Syntax as Lam
 import           Data.Sequence (Seq, (><))
+import qualified Main as point
 --------------------------------------------------------------------------------
 
 examplePsProgram :: Program Lam.Term
@@ -52,21 +53,42 @@ exampleLamTerm = Lam.Lam "x" $ Lam.Lam "y" $ Lam.Prim $ PrimAdd (Lam.Var "x") (L
 --------------------------------------------------------------------------------
 -- ANF AST
 
+-- | A terminal value.
 data Value = IntVal Int
            | Var Name
            | Global Name
            deriving (Show, Generic, Data)
 
-data Term = LetApp Name Name (List1 Value) Term
-          | LetLam Name (List1 Name) Term Term
-          | LetPrim Name (PrimOp Value) Term
-          | LetTuple Name (List Value) Term
-          | LetProj Name Natural Name Term
-          | IfThenElse Value Term Term
-          | LetJoin Name (Maybe Name) Term Term
-          | Jump Name (Maybe Value)
-          | Val Value
-          deriving (Show, Generic, Data)
+-- | A term in A-Normalised Form.
+data Term
+  -- | @let r = f x y z in m@
+  = LetApp Name Name (List1 Value) Term
+  -- | @let f = \x y z -> n in m
+  | LetLam Name (List1 Name) Term Term
+  -- | @let r = add# x y in m@
+  | LetPrim Name (PrimOp Value) Term
+  -- | @let r = (x, y, z) in m@
+  | LetTuple Name (List Value) Term
+  -- | @let r = projₙ x in m@
+  | LetProj Name Natural Name Term
+  -- | @if c then t else f@
+  | IfThenElse Value Term Term
+  -- | A /join point/ @j@ is like a local let-bound continuation, satisfying the
+  -- following properties:
+  --    * All calls to @j@ are tail calls;
+  --    * All applications of @j@ are fully saturated;
+  --    * @j@ is not captured in a closure.
+  -- These stricter requirements ensure join points never need any allocations.
+  --
+  -- @let-join j p = n in m@
+  | LetJoin Name (Maybe Name) Term Term
+  -- | A tail-call to a join point.
+  --
+  -- @jump j p@
+  | Jump Name (Maybe Value)
+  -- | @v@
+  | Val Value
+  deriving (Show, Generic, Data)
 
 instance Plated Term
 
