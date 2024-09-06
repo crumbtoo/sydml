@@ -158,6 +158,19 @@ CLOSED: [2024-09-05 Thu 11:50]
 **** DONE Hoist
 CLOSED: [2024-09-05 Thu 13:29]
 **** STRT ToQBE
+ - As of [[https://github.com/crumbtoo/sydml/commit/1342b377e9dfceda86831548eb39466830ac6ef5][this commit]], the toy compiler can compile its first program:
+   #+begin_src ghci
+λ> :m + *Presydc.SSA
+λ> writePipeline "/tmp/t/t.qbe" $ Lam.IntVal 123
+   #+end_src
+   #+begin_src shell
+$ nix-shell -p qbe gcc
+[nix-shell]$ cd /tmp/t
+[nix-shell]$ qbe t.qbe > t.s && gcc t.s
+[nix-shell]$ ./a.out
+[nix-shell]$ echo $?
+123
+   #+end_src
 **** TODO RenderQBE
 **** TODO Demo
 ** Other
@@ -171,6 +184,7 @@ CLOCK: [2024-09-01 Sun 07:02]--[2024-09-01 Sun 10:35] =>  3:33
 :END:
 *** README Fancifying
 :LOGBOOK:
+CLOCK: [2024-09-06 Fri 14:23]--[2024-09-06 Fri 14:53] =>  0:30
 CLOCK: [2024-09-03 Tue 10:32]--[2024-09-03 Tue 11:36] =>  1:04
 :END:
 *** GitHub Pages action
