@@ -31,7 +31,6 @@ import           Data.Functor.Reverse
 import           Prettyprinter
 import qualified Presydc.Lam.Syntax as Lam
 import           Data.Sequence (Seq, (><))
-import qualified Main as point
 --------------------------------------------------------------------------------
 
 examplePsProgram :: Program Lam.Term
@@ -294,8 +293,16 @@ convert e = traverseOf plate convert e
 -- Hoist
 
 data Join = Join Name (Maybe Name) Term
+  deriving (Show)
 
 data Lam = Lam Name (List1 Name) Join (List Join)
+  deriving (Show)
+
+lamName :: Lens' Lam Name
+lamName sbt (Lam f xs j js) = (\f' -> Lam f' xs j js) <$> sbt f
+
+lamParams :: Lens' Lam (List1 Name)
+lamParams sbt (Lam f xs j js) = (\xs' -> Lam f xs' j js) <$> sbt xs
 
 data Hoisted a = Hoisted !(Seq Lam) !(Seq Join) a
   deriving (Functor)

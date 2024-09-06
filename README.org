@@ -73,19 +73,19 @@ on compiler techniques.
 | cc              | Machine           |
 * Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
-#+CAPTION: Clock summary at [2024-09-05 Thu 15:28]
-| Headline                          | Time     |         |       |
-|-----------------------------------+----------+---------+-------|
-| *Total time*                        | *1d 10:56* |         |       |
-|-----------------------------------+----------+---------+-------|
-| Progress                          | 1d 10:56 |         |       |
-| \_  Milestones                    |          | 1d 4:12 |       |
-| \_    0 Preemptive Planning [6/6] |          |         |  7:40 |
-| \_    1 Research Toys [5/9]       |          |         | 20:32 |
-| \_  Other                         |          |    6:44 |       |
-| \_    Nix setup                   |          |         |  5:14 |
-| \_    README Fancifying           |          |         |  1:04 |
-| \_    GitHub Pages action         |          |         |  0:26 |
+#+CAPTION: Clock summary at [2024-09-06 Fri 12:14]
+| Headline                          | Time    |         |       |
+|-----------------------------------+---------+---------+-------|
+| *Total time*                        | *1d 8:45* |         |       |
+|-----------------------------------+---------+---------+-------|
+| Progress                          | 1d 8:45 |         |       |
+| \_  Milestones                    |         | 1d 2:01 |       |
+| \_    0 Preemptive Planning [6/6] |         |         |  5:29 |
+| \_    1 Research Toys [5/9]       |         |         | 20:32 |
+| \_  Other                         |         |    6:44 |       |
+| \_    Nix setup                   |         |         |  5:14 |
+| \_    README Fancifying           |         |         |  1:04 |
+| \_    GitHub Pages action         |         |         |  0:26 |
 #+END:
 
 ** Milestones
@@ -106,7 +106,6 @@ CLOCK: [2024-08-29 Thu 18:24]--[2024-08-29 Thu 18:54] =>  0:30
 CLOCK: [2024-08-28 Wed 12:49]--[2024-08-28 Wed 13:21] =>  0:32
 CLOCK: [2024-08-28 Wed 09:52]--[2024-08-28 Wed 10:09] =>  0:17
 CLOCK: [2024-08-27 Tue 13:22]--[2024-08-27 Tue 13:47] =>  0:25
-CLOCK: [2024-08-27 Tue 10:40]--[2024-08-27 Tue 12:51] =>  2:11
 CLOCK: [2024-08-27 Tue 10:40]--[2024-08-27 Tue 12:51] =>  2:11
 :END:
 DEADLINE: <2024-09-03 Tue>
@@ -130,9 +129,9 @@ DEADLINE: <2024-09-03 Tue>
 +   ...
   #+end_src
 **** DONE Define Milestone 2.
-*** TODO 1 Research Toys [5/9]
+*** TODO 1 Research Toys [5/8]
 :LOGBOOK:
-CLOCK: [2024-09-06 Fri 11:12]
+CLOCK: [2024-09-06 Fri 11:12]--[2024-09-06 Fri 14:30] =>  3:18
 CLOCK: [2024-09-05 Thu 11:17]--[2024-09-05 Thu 14:24] =>  3:07
 CLOCK: [2024-09-05 Thu 00:09]--[2024-09-05 Thu 01:32] =>  1:23
 CLOCK: [2024-09-04 Wed 18:28]--[2024-09-04 Wed 21:30] =>  3:02
@@ -158,7 +157,7 @@ Implement the core algorithms as toys with toothpick scaffolding.
 CLOSED: [2024-09-05 Thu 11:50]
 **** DONE Hoist
 CLOSED: [2024-09-05 Thu 13:29]
-**** TODO ToQBE
+**** STRT ToQBE
 **** TODO RenderQBE
 **** TODO Demo
 ** Other
