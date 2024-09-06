@@ -73,19 +73,19 @@ on compiler techniques.
 | cc              | Machine           |
 * Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
-#+CAPTION: Clock summary at [2024-09-06 Fri 12:14]
-| Headline                          | Time    |         |       |
-|-----------------------------------+---------+---------+-------|
-| *Total time*                        | *1d 8:45* |         |       |
-|-----------------------------------+---------+---------+-------|
-| Progress                          | 1d 8:45 |         |       |
-| \_  Milestones                    |         | 1d 2:01 |       |
-| \_    0 Preemptive Planning [6/6] |         |         |  5:29 |
-| \_    1 Research Toys [5/9]       |         |         | 20:32 |
-| \_  Other                         |         |    6:44 |       |
-| \_    Nix setup                   |         |         |  5:14 |
-| \_    README Fancifying           |         |         |  1:04 |
-| \_    GitHub Pages action         |         |         |  0:26 |
+#+CAPTION: Clock summary at [2024-09-06 Fri 14:34]
+| Headline                          | Time     |         |       |
+|-----------------------------------+----------+---------+-------|
+| *Total time*                        | *1d 12:03* |         |       |
+|-----------------------------------+----------+---------+-------|
+| Progress                          | 1d 12:03 |         |       |
+| \_  Milestones                    |          | 1d 5:19 |       |
+| \_    0 Preemptive Planning [6/6] |          |         |  5:29 |
+| \_    1 Research Toys [5/8]       |          |         | 23:50 |
+| \_  Other                         |          |    6:44 |       |
+| \_    Nix setup                   |          |         |  5:14 |
+| \_    README Fancifying           |          |         |  1:04 |
+| \_    GitHub Pages action         |          |         |  0:26 |
 #+END:
 
 ** Milestones
