@@ -1,4 +1,6 @@
-packages: ./*.cabal, ./vendor/*/*.cabal
+packages:
+  ./*.cabal
+  ./vendor/*/*.cabal
 
 source-repository-package
     type: git

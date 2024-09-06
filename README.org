@@ -179,6 +179,7 @@ I am not convinced that some of these tasks should count towards "work time;"
 regardless, I choose to log them.
 *** Nix setup
 :LOGBOOK:
+CLOCK: [2024-09-06 Fri 16:45]--[2024-09-06 Fri 18:57] =>  2:12
 CLOCK: [2024-09-04 Wed 12:38]--[2024-09-04 Wed 13:05] =>  0:27
 CLOCK: [2024-08-31 Sat 23:21]--[2024-09-01 Sun 00:35] =>  1:14
 CLOCK: [2024-09-01 Sun 07:02]--[2024-09-01 Sun 10:35] =>  3:33
