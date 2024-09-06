@@ -1,3 +1,4 @@
+{-# LANGUAGE ViewPatterns #-}
 module Presydc.SSA where
 --------------------------------------------------------------------------------
 import Language.QBE        qualified as QBE
@@ -16,6 +17,7 @@ import Data.Maybe
 import Control.Lens
 import System.IO
 import Data.Text.Prettyprint.Doc.Render.Text
+import Language.QBE (Val(ValTemporary))
 --------------------------------------------------------------------------------
 -- Lowering to SSA/QBE
 
@@ -32,25 +34,45 @@ preprocess = foldlM go mempty
         pure $ H.insert j p' spills
       _ -> pure spills
 
-nameToIdent :: forall t. Name -> QBE.Ident t
-nameToIdent = QBE.Ident . TS.fromText
+name2id :: forall t. Name -> QBE.Ident t
+name2id = QBE.Ident . TS.fromText
 
 lowerValue :: Value -> QBE.Val
 lowerValue (IntVal n) = QBE.ValConst (QBE.CInt s n')
   where
     s  = signum n == (-1)
     n' = fromIntegral . abs $ n
-lowerValue (Var x)    = QBE.ValTemporary (nameToIdent x)
-lowerValue (Global x) = QBE.ValGlobal (nameToIdent x)
+lowerValue (Var x)    = QBE.ValTemporary (name2id x)
+lowerValue (Global x) = QBE.ValGlobal (name2id x)
+
+blockInsts :: Lens' QBE.Block (List QBE.Inst)
+blockInsts sbt (QBE.Block nm phis insts j) =
+  (\insts' -> QBE.Block nm phis insts' j) <$> sbt insts
 
 lowerBlock :: forall es. (Unique :> es) => Spills -> Join -> Eff es QBE.Block
-lowerBlock spills (Join j p m) = go m
+lowerBlock spills (Join (name2id -> j0) p m) = allocSpills <$> go m
   where
-    j' = nameToIdent j
+    allocSpills :: QBE.Block -> QBE.Block
+    allocSpills = blockInsts <>:~ foldMap (\nm -> []) spills
 
     go :: Term -> Eff es QBE.Block
-    go (Val v) = pure $ QBE.Block j' [] [] (QBE.Ret . Just . lowerValue $ v)
 
+    go (Val v) = pure $ QBE.Block j0 [] [] (QBE.Ret . Just . lowerValue $ v)
+
+    go (Jump j (Just p)) = pure $ QBE.Block j0 [] insts (QBE.Jmp (name2id j))
+      where
+        insts = case spills ^. at j of
+          Just slot -> [ QBE.Store (QBE.BaseTy QBE.Word)
+                            (lowerValue p)
+                            (QBE.ValTemporary (name2id slot))
+                       ]
+          _ -> error $ "join points must have spill slots!"
+
+    go (IfThenElse c (Jump t Nothing) (Jump f Nothing)) =
+        pure $ QBE.Block j0 [] [] (QBE.Jnz c' (name2id t) (name2id f))
+      where c' = lowerValue c
+
+lowerLam :: (Unique :> es) => Lam -> Eff es (List1 QBE.Block)
 lowerLam (Lam f xs j js) = do
   spills <- preprocess (j :| js)
   let low = lowerBlock spills
@@ -62,7 +84,7 @@ lower :: (Unique :> es) => List1 Lam -> Eff es (List1 QBE.FuncDef)
 lower = traverse go where
   go l = QBE.FuncDef [linkage]
                      abiTy
-                     (nameToIdent name)
+                     (name2id name)
                      env
                      params
                      QBE.NoVariadic
@@ -75,7 +97,7 @@ lower = traverse go where
       abiTy = Just qbeTyWord
       env = Nothing
       params = List1.toList $
-        QBE.Param qbeTyWord . nameToIdent <$> l ^. lamParams
+        QBE.Param qbeTyWord . name2id <$> l ^. lamParams
 
 getMain :: List1 Lam -> Lam
 getMain = fromJust . getFirst . foldMap \case
@@ -96,3 +118,9 @@ pipeline = QBE.Program [] []
 writePipeline :: FilePath -> Lam.Term -> IO ()
 writePipeline fp e = withFile fp WriteMode \h ->
   hPutDoc h . pretty . pipeline $ e
+
+--------------------------------------------------------------------------------
+-- Run pipeline up to X
+
+upToHoist :: Lam.Term -> List1 Lam
+upToHoist = runPureEff . runUnique . (hoist <=< convert <=< anfTerm <=< rename)
