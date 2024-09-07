@@ -13,4 +13,4 @@ allow-newer:
     , qbe:deepseq
     , qbe:bytestring
 
-multi-repl: True
+-- multi-repl: True

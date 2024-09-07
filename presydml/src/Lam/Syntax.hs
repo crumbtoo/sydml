@@ -29,6 +29,7 @@ instance Plated Term where
 
 data PrimOp a = PrimAdd a a
               | PrimPrint a
+              | PrimPrintInt a
               deriving (Show, Functor, Foldable, Traversable, Data)
 
 instance Each (PrimOp a) (PrimOp b) a b

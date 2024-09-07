@@ -18,7 +18,7 @@ import Data.Text.IO qualified as T
 import Data.Foldable
 import Data.Monoid
 import Data.Maybe
-import Control.Lens hiding ((<>:~))
+import Control.Lens
 import System.IO
 import Prettyprinter.Render.Text
 import Language.QBE (pattern (:=))
@@ -57,11 +57,6 @@ unitype = QBE.Long
 unitypeAlignment = QBE.Eight
 unitypeSize = 8
 
-infixr 4 <>:~
-(<>:~) :: Semigroup b => ASetter s t b b -> b -> s -> t
-l <>:~ n = over l (n <>)
-{-# INLINE (<>:~) #-}
-
 lowerBlock :: forall es. (Unique :> es) => Spills -> Join -> Eff es QBE.Block
 lowerBlock spills (Join j0 p m) = go m <&> blockInsts <>:~ maybeLoad
   where
@@ -76,7 +71,25 @@ lowerBlock spills (Join j0 p m) = go m <&> blockInsts <>:~ maybeLoad
 
     go (Val v) = pure $ QBE.Block j0' [] [] (QBE.Ret . Just . lowerValue $ v)
 
-    go (LetPrim x p m) = pure $ QBE.Block j0' [] [] (QBE.Ret Nothing)
+    go (LetPrim x p m) = do
+      let ass = name2id x := unitype
+      letPrimInsts <-
+        case p of
+          PrimAdd a b ->
+            pure [ QBE.BinaryOp ass QBE.Add (lowerValue a) (lowerValue b) ]
+          PrimPrintInt a ->
+            pure [ QBE.Call
+                     (Just (name2id x, QBE.AbiBaseTy unitype))
+                     (QBE.ValGlobal "printf")
+                     Nothing
+                     [QBE.Arg
+                        (QBE.AbiBaseTy unitype)
+                        (QBE.ValGlobal primPrintIntFmtLabel)]
+                     [QBE.Arg
+                        (QBE.AbiBaseTy unitype)
+                        (lowerValue a)]
+                 ]
+      go m <&> blockInsts <>:~ letPrimInsts
 
     go (Jump j (Just p)) = pure $ QBE.Block j0' [] insts (QBE.Jmp (name2id j))
       where
@@ -90,6 +103,9 @@ lowerBlock spills (Join j0 p m) = go m <&> blockInsts <>:~ maybeLoad
     go (IfThenElse c (Jump t Nothing) (Jump f Nothing)) =
         pure $ QBE.Block j0' [] [] (QBE.Jnz c' (name2id t) (name2id f))
       where c' = lowerValue c
+
+primPrintIntFmtLabel :: QBE.Ident 'QBE.Global
+primPrintIntFmtLabel = "int_fmt"
 
 lowerLam :: (Unique :> es) => Lam -> Eff es (List1 QBE.Block)
 lowerLam (Lam f xs j js) = do
@@ -126,7 +142,7 @@ getMain = fromJust . getFirst . foldMap \case
   _                    -> First Nothing
 
 pipeline :: Lam.Term -> _
-pipeline = QBE.Program [] []
+pipeline = QBE.Program [] [datas]
          . List1.toList
          . runPureEff
          . runUnique
@@ -135,6 +151,13 @@ pipeline = QBE.Program [] []
            <=< convert
            <=< anfTerm
            <=< rename )
+  where
+    datas = QBE.DataDef [] primPrintIntFmtLabel Nothing
+      [ QBE.FieldExtTy QBE.Byte $
+          List1.singleton (QBE.String "%d\n")
+      , QBE.FieldExtTy QBE.Byte $
+          List1.singleton (QBE.Const $ QBE.CInt False 0)
+      ]
 
 writePipeline :: FilePath -> Lam.Term -> IO ()
 writePipeline fp e = withFile fp WriteMode \h ->
