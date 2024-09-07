@@ -1,31 +1,35 @@
-{-# LANGUAGE ViewPatterns #-}
-module Presydc.SSA where
+{-# LANGUAGE ViewPatterns, PatternSynonyms #-}
+{-# LANGUAGE LambdaCase, BlockArguments #-}
+{-# LANGUAGE PartialTypeSignatures #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# OPTIONS_GHC -Wno-typed-holes #-}
+module SSA where
 --------------------------------------------------------------------------------
 import Language.QBE        qualified as QBE
 import Data.HashMap.Strict qualified as H
 import Data.List.NonEmpty qualified as List1
 import Effectful
-import Presydc.ANF
-import Presydc.Lam.Syntax (Name, PrimOp (..), Program (..))
-import Presydc.Lam.Syntax qualified as Lam
+import ANF
+import Lam.Syntax (Name, PrimOp (..), Program (..))
+import Lam.Syntax qualified as Lam
 import SydPrelude
 import Data.Text.Short qualified as TS
 import Data.Text.IO qualified as T
 import Data.Foldable
 import Data.Monoid
 import Data.Maybe
-import Control.Lens
+import Control.Lens hiding ((<>:~))
 import System.IO
-import Data.Text.Prettyprint.Doc.Render.Text
+import Prettyprinter.Render.Text
 import Language.QBE (pattern (:=))
 --------------------------------------------------------------------------------
 -- Lowering to SSA/QBE
 
 type Spills = H.HashMap Name Name
 
-preprocess :: forall es. (Unique :> es)
+findSpills :: forall es. (Unique :> es)
            => List1 Join -> Eff es Spills
-preprocess = foldlM go mempty
+findSpills = foldlM go mempty
   where
     go :: H.HashMap Name Name -> Join -> Eff es Spills
     go spills = \case
@@ -53,6 +57,11 @@ unitype = QBE.Long
 unitypeAlignment = QBE.Eight
 unitypeSize = 8
 
+infixr 4 <>:~
+(<>:~) :: Semigroup b => ASetter s t b b -> b -> s -> t
+l <>:~ n = over l (n <>)
+{-# INLINE (<>:~) #-}
+
 lowerBlock :: forall es. (Unique :> es) => Spills -> Join -> Eff es QBE.Block
 lowerBlock spills (Join j0 p m) = go m <&> blockInsts <>:~ maybeLoad
   where
@@ -66,6 +75,8 @@ lowerBlock spills (Join j0 p m) = go m <&> blockInsts <>:~ maybeLoad
     go :: Term -> Eff es QBE.Block
 
     go (Val v) = pure $ QBE.Block j0' [] [] (QBE.Ret . Just . lowerValue $ v)
+
+    go (LetPrim x p m) = pure $ QBE.Block j0' [] [] (QBE.Ret Nothing)
 
     go (Jump j (Just p)) = pure $ QBE.Block j0' [] insts (QBE.Jmp (name2id j))
       where
@@ -82,7 +93,7 @@ lowerBlock spills (Join j0 p m) = go m <&> blockInsts <>:~ maybeLoad
 
 lowerLam :: (Unique :> es) => Lam -> Eff es (List1 QBE.Block)
 lowerLam (Lam f xs j js) = do
-  spills <- preprocess (j :| js)
+  spills <- findSpills (j :| js)
   let low = lowerBlock spills
   (:|) <$> (allocSpills spills <$> low j) <*> (low `traverse` js)
 

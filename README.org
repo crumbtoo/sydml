@@ -147,6 +147,8 @@ DEADLINE: <2024-09-03 Tue>
 **** DONE Define Milestone 2.
 *** TODO 1 Research Toys [5/8]
 :LOGBOOK:
+CLOCK: [2024-09-07 Sat 14:30]
+CLOCK: [2024-09-07 Sat 14:07]--[2024-09-07 Sat 14:27] =>  0:20
 CLOCK: [2024-09-06 Fri 19:02]--[2024-09-06 Fri 20:22] =>  1:20
 CLOCK: [2024-09-06 Fri 14:59]--[2024-09-06 Fri 16:19] =>  1:20
 CLOCK: [2024-09-06 Fri 11:12]--[2024-09-06 Fri 14:30] =>  3:18
@@ -183,16 +185,27 @@ CLOSED: [2024-09-05 Thu 13:29]
    #+end_src
    #+begin_src shell
 $ nix-shell -p qbe gcc
-[nix-shell]$ cd /tmp/t
 [nix-shell]$ qbe t.qbe > t.s && gcc t.s
-[nix-shell]$ ./a.out
-[nix-shell]$ echo $?
+[nix-shell]$ ./a.out ; echo $?
 123
    #+end_src
  - As of [[https://github.com/crumbtoo/sydml/commit/6379d5647e89414331949f3206d3cdb1af2f9223][this commit]], can compile trivial conditional expressions.
-**** TODO RenderQBE
+   #+begin_src ghci
+λ> :m + *Presydc.SSA
+λ> writePipeline "/tmp/t/t.qbe" $ Lam.IfThenElse (Lam.IntVal 1) (Lam.IntVal 2) (Lam.IntVal 3)
+   #+end_src
+   #+begin_src shell
+$ nix-shell -p qbe gcc
+[nix-shell]$ qbe t.qbe > t.s && gcc t.s
+[nix-shell]$ ./a.out ; echo $?
+2
+   #+end_src
 **** TODO Demo
+- Maybe using [[https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/AddingACompiler.md][godbolt]]?
 ** Other
+:LOGBOOK:
+CLOCK: [2024-09-07 Sat 11:02]--[2024-09-07 Sat 12:17] =>  1:15
+:END:
 I am not convinced that some of these tasks should count towards "work time;"
 regardless, I choose to log them.
 *** Nix setup

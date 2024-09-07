@@ -1,5 +1,9 @@
 {-# LANGUAGE TemplateHaskell #-}
-module Presydc.ANF
+{-# LANGUAGE BlockArguments, LambdaCase #-}
+{-# LANGUAGE OverloadedLabels, OverloadedStrings #-}
+{-# LANGUAGE DataKinds, TypeFamilies, DeriveTraversable #-}
+{-# OPTIONS_GHC -Wno-typed-holes #-}
+module ANF
   -- ( Value(..)
   -- , Term(..)
   -- , Unique, fresh, mkFresh, runUnique
@@ -13,10 +17,9 @@ import           Data.Data
 import Data.HashSet qualified as HS
 import           Data.Monoid
 import           Control.Lens
-import           SydPrelude hiding (hoist)
-import Presydc.Lam.Syntax qualified as Lam
-import           Presydc.Lam.Syntax (Program(..), Name, PrimOp(..))
-import           Data.Functor.Foldable.Monadic
+import           SydPrelude
+import Lam.Syntax qualified as Lam
+import           Lam.Syntax (Program(..), Name, PrimOp(..))
 import Data.Text qualified as T
 import Data.HashMap.Strict qualified as H
 import           Effectful
@@ -29,7 +32,6 @@ import           Control.Monad.Cont
 import           Data.Foldable
 import           Data.Functor.Reverse
 import           Prettyprinter
-import qualified Presydc.Lam.Syntax as Lam
 import           Data.Sequence (Seq, (><))
 --------------------------------------------------------------------------------
 
@@ -90,8 +92,6 @@ data Term
   deriving (Show, Generic, Data)
 
 instance Plated Term
-
-makeBaseFunctor ''Term
 
 -- values :: Traversal' Term Value
 -- values k (App f x)          = App <$> k f <*> k x

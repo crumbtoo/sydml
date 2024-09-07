@@ -1,12 +1,11 @@
-{-# LANGUAGE TemplateHaskell #-}
-module Presydc.Lam.Syntax where
+{-# LANGUAGE TemplateHaskell, OverloadedStrings #-}
+module Lam.Syntax where
 --------------------------------------------------------------------------------
 import Control.Lens
 import SydPrelude
-import Data.Located (Position(line))
+-- import Data.Located (Position(line))
 import Data.Data (Data)
 import Data.Data.Lens (uniplate)
-import Language.LSP.Protocol.Lens (HasLanguage(language))
 import Data.String (IsString (fromString))
 import Data.Text qualified as T
 import Prettyprinter
@@ -59,7 +58,7 @@ newtype Program a = Program (List (Name, a))
 instance Each (Program a) (Program b) (Name, a) (Name, b) where
   each k (Program ds) = Program <$> each k ds
 
-makeBaseFunctor ''Term
+-- makeBaseFunctor ''Term
 
 zCombinator :: Term
 zCombinator = Lam "f" $ d `App` d

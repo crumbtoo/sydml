@@ -40,10 +40,14 @@ common common
 
   ghc-options:
     -fdefer-typed-holes
+  default-language: GHC2021
+
+--------------------------------------------------------------------------------
+-- sydml
 
 library
   import:           common
-  -- cabal-fmt: expand src/ -Main
+  -- cabal-fmt: expand sydml/src/ -Main
   exposed-modules:
     Data.Located
     Data.PrettyP
@@ -53,12 +57,9 @@ library
     Sydc.Monad
     Sydc.Query
     Sydc.Types
-    Presydc.Lam.Syntax
-    Presydc.ANF
-    Presydc.SSA
-    Presydc.Lam.Parse
     SydPrelude
 
+  default-language: GHC2021
   include-dirs: tree-sitter-sydml/src
   includes:     tree_sitter/parser.h
   install-includes: tree_sitter/parser.h
@@ -96,12 +97,12 @@ library
                 , tree-sitter
                 , unordered-containers
                 , witherable
-  hs-source-dirs:   src
-  default-language: GHC2021
+  hs-source-dirs:   sydml/src
 
 executable sydc
     import:           common
     main-is:          Main.hs
+    default-language: GHC2021
 
     other-modules:
       Command.Batch
@@ -113,14 +114,12 @@ executable sydc
                   , optparse-applicative
                   , sydml
 
-    hs-source-dirs:   app
-    default-language: GHC2021
+    hs-source-dirs:   sydml/app
 
 test-suite sydml-test
     import:           common
-    default-language: GHC2021
     type:             exitcode-stdio-1.0
-    hs-source-dirs:   test
+    hs-source-dirs:   sydml/test
     main-is:          Main.hs
     other-modules:
       SydmlTests.EmptyInput
@@ -131,3 +130,50 @@ test-suite sydml-test
       , tasty-program >=1.1 && <=1.2
       , tasty >=1.2.2 && <1.6
       , sydml
+
+--------------------------------------------------------------------------------
+-- presydc
+
+library presydml
+  import: common
+  -- cabal-fmt: expand presydml/src/ -Main
+  exposed-modules:
+    ANF
+    SSA
+    Lam.Syntax
+    SydPrelude
+
+  default-language: GHC2021
+  build-depends:
+      base ^>=4.19.1.0
+    , lens                       >=5.3.0     && <6.0.0
+    , pretty-simple
+    , prettyprinter
+    , qbe
+    , rock                       >=0.3.1.0   && <0.4.0.0.0
+    , effectful
+    , text                       >=2.0 && <2.2
+    , text-short
+    , unordered-containers
+    , containers
+    , hashable
+    , mtl
+    , transformers
+    , generic-lens               ^>=2.2.0.0
+  hs-source-dirs: presydml/src
+
+executable presydc
+  hs-source-dirs: presydml/app
+  main-is:          Main.hs
+  default-language: GHC2021
+  build-depends:
+      base ^>=4.19.1.0
+    , presydml
+    , lens                       >=5.3.0     && <6.0.0
+    , generic-lens               ^>=2.2.0.0
+    , pretty-simple
+    , prettyprinter
+    , qbe
+    , rock                       >=0.3.1.0   && <0.4.0.0.0
+    , effectful
+    , text                       >=2.0 && <2.2
