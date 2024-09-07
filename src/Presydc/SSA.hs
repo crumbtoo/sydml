@@ -17,7 +17,7 @@ import Data.Maybe
 import Control.Lens
 import System.IO
 import Data.Text.Prettyprint.Doc.Render.Text
-import Language.QBE (Val(ValTemporary))
+import Language.QBE (pattern (:=))
 --------------------------------------------------------------------------------
 -- Lowering to SSA/QBE
 
@@ -49,36 +49,46 @@ blockInsts :: Lens' QBE.Block (List QBE.Inst)
 blockInsts sbt (QBE.Block nm phis insts j) =
   (\insts' -> QBE.Block nm phis insts' j) <$> sbt insts
 
+unitype = QBE.Long
+unitypeAlignment = QBE.Eight
+unitypeSize = 8
+
 lowerBlock :: forall es. (Unique :> es) => Spills -> Join -> Eff es QBE.Block
-lowerBlock spills (Join (name2id -> j0) p m) = allocSpills <$> go m
+lowerBlock spills (Join j0 p m) = go m <&> blockInsts <>:~ maybeLoad
   where
-    allocSpills :: QBE.Block -> QBE.Block
-    allocSpills = blockInsts <>:~ foldMap (\nm -> []) spills
+    j0' = name2id j0
+
+    maybeLoad = case p of
+      Just p' -> [QBE.Load (name2id p' := unitype) unitype (QBE.ValTemporary (name2id slot))]
+        where slot = unsafeLookup j0 spills
+      Nothing -> []
 
     go :: Term -> Eff es QBE.Block
 
-    go (Val v) = pure $ QBE.Block j0 [] [] (QBE.Ret . Just . lowerValue $ v)
+    go (Val v) = pure $ QBE.Block j0' [] [] (QBE.Ret . Just . lowerValue $ v)
 
-    go (Jump j (Just p)) = pure $ QBE.Block j0 [] insts (QBE.Jmp (name2id j))
+    go (Jump j (Just p)) = pure $ QBE.Block j0' [] insts (QBE.Jmp (name2id j))
       where
         insts = case spills ^. at j of
-          Just slot -> [ QBE.Store (QBE.BaseTy QBE.Word)
+          Just slot -> [ QBE.Store (QBE.BaseTy QBE.Long)
                             (lowerValue p)
                             (QBE.ValTemporary (name2id slot))
                        ]
           _ -> error $ "join points must have spill slots!"
 
     go (IfThenElse c (Jump t Nothing) (Jump f Nothing)) =
-        pure $ QBE.Block j0 [] [] (QBE.Jnz c' (name2id t) (name2id f))
+        pure $ QBE.Block j0' [] [] (QBE.Jnz c' (name2id t) (name2id f))
       where c' = lowerValue c
 
 lowerLam :: (Unique :> es) => Lam -> Eff es (List1 QBE.Block)
 lowerLam (Lam f xs j js) = do
   spills <- preprocess (j :| js)
   let low = lowerBlock spills
-  (:|) <$> low j <*> (low `traverse` js)
+  (:|) <$> (allocSpills spills <$> low j) <*> (low `traverse` js)
 
-qbeTyWord = QBE.AbiBaseTy $ QBE.Word
+allocSpills :: Spills -> QBE.Block -> QBE.Block
+allocSpills spills = blockInsts <>:~ foldMap mkAlloc spills
+  where mkAlloc nm = [QBE.Alloc (name2id nm := unitype) unitypeAlignment unitypeSize]
 
 lower :: (Unique :> es) => List1 Lam -> Eff es (List1 QBE.FuncDef)
 lower = traverse go where
@@ -94,10 +104,10 @@ lower = traverse go where
       linkage = case name of
             "main" -> QBE.Export
             _ -> _
-      abiTy = Just qbeTyWord
+      abiTy = Just . QBE.AbiBaseTy $ unitype
       env = Nothing
       params = List1.toList $
-        QBE.Param qbeTyWord . name2id <$> l ^. lamParams
+        QBE.Param (QBE.AbiBaseTy unitype) . name2id <$> l ^. lamParams
 
 getMain :: List1 Lam -> Lam
 getMain = fromJust . getFirst . foldMap \case

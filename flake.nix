@@ -17,7 +17,7 @@
         # qbe = hlib.doJailbreak prev.qbe;
         qbe = prev.callCabal2nix "qbe" ./vendor/qbe-hs {};
         # broken tests
-        dependent-hashmap = hlib.dontCheck prev.dependent-hashmap;
+        dependent-hashmap = hlib.markUnbroken (hlib.dontCheck prev.dependent-hashmap);
       });
     in {
       inherit pkgs;
@@ -26,6 +26,10 @@
           packages = p: [ p.sydml ];
           nativeBuildInputs = [
           ];
+          buildInputs = with pkgs; [
+            qbe
+          ];
+          withHoogle = true;
         };
       };
     };
