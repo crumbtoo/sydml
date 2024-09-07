@@ -45,10 +45,26 @@ on compiler techniques.
 *** IRs — ANF and SSA
 * Project structure
 ** =app=
+** =vendor=
+Vendored dependencies.
+*** =tree-sitter=
+The tree-sitter bindings for Haskell leave a lot to be desired. My patches
+include the following:
+- Add binding to =ts_node_string()=.
+- Add bindings to the "edit" API.
+*** =qbe=
+This library provides a Haskell representation of QBE's IL. Patches include the
+following:
+- Bump the version bounds of =base=, =text=, =bytestring=, and =deepseq=.
+- Add support for allocation instructions. This patch is the work of [[https://todo.sr.ht/~fgaz/qbe-hs/1][Ellis
+  Kesterton]], whose merge request to =qbe-hs= has been idle upstream for over a
+  year.
 ** =doc=
+Documentation. Currently, this solely serves as a home for the rendered HTML of the README.
 ** =src=
 ** =test=
 ** =tree-sitter-sydml=
+Houses Sydc's parser.
 * Compiler overview
 | *Pass*            | *Produced IL*       |
 |-----------------+-------------------|
@@ -73,19 +89,19 @@ on compiler techniques.
 | cc              | Machine           |
 * Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
-#+CAPTION: Clock summary at [2024-09-06 Fri 14:34]
-| Headline                          | Time     |         |       |
-|-----------------------------------+----------+---------+-------|
-| *Total time*                        | *1d 12:03* |         |       |
-|-----------------------------------+----------+---------+-------|
-| Progress                          | 1d 12:03 |         |       |
-| \_  Milestones                    |          | 1d 5:19 |       |
-| \_    0 Preemptive Planning [6/6] |          |         |  5:29 |
-| \_    1 Research Toys [5/8]       |          |         | 23:50 |
-| \_  Other                         |          |    6:44 |       |
-| \_    Nix setup                   |          |         |  5:14 |
-| \_    README Fancifying           |          |         |  1:04 |
-| \_    GitHub Pages action         |          |         |  0:26 |
+#+CAPTION: Clock summary at [2024-09-06 Fri 20:41]
+| Headline                          | Time     |         |         |
+|-----------------------------------+----------+---------+---------|
+| *Total time*                        | *1d 17:35* |         |         |
+|-----------------------------------+----------+---------+---------|
+| Progress                          | 1d 17:35 |         |         |
+| \_  Milestones                    |          | 1d 7:59 |         |
+| \_    0 Preemptive Planning [6/6] |          |         |    5:29 |
+| \_    1 Research Toys [5/8]       |          |         | 1d 2:30 |
+| \_  Other                         |          |    9:36 |         |
+| \_    Nix setup                   |          |         |    7:26 |
+| \_    Documentation               |          |         |    1:44 |
+| \_    GitHub Pages action         |          |         |    0:26 |
 #+END:
 
 ** Milestones
@@ -96,8 +112,8 @@ on compiler techniques.
 | The identity fn  |        |      |              |               |       |       |       |       |
 |------------------+--------+------+--------------+---------------+-------+-------+-------+-------|
 
-*** TODO 0 Preemptive Planning [6/6]
-SCHEDULED: <2024-08-27 Tue>
+*** DONE 0 Preemptive Planning [6/6]
+CLOSED: [2024-09-06 Fri 20:42] SCHEDULED: <2024-08-27 Tue>
 :LOGBOOK:
 CLOCK: [2024-09-01 Sun 16:03]--[2024-09-01 Sun 16:22] =>  0:19
 CLOCK: [2024-09-01 Sun 12:32]--[2024-09-01 Sun 13:15] =>  0:43
@@ -173,6 +189,7 @@ $ nix-shell -p qbe gcc
 [nix-shell]$ echo $?
 123
    #+end_src
+ - As of [[https://github.com/crumbtoo/sydml/commit/6379d5647e89414331949f3206d3cdb1af2f9223][this commit]], can compile trivial conditional expressions.
 **** TODO RenderQBE
 **** TODO Demo
 ** Other
@@ -185,8 +202,9 @@ CLOCK: [2024-09-04 Wed 12:38]--[2024-09-04 Wed 13:05] =>  0:27
 CLOCK: [2024-08-31 Sat 23:21]--[2024-09-01 Sun 00:35] =>  1:14
 CLOCK: [2024-09-01 Sun 07:02]--[2024-09-01 Sun 10:35] =>  3:33
 :END:
-*** README Fancifying
+*** Documentation
 :LOGBOOK:
+CLOCK: [2024-09-06 Fri 20:30]--[2024-09-06 Fri 20:40] =>  0:10
 CLOCK: [2024-09-06 Fri 14:23]--[2024-09-06 Fri 14:53] =>  0:30
 CLOCK: [2024-09-03 Tue 10:32]--[2024-09-03 Tue 11:36] =>  1:04
 :END:
