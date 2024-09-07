@@ -185,19 +185,28 @@ CLOSED: [2024-09-05 Thu 13:29]
    #+end_src
    #+begin_src shell
 $ nix-shell -p qbe gcc
-[nix-shell]$ qbe t.qbe > t.s && gcc t.s
-[nix-shell]$ ./a.out ; echo $?
+[nix-shell]$ qbe t.qbe > t.s && gcc t.s -o t
+[nix-shell]$ ./t ; echo $?
 123
    #+end_src
- - As of [[https://github.com/crumbtoo/sydml/commit/6379d5647e89414331949f3206d3cdb1af2f9223][this commit]], can compile trivial conditional expressions.
+ - As of [[https://github.com/crumbtoo/sydml/commit/acf74f12dc4327efce54610e5e1ffb81d57a5eba][this commit]], it can compile arithmetic primitives and impure =print= calls:
    #+begin_src ghci
 λ> :m + *Presydc.SSA
-λ> writePipeline "/tmp/t/t.qbe" $ Lam.IfThenElse (Lam.IntVal 1) (Lam.IntVal 2) (Lam.IntVal 3)
+λ> writePipeline "/tmp/t/t.qbe" $ Lam.Prim $ PrimPrintInt $ Lam.Prim $ Lam.PrimAdd (Lam.IntVal 2) (Lam.IntVal 3)
    #+end_src
    #+begin_src shell
 $ nix-shell -p qbe gcc
-[nix-shell]$ qbe t.qbe > t.s && gcc t.s
-[nix-shell]$ ./a.out ; echo $?
+[nix-shell]$ qbe t.qbe > t.s && gcc t.s -o t
+[nix-shell]$ ./t
+5
+   #+end_src
+ - As of [[https://github.com/crumbtoo/sydml/commit/6379d5647e89414331949f3206d3cdb1af2f9223][this commit]], it can compile trivial conditional expressions:
+   #+begin_src ghci
+λ> writePipeline "/tmp/t/t.qbe" $ Lam.IfThenElse (Lam.IntVal 1) (Lam.IntVal 2) (Lam.IntVal 3)
+   #+end_src
+   #+begin_src shell
+[nix-shell]$ qbe t.qbe > t.s && gcc t.s -o t
+[nix-shell]$ ./t ; echo $?
 2
    #+end_src
 **** TODO Demo
