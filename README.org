@@ -147,7 +147,8 @@ DEADLINE: <2024-09-03 Tue>
 **** DONE Define Milestone 2.
 *** TODO 1 Research Toys [6/7]
 :LOGBOOK:
-CLOCK: [2024-09-08 Sun 12:03]
+CLOCK: [2024-09-08 Sun 17:12]--[2024-09-08 Sun 18:02] =>  0:50
+CLOCK: [2024-09-08 Sun 12:03]--[2024-09-08 Sun 16:35] =>  4:32
 CLOCK: [2024-09-08 Sun 10:57]--[2024-09-08 Sun 11:59] =>  1:02
 CLOCK: [2024-09-08 Sun 10:16]--[2024-09-08 Sun 10:46] =>  0:30
 CLOCK: [2024-09-08 Sun 02:57]--[2024-09-08 Sun 03:29] =>  0:32
@@ -382,3 +383,6 @@ Covers a lot of topics that textbooks miss.
 *** [[https://www.reddit.com/r/ProgrammingLanguages/comments/8ggx2n/comment/dybo3rl/][A Reddit thread about functional IRs]]
 Nearly all of their linked resources are included in this document.
 *** [#A] [[https://simonmar.github.io/bib/papers/eval-apply.pdf][Making a Fast Curry: Push/Enter vs. Eval/Apply for Higher-order Languages]]
+*** [[https://cabal.readthedocs.io/en/3.4/cabal-package.html?highlight=build-type%20configure#pkg-field-build-type][Custom Cabal builds]]
+- Will be necessary to build tree-sitter-sydml.
+*** [[https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/development/tools/parsing/tree-sitter/grammar.nix][Nix tree-sitter examples]]

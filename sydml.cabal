@@ -33,6 +33,7 @@ common common
     NoFieldSelectors
     OverloadedLabels
     OverloadedStrings
+    OverloadedRecordDot
     PartialTypeSignatures
     PatternSynonyms
     StandaloneDeriving
@@ -61,10 +62,10 @@ library
     SydPrelude
 
   default-language: GHC2021
-  include-dirs:     tree-sitter-sydml/src
-  includes:         tree_sitter/parser.h
-  install-includes: tree_sitter/parser.h
-  cxx-sources:      tree-sitter-sydml/src/parser.c
+  -- include-dirs:     tree-sitter-sydml/src
+  -- includes:         tree_sitter/parser.h
+  -- install-includes: tree_sitter/parser.h
+  -- cxx-sources:      tree-sitter-sydml/src/parser.c
   build-depends:
     , base                       ^>=4.19.1.0
     , bytestring
@@ -78,7 +79,7 @@ library
     , free
     , generic-lens               ^>=2.2.0.0
     , hashable
-    , lens                       >=5.0.0     && <6.0.0.0
+    , lens                       >=5.3.0     && <6.0.0
     , lsp
     , megaparsec
     , monadic-recursion-schemes
@@ -171,13 +172,16 @@ executable presydc
   main-is:          Main.hs
   default-language: GHC2021
   build-depends:
-    , base           ^>=4.19.1.0
-    , effectful
-    , generic-lens   ^>=2.2.0.0
-    , lens           >=5.3.0     && <6.0.0
-    , presydml
-    , pretty-simple
-    , prettyprinter
-    , qbe
-    , rock           >=0.3.1.0   && <0.4.0.0.0
-    , text           >=2.0       && <2.2
+                  base           ^>=4.19.1.0
+                , effectful
+                , generic-lens   ^>=2.2.0.0
+                , lens           >=5.3.0     && <6.0.0
+                , optparse-applicative
+                , presydml
+                , pretty-simple
+                , prettyprinter
+                , process
+                , qbe
+                , rock           >=0.3.1.0   && <0.4.0.0.0
+                , text           >=2.0       && <2.2
+                , unordered-containers

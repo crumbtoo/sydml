@@ -1,3 +1,6 @@
 [submodule "vendor/qbe-hs"]
 	path = vendor/qbe-hs
 	url = https://git.sr.ht/~fgaz/qbe-hs
+[submodule "vendor/compiler-explorer"]
+	path = vendor/compiler-explorer
+	url = git@github.com:compiler-explorer/compiler-explorer.git
