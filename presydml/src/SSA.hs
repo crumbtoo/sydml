@@ -91,6 +91,61 @@ lowerBlock spills (Join j0 p m) = go m <&> blockInsts <>:~ maybeLoad
                  ]
       go m <&> blockInsts <>:~ letPrimInsts
 
+    go (LetTuple x vs m) = do
+      let nbytes = fromIntegral (length vs) * unitypeSize
+      let alloc =
+            QBE.Call
+              (Just (name2id x, QBE.AbiBaseTy unitype))
+              (QBE.ValGlobal "malloc")
+              Nothing
+              [QBE.Arg
+                (QBE.AbiBaseTy QBE.Long)
+                (QBE.ValConst (QBE.CInt False nbytes))]
+              []
+      let populate :: _ -> _ -> Eff es _
+          populate ix e = do
+            ptr <- mkFresh "ptr"
+            pure [ QBE.BinaryOp
+                     (name2id ptr := unitype)
+                     QBE.Add
+                     (QBE.ValTemporary $ name2id x)
+                     (QBE.ValConst $ QBE.CInt False
+                        (fromIntegral (ix :: Int) * unitypeSize))
+                 , QBE.Store (QBE.BaseTy unitype)
+                     e
+                     (QBE.ValTemporary $ name2id ptr)
+                 ]
+      insts <- (alloc:) . fold <$> (\i -> populate i . lowerValue) `itraverse` vs
+               :: Eff es (List QBE.Inst)
+      go m <&> blockInsts <>:~ insts
+
+    go (LetApp r f xs m) = do
+      let vs = List1.toList $
+                QBE.Arg (QBE.AbiBaseTy unitype) . lowerValue <$> xs
+      let insts = [ QBE.Call
+                    (Just (name2id r, QBE.AbiBaseTy unitype))
+                    (QBE.ValTemporary (name2id f))
+                    Nothing
+                    vs
+                    []
+                  ]
+      go m <&> blockInsts <>:~ insts
+
+    go (LetProj r i v m) = do
+      ptr <- mkFresh "ptr"
+      let insts =
+            [ QBE.BinaryOp
+                (name2id ptr := unitype)
+                QBE.Add
+                (QBE.ValConst $ QBE.CInt False (fromIntegral i * unitypeSize))
+                (QBE.ValTemporary (name2id v))
+            , QBE.Load
+                (name2id r := unitype)
+                unitype
+                (QBE.ValTemporary (name2id ptr))
+            ]
+      go m <&> blockInsts <>:~ insts
+
     go (Jump j (Just p)) = pure $ QBE.Block j0' [] insts (QBE.Jmp (name2id j))
       where
         insts = case spills ^. at j of
@@ -119,7 +174,7 @@ allocSpills spills = blockInsts <>:~ foldMap mkAlloc spills
 
 lower :: (Unique :> es) => List1 Lam -> Eff es (List1 QBE.FuncDef)
 lower = traverse go where
-  go l = QBE.FuncDef [linkage]
+  go l = QBE.FuncDef linkage
                      abiTy
                      (name2id name)
                      env
@@ -129,17 +184,12 @@ lower = traverse go where
     where
       name = l ^. lamName
       linkage = case name of
-            "main" -> QBE.Export
-            _ -> _
+            "main" -> [ QBE.Export ]
+            _ -> []
       abiTy = Just . QBE.AbiBaseTy $ unitype
       env = Nothing
       params = List1.toList $
         QBE.Param (QBE.AbiBaseTy unitype) . name2id <$> l ^. lamParams
-
-getMain :: List1 Lam -> Lam
-getMain = fromJust . getFirst . foldMap \case
-  p@(Lam "main" _ _ _) -> First (Just p)
-  _                    -> First Nothing
 
 pipeline :: Lam.Term -> _
 pipeline = QBE.Program [] [datas]
