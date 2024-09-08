@@ -1,23 +1,24 @@
-cabal-version:      3.0
-name:               sydml
-version:            0.1.0.0
-synopsis: A compiler for an ML in Haskell's clothes.
-description: A compiler for an ML in Haskell's clothes.
-license:            GPL-3.0-only
-license-file:       LICENSE
-author:             crumbtoo
-maintainer:         lomiskiam@gmail.com
+cabal-version:   3.0
+name:            sydml
+version:         0.1.0.0
+synopsis:        A compiler for an ML in Haskell's clothes.
+description:     A compiler for an ML in Haskell's clothes.
+license:         GPL-3.0-only
+license-file:    LICENSE
+author:          crumbtoo
+maintainer:      lomiskiam@gmail.com
+
 -- copyright:
-category:           Language
-build-type:         Simple
-extra-doc-files:    CHANGELOG.md
+category:        Language
+build-type:      Simple
+extra-doc-files: CHANGELOG.md
+
 -- extra-source-files:
 
 common common
-  ghc-options:
-    -- -Wall
-    -Wno-typed-holes
+  ghc-options:        -Wno-typed-holes
 
+  -- -Wall
   default-extensions:
     BlockArguments
     DataKinds
@@ -28,6 +29,7 @@ common common
     GADTs
     GeneralisedNewtypeDeriving
     LambdaCase
+    MultiWayIf
     NoFieldSelectors
     OverloadedLabels
     OverloadedStrings
@@ -36,17 +38,16 @@ common common
     StandaloneDeriving
     TypeApplications
     TypeFamilies
-    MultiWayIf
 
-  ghc-options:
-    -fdefer-typed-holes
-  default-language: GHC2021
+  ghc-options:        -fdefer-typed-holes
+  default-language:   GHC2021
 
 --------------------------------------------------------------------------------
 -- sydml
 
 library
   import:           common
+
   -- cabal-fmt: expand sydml/src/ -Main
   exposed-modules:
     Data.Located
@@ -60,120 +61,123 @@ library
     SydPrelude
 
   default-language: GHC2021
-  include-dirs: tree-sitter-sydml/src
-  includes:     tree_sitter/parser.h
+  include-dirs:     tree-sitter-sydml/src
+  includes:         tree_sitter/parser.h
   install-includes: tree_sitter/parser.h
-  cxx-sources: tree-sitter-sydml/src/parser.c
+  cxx-sources:      tree-sitter-sydml/src/parser.c
   build-depends:
-                  base ^>=4.19.1.0
-                , bytestring
-                , comonad
-                , containers
-                , data-fix
-                , dependent-sum-template     ^>=0.2.0.1
-                , deriving-compat
-                , effectful
-                , filepath
-                , free
-                , generic-lens               ^>=2.2.0.0
-                , hashable
-                , lens                       >=5.0.0     && <6.0.0.0
-                , lsp
-                , megaparsec
-                , monadic-recursion-schemes
-                , mtl
-                , parser-combinators
-                , pretty-simple
-                , prettyprinter
-                , qbe
-                , recursion-schemes          >=5.0.0     && <6.0.0.0
-                , rock                       >=0.3.1.0   && <0.4.0.0.0
-                , semigroupoids
-                , some
-                , text                       >=2.0 && <2.2
-                , text-short
-                , these
-                , transformers
-                , tree-sitter
-                , unordered-containers
-                , witherable
+    , base                       ^>=4.19.1.0
+    , bytestring
+    , comonad
+    , containers
+    , data-fix
+    , dependent-sum-template     ^>=0.2.0.1
+    , deriving-compat
+    , effectful
+    , filepath
+    , free
+    , generic-lens               ^>=2.2.0.0
+    , hashable
+    , lens                       >=5.0.0     && <6.0.0.0
+    , lsp
+    , megaparsec
+    , monadic-recursion-schemes
+    , mtl
+    , parser-combinators
+    , pretty-simple
+    , prettyprinter
+    , qbe
+    , recursion-schemes          >=5.0.0     && <6.0.0.0
+    , rock                       >=0.3.1.0   && <0.4.0.0.0
+    , semigroupoids
+    , some
+    , text                       >=2.0       && <2.2
+    , text-short
+    , these
+    , transformers
+    , tree-sitter
+    , unordered-containers
+    , witherable
+
   hs-source-dirs:   sydml/src
 
 executable sydc
-    import:           common
-    main-is:          Main.hs
-    default-language: GHC2021
+  import:           common
+  main-is:          Main.hs
+  default-language: GHC2021
+  other-modules:    Command.Batch
 
-    other-modules:
-      Command.Batch
+  -- other-extensions:
+  build-depends:
+    , base                  ^>=4.19.1.0
+    , lens
+    , optparse-applicative
+    , sydml
 
-    -- other-extensions:
-    build-depends:
-                    base ^>=4.19.1.0
-                  , lens
-                  , optparse-applicative
-                  , sydml
-
-    hs-source-dirs:   sydml/app
+  hs-source-dirs:   sydml/app
 
 test-suite sydml-test
-    import:           common
-    type:             exitcode-stdio-1.0
-    hs-source-dirs:   sydml/test
-    main-is:          Main.hs
-    other-modules:
-      SydmlTests.EmptyInput
-    build-depends:
-      , base ^>=4.19.1.0
-      , tasty-hunit ^>=0.10
-      , tasty-golden ^>=2.3
-      , tasty-program >=1.1 && <=1.2
-      , tasty >=1.2.2 && <1.6
-      , sydml
+  import:         common
+  type:           exitcode-stdio-1.0
+  hs-source-dirs: sydml/test
+  main-is:        Main.hs
+  other-modules:  SydmlTests.EmptyInput
+  build-depends:
+    , base           ^>=4.19.1.0
+    , sydml
+    , tasty          >=1.2.2     && <1.6
+    , tasty-golden   ^>=2.3
+    , tasty-hunit    ^>=0.10
+    , tasty-program  >=1.1       && <1.2.0
 
 --------------------------------------------------------------------------------
 -- presydc
 
 library presydml
-  import: common
+  import:           common
+
   -- cabal-fmt: expand presydml/src/ -Main
   exposed-modules:
     ANF
-    SSA
+    Lam.Parse
     Lam.Syntax
+    SSA
     SydPrelude
 
   default-language: GHC2021
   build-depends:
-      base ^>=4.19.1.0
-    , lens                       >=5.3.0     && <6.0.0
-    , pretty-simple
-    , prettyprinter
-    , qbe
-    , rock                       >=0.3.1.0   && <0.4.0.0.0
-    , effectful
-    , text                       >=2.0 && <2.2
-    , text-short
-    , unordered-containers
-    , containers
-    , hashable
-    , mtl
-    , transformers
-    , generic-lens               ^>=2.2.0.0
-  hs-source-dirs: presydml/src
+                  base                  ^>=4.19.1.0
+                , containers
+                , effectful
+                , generic-lens          ^>=2.2.0.0
+                , hashable
+                , lens                  >=5.3.0     && <6.0.0
+                , megaparsec
+                , mtl
+                , parser-combinators
+                , pretty-simple
+                , prettyprinter
+                , qbe
+                , rock                  >=0.3.1.0   && <0.4.0.0.0
+                , text                  >=2.0       && <2.2
+                , text-short
+                , transformers
+                , unordered-containers
+
+  hs-source-dirs:   presydml/src
 
 executable presydc
-  hs-source-dirs: presydml/app
+  hs-source-dirs:   presydml/app
   main-is:          Main.hs
   default-language: GHC2021
   build-depends:
-      base ^>=4.19.1.0
+    , base           ^>=4.19.1.0
+    , effectful
+    , generic-lens   ^>=2.2.0.0
+    , lens           >=5.3.0     && <6.0.0
     , presydml
-    , lens                       >=5.3.0     && <6.0.0
-    , generic-lens               ^>=2.2.0.0
     , pretty-simple
     , prettyprinter
     , qbe
-    , rock                       >=0.3.1.0   && <0.4.0.0.0
-    , effectful
-    , text                       >=2.0 && <2.2
+    , rock           >=0.3.1.0   && <0.4.0.0.0
+    , text           >=2.0       && <2.2

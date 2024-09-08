@@ -147,6 +147,8 @@ DEADLINE: <2024-09-03 Tue>
 **** DONE Define Milestone 2.
 *** TODO 1 Research Toys [6/7]
 :LOGBOOK:
+CLOCK: [2024-09-08 Sun 12:03]
+CLOCK: [2024-09-08 Sun 10:57]--[2024-09-08 Sun 11:59] =>  1:02
 CLOCK: [2024-09-08 Sun 10:16]--[2024-09-08 Sun 10:46] =>  0:30
 CLOCK: [2024-09-08 Sun 02:57]--[2024-09-08 Sun 03:29] =>  0:32
 CLOCK: [2024-09-08 Sun 02:05]--[2024-09-08 Sun 02:43] =>  0:38
