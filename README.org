@@ -89,19 +89,19 @@ Houses Sydc's parser.
 | cc              | Machine           |
 * Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
-#+CAPTION: Clock summary at [2024-09-08 Sun 02:55]
-| Headline                          | Time     |          |         |
-|-----------------------------------+----------+----------+---------|
-| *Total time*                        | *1d 23:50* |          |         |
-|-----------------------------------+----------+----------+---------|
-| Progress                          | 1d 23:50 |          |         |
-| \_  Milestones                    |          | 1d 12:59 |         |
-| \_    0 Preemptive Planning [6/6] |          |          |    5:29 |
-| \_    1 Research Toys [6/7]       |          |          | 1d 7:30 |
-| \_  Other                         |          |    10:51 |         |
-| \_    Nix setup                   |          |          |    7:26 |
-| \_    Documentation               |          |          |    1:44 |
-| \_    GitHub Pages action         |          |          |    0:26 |
+#+CAPTION: Clock summary at [2024-09-08 Sun 10:46]
+| Headline                          | Time    |          |         |
+|-----------------------------------+---------+----------+---------|
+| *Total time*                        | *2d 0:52* |          |         |
+|-----------------------------------+---------+----------+---------|
+| Progress                          | 2d 0:52 |          |         |
+| \_  Milestones                    |         | 1d 14:01 |         |
+| \_    0 Preemptive Planning [6/6] |         |          |    5:29 |
+| \_    1 Research Toys [6/7]       |         |          | 1d 8:32 |
+| \_  Other                         |         |    10:51 |         |
+| \_    Nix setup                   |         |          |    7:26 |
+| \_    Documentation               |         |          |    1:44 |
+| \_    GitHub Pages action         |         |          |    0:26 |
 #+END:
 
 ** Milestones
@@ -147,7 +147,7 @@ DEADLINE: <2024-09-03 Tue>
 **** DONE Define Milestone 2.
 *** TODO 1 Research Toys [6/7]
 :LOGBOOK:
-CLOCK: [2024-09-08 Sun 10:16]
+CLOCK: [2024-09-08 Sun 10:16]--[2024-09-08 Sun 10:46] =>  0:30
 CLOCK: [2024-09-08 Sun 02:57]--[2024-09-08 Sun 03:29] =>  0:32
 CLOCK: [2024-09-08 Sun 02:05]--[2024-09-08 Sun 02:43] =>  0:38
 CLOCK: [2024-09-07 Sat 17:23]--[2024-09-07 Sat 18:52] =>  1:29
@@ -218,7 +218,7 @@ $ nix-shell -p qbe gcc
 [nix-shell]$ ./t ; echo $?
 2
   #+end_src
-- As of this commit, the factorial program sucessfully compiles and executes.
+- As of [[https://github.com/crumbtoo/sydml/commit/08ef987a563eabb199610a26546305dcbb6dd76a][this commit]], the factorial program sucessfully compiles and executes.
   Two hidden bugs were fixed in the process:
   - =freeVars= did not function as expects on application nodes.
     #+begin_src diff
