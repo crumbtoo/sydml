@@ -252,6 +252,7 @@ toHashSetOf l s = getConst (l (Const . HS.singleton) s)
 
 freeVars :: Term -> HS.HashSet Name
 freeVars (LetApp x f ys m) = toHashSetOf (each . #Var) ys
+                          <> HS.singleton f
                           <> (freeVars m & HS.delete x)
 freeVars (LetLam x ys n m) = (freeVars n `HS.difference` toHashSetOf each ys)
                           <> (freeVars m & HS.delete x)
@@ -336,10 +337,10 @@ hoist = go >=> finalise
 
     go (IfThenElse c t f) = do
       Hoisted fs js t' <- go t
-      Hoisted fs' js' t' <- go f
+      Hoisted fs' js' f' <- go f
       (th,el) <- each mkFresh ("then","else")
-      let bt = Join th Nothing t
-          bf = Join el Nothing t
+      let bt = Join th Nothing t'
+          bf = Join el Nothing f'
       pure $ Hoisted (fs >< fs') (Seq.fromList [bt,bf] >< js >< js') $
         IfThenElse c (Jump th Nothing) (Jump el Nothing)
 

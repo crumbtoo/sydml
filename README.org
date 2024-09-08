@@ -89,7 +89,7 @@ Houses Sydc's parser.
 | cc              | Machine           |
 * Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
-#+CAPTION: Clock summary at [2024-09-08 Sun 02:43]
+#+CAPTION: Clock summary at [2024-09-08 Sun 02:55]
 | Headline                          | Time     |          |         |
 |-----------------------------------+----------+----------+---------|
 | *Total time*                        | *1d 23:50* |          |         |
@@ -97,7 +97,7 @@ Houses Sydc's parser.
 | Progress                          | 1d 23:50 |          |         |
 | \_  Milestones                    |          | 1d 12:59 |         |
 | \_    0 Preemptive Planning [6/6] |          |          |    5:29 |
-| \_    1 Research Toys [5/8]       |          |          | 1d 7:30 |
+| \_    1 Research Toys [6/7]       |          |          | 1d 7:30 |
 | \_  Other                         |          |    10:51 |         |
 | \_    Nix setup                   |          |          |    7:26 |
 | \_    Documentation               |          |          |    1:44 |
@@ -147,6 +147,8 @@ DEADLINE: <2024-09-03 Tue>
 **** DONE Define Milestone 2.
 *** TODO 1 Research Toys [6/7]
 :LOGBOOK:
+CLOCK: [2024-09-08 Sun 10:16]
+CLOCK: [2024-09-08 Sun 02:57]--[2024-09-08 Sun 03:29] =>  0:32
 CLOCK: [2024-09-08 Sun 02:05]--[2024-09-08 Sun 02:43] =>  0:38
 CLOCK: [2024-09-07 Sat 17:23]--[2024-09-07 Sat 18:52] =>  1:29
 CLOCK: [2024-09-07 Sat 14:30]--[2024-09-07 Sat 17:03] =>  2:33
@@ -170,6 +172,10 @@ Implement the core algorithms as toys with toothpick scaffolding.
   initially work uncurried by default, à la SML, and implement the necessary
   optimisations for curry-heavy code later.
 - The value of statically-typed IRs is not to be undermined.
+- [X] Known issue: There is some problem with closure conversion. Try compiling:
+  #+begin_src ghci
+λ> pretty . upToConvert $ Lam.Prim $ PrimPrintInt $ Lam.zCombinator `Lam.App` ((Lam.Lam "x" $ Lam.Lam "y" $ Lam.Var "x") `Lam.App` Lam.IntVal 3)
+  #+end_src
 
 **** DONE The Untyped λ-calculus
 - Augmented with tuples.
@@ -181,48 +187,76 @@ CLOSED: [2024-09-05 Thu 11:50]
 CLOSED: [2024-09-05 Thu 13:29]
 **** DONE ToQBE
 CLOSED: [2024-09-08 Sun 02:55]
- - As of [[https://github.com/crumbtoo/sydml/commit/1342b377e9dfceda86831548eb39466830ac6ef5][this commit]], the toy compiler can compile its first program:
-   #+begin_src ghci
+- As of [[https://github.com/crumbtoo/sydml/commit/1342b377e9dfceda86831548eb39466830ac6ef5][this commit]], the toy compiler can compile its first program:
+  #+begin_src ghci
 λ> :m + *Presydc.SSA
 λ> writePipeline "/tmp/t/t.qbe" $ Lam.IntVal 123
-   #+end_src
-   #+begin_src shell
+  #+end_src
+  #+begin_src shell
 $ nix-shell -p qbe gcc
 [nix-shell]$ qbe t.qbe > t.s && gcc t.s -o t
 [nix-shell]$ ./t ; echo $?
 123
-   #+end_src
- - As of [[https://github.com/crumbtoo/sydml/commit/acf74f12dc4327efce54610e5e1ffb81d57a5eba][this commit]], it can compile arithmetic primitives and impure =print= calls:
-   #+begin_src ghci
+  #+end_src
+- As of [[https://github.com/crumbtoo/sydml/commit/acf74f12dc4327efce54610e5e1ffb81d57a5eba][this commit]], it can compile arithmetic primitives and impure =print= calls:
+  #+begin_src ghci
 λ> :m + *Presydc.SSA
 λ> writePipeline "/tmp/t/t.qbe" $ Lam.Prim $ PrimPrintInt $ Lam.Prim $ Lam.PrimAdd (Lam.IntVal 2) (Lam.IntVal 3)
-   #+end_src
-   #+begin_src shell
+  #+end_src
+  #+begin_src shell
 $ nix-shell -p qbe gcc
 [nix-shell]$ qbe t.qbe > t.s && gcc t.s -o t
 [nix-shell]$ ./t
 5
-   #+end_src
- - As of [[https://github.com/crumbtoo/sydml/commit/6379d5647e89414331949f3206d3cdb1af2f9223][this commit]], it can compile trivial conditional expressions:
-   #+begin_src ghci
+  #+end_src
+- As of [[https://github.com/crumbtoo/sydml/commit/6379d5647e89414331949f3206d3cdb1af2f9223][this commit]], it can compile trivial conditional expressions:
+  #+begin_src ghci
 λ> writePipeline "/tmp/t/t.qbe" $ Lam.IfThenElse (Lam.IntVal 1) (Lam.IntVal 2) (Lam.IntVal 3)
-   #+end_src
-   #+begin_src shell
+  #+end_src
+  #+begin_src shell
 [nix-shell]$ qbe t.qbe > t.s && gcc t.s -o t
 [nix-shell]$ ./t ; echo $?
 2
-   #+end_src
- - As of [[https://github.com/crumbtoo/sydml/commit/e27f4664af156d3862100e21c4396423165e8469][this commit]], it can compile closures and applications thereupon,
-   marking the completion of the ToQBE pass!
-   #+begin_src ghci
+  #+end_src
+- As of this commit, the factorial program sucessfully compiles and executes.
+  Two hidden bugs were fixed in the process:
+  - =freeVars= did not function as expects on application nodes.
+    #+begin_src diff
+ freeVars (LetApp x f ys m) = toHashSetOf (each . #Var) ys
++                           <> HS.singleton f
+                           <> (freeVars m & HS.delete x)
+    #+end_src
+  - Three typos in the =hoist= function led to both branches of an if-expression
+    being the unhoisted 'true' branch — I have no idea how this happened. :P
+    #+begin_src diff
+ go (IfThenElse c t f) = do
+   Hoisted fs js t' <- go t
+-   Hoisted fs' js' t' <- go f
++   Hoisted fs' js' f' <- go f
+   (th,el) <- each mkFresh ("then","else")
+-   let bt = Join th Nothing t
++   let bt = Join th Nothing t'
+-       bf = Join el Nothing t
++       bf = Join el Nothing f'
+   pure $ Hoisted (fs >< fs') (Seq.fromList [bt,bf] >< js >< js') $
+     IfThenElse c (Jump th Nothing) (Jump el Nothing)
+    #+end_src
+  #+begin_src ghci
+-- (λf. (λx. f (λv. x x v)) (λx. f (λv. x x v))) (λ rec n. if n then n * rec (n - 1) else 1) 3
+)
+λ> writePipeline "/tmp/t/t.qbe" $ Lam.Prim $ PrimPrintInt $ Lam.zCombinator `Lam.App` (Lam.Lam "rec" $ Lam.Lam "n" $ Lam.IfThenElse (Lam.Var "n") (Lam.Prim $ PrimMul (Lam.Var "n") (Lam.Var "rec" `Lam.App` (Lam.Prim $ PrimSub (Lam.Var "n") (Lam.IntVal 1)))) (Lam.IntVal 1)) `Lam.App` Lam.IntVal 3
+  #+end_src
+- As of [[https://github.com/crumbtoo/sydml/commit/e27f4664af156d3862100e21c4396423165e8469][this commit]], it can compile closures and applications thereupon,
+  marking the completion of the ToQBE pass!
+  #+begin_src ghci
 λ> writePipeline "/tmp/t/t.qbe" $ Lam.Prim $ PrimPrintInt $ (Lam.Lam "x" $ Lam.Lam "y" $ Lam.Var "x") `Lam.App` Lam.IntVal 1 `Lam.App` Lam.IntVal 2
-   #+end_src
-   #+begin_src shell
+  #+end_src
+  #+begin_src shell
 [nix-shell]$ qbe t.qbe > t.s && gcc t.s -o t
 [nix-shell]$ ./t
 1
-   #+end_src
-**** TODO Demo
+  #+end_src
+**** STRT Demo
 - Maybe using [[https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/AddingACompiler.md][godbolt]]?
 ** Other
 :LOGBOOK:

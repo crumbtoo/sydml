@@ -28,6 +28,8 @@ instance Plated Term where
   plate = uniplate
 
 data PrimOp a = PrimAdd a a
+              | PrimMul a a
+              | PrimSub a a
               | PrimPrint a
               | PrimPrintInt a
               deriving (Show, Functor, Foldable, Traversable, Data)
@@ -39,7 +41,10 @@ instance Pretty a => Pretty (PrimOp a) where
     where
       name = case p of
         PrimAdd _ _ -> "add#"
+        PrimMul _ _ -> "mul#"
+        PrimSub _ _ -> "sub#"
         PrimPrint _ -> "print#"
+        PrimPrintInt _ -> "printInt#"
 
 asFunction :: List (Doc ann) -> Doc ann
 asFunction [] = "()"
@@ -60,6 +65,15 @@ instance Each (Program a) (Program b) (Name, a) (Name, b) where
   each k (Program ds) = Program <$> each k ds
 
 -- makeBaseFunctor ''Term
+
+{- |
+The Z combinator — a strict fixed-point combinator.
+
+@
+Z g v = g (Z g) v
+Z = λf. (λx. f (λv. x x v)) (λx. f (λv. x x v))
+@
+-}
 
 zCombinator :: Term
 zCombinator = Lam "f" $ d `App` d

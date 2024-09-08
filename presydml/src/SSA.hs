@@ -73,10 +73,15 @@ lowerBlock spills (Join j0 p m) = go m <&> blockInsts <>:~ maybeLoad
 
     go (LetPrim x p m) = do
       let ass = name2id x := unitype
+      let mkBinOp op = QBE.BinaryOp ass op `on` lowerValue
       letPrimInsts <-
         case p of
           PrimAdd a b ->
-            pure [ QBE.BinaryOp ass QBE.Add (lowerValue a) (lowerValue b) ]
+            pure [ mkBinOp QBE.Add a b ]
+          PrimMul a b ->
+            pure [ mkBinOp QBE.Mul a b ]
+          PrimSub a b ->
+            pure [ mkBinOp QBE.Sub a b ]
           PrimPrintInt a ->
             pure [ QBE.Call
                      (Just (name2id x, QBE.AbiBaseTy unitype))
@@ -218,3 +223,6 @@ writePipeline fp e = withFile fp WriteMode \h ->
 
 upToHoist :: Lam.Term -> List1 Lam
 upToHoist = runPureEff . runUnique . (hoist <=< convert <=< anfTerm <=< rename)
+
+upToConvert :: Lam.Term -> Term
+upToConvert = runPureEff . runUnique . (convert <=< anfTerm <=< rename)
