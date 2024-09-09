@@ -44,7 +44,11 @@ While last year's compiler was primarily language-focused, I now intend to focus
 on compiler techniques.
 *** IRs — ANF and SSA
 * Project structure
-** =app=
+** =sydml=
+*** =app=
+*** =src=
+*** =test=
+** =presydml=
 ** =vendor=
 Vendored dependencies.
 *** =tree-sitter=
@@ -65,8 +69,6 @@ A tool for viewing compiler output and IRS. My patches include:
 - Add support for presydml.
 ** =doc=
 Documentation. Currently, this solely serves as a home for the rendered HTML of the README.
-** =src=
-** =test=
 ** =tree-sitter-sydml=
 Houses Sydc's parser.
 * Compiler overview
@@ -91,6 +93,30 @@ Houses Sydc's parser.
 |-----------------+-------------------|
 | qbe             | Assembly          |
 | cc              | Machine           |
+* Languages
+** The SydML language
+*** Syntax
+- We use Haskell-style layouts, meaning that one can group productions by either
+  alignment, or semicolons and braces.
+** Core
+Core is an explicitly-typed IL based on System F_ω. Internally
+#+begin_src fundamental
+e ::= x                     Variables
+   |  λx:τ. e               Term abstractions
+   |  Λx:κ. e               Type abstractions
+   |  e e                   Term applications
+   |  e @τ                  Type applications
+   |  let x = e in e        Let-bindings
+   |  letrec (x = e)* in e  Recursive let-bindings
+
+τ ::= K                     Type constructors
+   |  τ τ                   Constructor application
+   |  τ → τ                 Function types
+   |  ∀x:k. τ               Universal quantification
+
+k ::= Type                  The kind of all types
+   |  k → k                 Higher kinds
+#+end_src
 * Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
 #+CAPTION: Clock summary at [2024-09-08 Sun 23:18]
@@ -109,12 +135,13 @@ Houses Sydc's parser.
 #+END:
 
 ** Milestones
-| *Milestone*        | Parser | Elab | Type-checker | ->ANF | Closure-conv. | Hoist | ->QBE |
-|------------------+--------+------+--------------+-------+---------------+-------+-------|
-| Empty module     |        |      |              |       |               |       |       |
-| Int literal decl |        |      |              |       |               |       |       |
-| The identity fn  |        |      |              |       |               |       |       |
-|------------------+--------+------+--------------+-------+---------------+-------+-------|
+| *Milestone*          | Parser | Elab | Type-checker | ->ANF | Closure-conv. | Hoist | ->QBE |
+|--------------------+--------+------+--------------+-------+---------------+-------+-------|
+| Empty module       |        |      |              |       |               |       |       |
+| Int literal decl   |        |      |              |       |               |       |       |
+| if 1 then 2 else 3 |        |      |              |       |               |       |       |
+| The identity fn    |        |      |              |       |               |       |       |
+|--------------------+--------+------+--------------+-------+---------------+-------+-------|
 
 *** DONE 0 Preemptive Planning [6/6]
 CLOSED: [2024-09-06 Fri 20:42] SCHEDULED: <2024-08-27 Tue>
@@ -268,9 +295,32 @@ $ nix-shell -p qbe gcc
 **** DONE Demo
 CLOSED: [2024-09-08 Sun 23:17]
 - Maybe using [[https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/AddingACompiler.md][godbolt]]?
-*** TODO 2 Layer 1 [0/4]
+*** TODO 2 Layer 1 [1/5]
+:LOGBOOK:
+CLOCK: [2024-09-10 Tue 02:01]--[2024-09-10 Tue 02:23] =>  0:22
+CLOCK: [2024-09-09 Mon 12:40]--[2024-09-09 Mon 14:55] =>  2:15
+:END:
 Round three of planning. Define the core data structures, signatures for
 functions between them, and tests for those functions.
+**** DONE [#A] Big decisions!
+CLOSED: [2024-09-10 Tue 02:17]
+***** NO Side effects?
+CLOSED: [2024-09-10 Tue 02:16]
+****** Impure
+******* Pros
+- Rely less on optimisations — use =ref= types.
+- Easy implementation.
+******* Cons
+- Top-level side effects lead to a lot of pain in implementation and use.
+****** Pure
+******* Pros
+- I have Haskellbrain.
+- More interesting implementation.
+******* Cons
+- Potentially complicated to make effecient.
+***** OKAY ML Modules?
+CLOSED: [2024-09-10 Tue 02:01]
+We can postpone this thought.
 **** TODO Core data structures [0/9]
 ***** TODO =Syd= monad
 ***** TODO Error effect and ADT
@@ -342,11 +392,14 @@ CLOCK: [2024-09-05 Thu 15:02]--[2024-09-05 Thu 15:28] =>  0:26
 *** [[https://github.com/purescript/purescript][purescript]]
 - haskell-like.
 - implemented in glorious haskell.
-*** [[http://mlton.org/CompilerOverview][MLton]]
+*** [[http://mlton.org/CompilerOverview][MLton]] :SML:
 - many different IRs.
 - whole-program optimising.
 - [[http://mlton.org/CompilerOverview][pretty decent documentation]].
 - implemented in SML.
+*** [[https://github.com/kfl/mosml][Moscow ML]] :SML:
+*** [[https://github.com/rossberg/hamlet][HaMLet]] :SML:
+- Self-described as a reference implementation.
 *** [[https://github.com/jdreaver/amy][amy]]
 - targets LLVM.
 - ANF-based IR.
@@ -414,6 +467,7 @@ lambda calculus IR
 *** [#A] [[https://borretti.me/article/lessons-writing-compiler#err][Lessons from Writing a Compiler]]
 Covers a lot of topics that textbooks miss.
 *** [[https://matt.might.net/articles/closure-conversion/][Matt Might — Closure Conversion]]
+*** [[https://www.cse.chalmers.se/~ulfn/papers/thesis.pdf][Towards a practical programming language based on dependent type theory]]
 *** [[https://www.stephendiehl.com/llvm/][Implementing a JIT Compiled Language with Haskell and LLVM]]
 *** [[https://www.cambridge.org/core/services/aop-cambridge-core/content/view/097CE52C750E69BD16B78C318754C7A4/S0956796820000088a.pdf/div-class-title-build-systems-a-la-carte-theory-and-practice-div.pdf][Build systems à la carte: Theory and Practice]]
 *** [[https://www.reddit.com/r/ProgrammingLanguages/comments/8ggx2n/comment/dybo3rl/][A Reddit thread about functional IRs]]
@@ -422,3 +476,4 @@ Nearly all of their linked resources are included in this document.
 *** [[https://cabal.readthedocs.io/en/3.4/cabal-package.html?highlight=build-type%20configure#pkg-field-build-type][Custom Cabal builds]]
 - Will be necessary to build tree-sitter-sydml.
 *** [[https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/development/tools/parsing/tree-sitter/grammar.nix][Nix tree-sitter examples]]
+*** [[https://dl.acm.org/doi/pdf/10.1145/151333.151343][Tarditi — No Assembly Required: Compiling SML to C]]
