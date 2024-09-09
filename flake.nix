@@ -22,7 +22,7 @@
           # broken tests
           dependent-hashmap = hlib.markUnbroken (hlib.dontCheck prev.dependent-hashmap);
           # out of date (we insist on using latest for the sole reason of
-          # including the dual-sperm operator, (<>:~).)
+          # including the dual sperm operator, (<>:~).)
           lens = prev.lens_5_3_2;
         });
       in {
@@ -35,8 +35,7 @@
               gcc
             ]
             ++ prev.propagatedBuildInputs;
-          }
-          );
+          });
 
         devShell = hpkgs.shellFor {
           packages = p: [

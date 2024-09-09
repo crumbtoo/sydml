@@ -5,23 +5,29 @@
 {-# OPTIONS_GHC -Wno-typed-holes #-}
 module SSA where
 --------------------------------------------------------------------------------
+import Data.Aeson qualified as Aeson
+import Data.Aeson ((.=))
 import Language.QBE        qualified as QBE
 import Data.HashMap.Strict qualified as H
 import Data.List.NonEmpty qualified as List1
-import Effectful
-import ANF
-import Lam.Syntax (Name, PrimOp (..), Program (..))
+import           Effectful
+import           ANF
+import           Lam.Syntax (Name, PrimOp (..), Program (..))
 import Lam.Syntax qualified as Lam
-import SydPrelude
+import           SydPrelude
 import Data.Text.Short qualified as TS
 import Data.Text.IO qualified as T
-import Data.Foldable
-import Data.Monoid
-import Data.Maybe
-import Control.Lens
-import System.IO
-import Prettyprinter.Render.Text
-import Language.QBE (pattern (:=))
+import           Data.Foldable
+import           Data.Monoid
+import           Data.Maybe
+import           Control.Lens hiding ((.=))
+import           System.IO
+import           Prettyprinter.Render.Text
+import           Language.QBE (pattern (:=))
+import           Effectful.Writer.Static.Local
+import qualified Data.Text as T
+import           Data.Text.Prettyprint.Doc
+import qualified Data.ByteString.Lazy as BS
 --------------------------------------------------------------------------------
 -- Lowering to SSA/QBE
 
@@ -214,9 +220,54 @@ pipeline = QBE.Program [] [datas]
           List1.singleton (QBE.Const $ QBE.CInt False 0)
       ]
 
+pipeline' :: Lam.Term -> _
+pipeline'
+  = first (QBE.Program [] [datas] . List1.toList)
+  . runPureEff
+  . runWriter @(List Aeson.Value)
+  . runUnique
+  . ( adornDump "lower" lower
+     <=< adornDump "hoist" hoist
+     <=< adornDump "conver" convert
+     <=< adornDump "to anf" anfTerm
+     <=< adornDump "rename" rename)
+  where
+    datas = QBE.DataDef [] primPrintIntFmtLabel Nothing
+      [ QBE.FieldExtTy QBE.Byte $
+          List1.singleton (QBE.String "%d\n")
+      , QBE.FieldExtTy QBE.Byte $
+          List1.singleton (QBE.Const $ QBE.CInt False 0)
+      ]
+
+makePass :: Text -> List Text -> List Text -> Aeson.Value
+makePass name before after = Aeson.object
+  [ "name" .= name
+  , "machine" .= False
+  , "before" .= ((\x -> Aeson.object ["text" .= x]) <$> before)
+  , "after" .= ((\x -> Aeson.object ["text" .= x]) <$> after)
+  , "irChanged" .= True
+  ]
+
+render = renderStrict . layoutPretty defaultLayoutOptions
+
+adornDump :: (Pretty a, Pretty b, Writer (List Aeson.Value) :> es)
+          => Text -> (a -> Eff es b) -> a -> Eff es b
+adornDump name k a = do
+  b <- k a
+  let p = makePass name (f a) (f b)
+      f x = T.lines . render . pretty $ x -- mono restr
+  tell [p] $> b
+
 writePipeline :: FilePath -> Lam.Term -> IO ()
 writePipeline fp e = withFile fp WriteMode \h ->
   hPutDoc h . pretty . pipeline $ e
+
+writePipeline' :: FilePath -> Lam.Term -> IO ()
+writePipeline' fp e = withFile fp WriteMode \h -> do
+  let (qbe,vs) = pipeline' e
+  hPutDoc h . pretty $ qbe
+  BS.putStr . Aeson.encode $ Aeson.object
+    [ "compilation" .= vs ]
 
 --------------------------------------------------------------------------------
 -- Run pipeline up to X

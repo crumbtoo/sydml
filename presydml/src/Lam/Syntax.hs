@@ -9,6 +9,7 @@ import Data.Data.Lens (uniplate)
 import Data.String (IsString (fromString))
 import Data.Text qualified as T
 import Prettyprinter
+import Data.Functor.Apply qualified
 --------------------------------------------------------------------------------
 
 data Term = App Term Term
@@ -40,11 +41,11 @@ instance Pretty a => Pretty (PrimOp a) where
   pretty p = asFunction $ name : (pretty <$> p ^.. each)
     where
       name = case p of
-        PrimAdd _ _ -> "add#"
-        PrimMul _ _ -> "mul#"
-        PrimSub _ _ -> "sub#"
-        PrimPrint _ -> "print#"
-        PrimPrintInt _ -> "printInt#"
+        PrimAdd _ _ -> "int+"
+        PrimMul _ _ -> "int*"
+        PrimSub _ _ -> "int-"
+        PrimPrint _ -> "print"
+        PrimPrintInt _ -> "int-print"
 
 asFunction :: List (Doc ann) -> Doc ann
 asFunction [] = "()"
@@ -79,3 +80,29 @@ zCombinator :: Term
 zCombinator = Lam "f" $ d `App` d
   where
     d = Lam "x" $ "f" `App` (Lam "v" $ "x" `App` "x" `App` "v")
+
+pIf :: Bool -> Doc ann -> Doc ann
+pIf = bool id parens
+
+applicants :: Traversal1' Term Term
+applicants k (App f x) = App <$> applicants k f Data.Functor.Apply.<.> k x
+applicants k x         = k x
+
+instance Pretty Term where
+  pretty = go 0
+    where
+      go d app@(App _ _) = pIf (d>11) $
+        case toNonEmptyOf applicants app of
+          f:|xs -> vsep $ go 11 f : (indent 2 . go 12 <$> xs)
+      go d (IfThenElse c t f) = pIf (d>0) $ vsep
+        [ "if" <+> go 0 c
+        , indent 2 $ "then" <+> go 0 t
+        , indent 2 $ "else" <+> go 0 f
+        ]
+      go d (Lam x m) = pIf (d>0) . vsep $
+        [ "λ" <> pretty x <+> "->"
+        , indent 2 $ go 0 m
+        ]
+      go d (Var x) = pretty x
+      go d (Prim p) = pIf (d>11) $ pretty p
+      go d (IntVal x) = pretty x

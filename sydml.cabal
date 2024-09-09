@@ -147,7 +147,9 @@ library presydml
 
   default-language: GHC2021
   build-depends:
-                  base                  ^>=4.19.1.0
+                    base                  ^>=4.19.1.0
+                , aeson
+                , bytestring
                 , containers
                 , effectful
                 , generic-lens          ^>=2.2.0.0
@@ -160,6 +162,7 @@ library presydml
                 , prettyprinter
                 , qbe
                 , rock                  >=0.3.1.0   && <0.4.0.0.0
+                , semigroupoids
                 , text                  >=2.0       && <2.2
                 , text-short
                 , transformers
@@ -181,6 +184,7 @@ executable presydc
                 , pretty-simple
                 , prettyprinter
                 , process
+                , aeson
                 , qbe
                 , rock           >=0.3.1.0   && <0.4.0.0.0
                 , text           >=2.0       && <2.2

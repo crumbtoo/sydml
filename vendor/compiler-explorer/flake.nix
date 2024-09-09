@@ -69,6 +69,9 @@
             node2nix
             racket
           ];
+          nativeBuildInputs = [
+            typescript
+          ];
         };
       });
 }

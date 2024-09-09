@@ -244,8 +244,8 @@ anfTerm = flip go (pure . Val)
       m' <- go m (pure . Val)
       LetLam r (List1.singleton x) m' <$> k (Var r)
 
--- --------------------------------------------------------------------------------
--- -- Closure-conversion
+--------------------------------------------------------------------------------
+-- Closure-conversion
 
 toHashSetOf :: Hashable a => Getting (HS.HashSet a) s a -> s -> HS.HashSet a
 toHashSetOf l s = getConst (l (Const . HS.singleton) s)

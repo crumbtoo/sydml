@@ -177,8 +177,10 @@ DEADLINE: <2024-09-03 Tue>
   #+end_src
 **** DONE Define Milestone 2.
 *** DONE 1 Research Toys [7/7]
-CLOSED: [2024-09-08 Sun 23:17]
 :LOGBOOK:
+CLOCK: [2024-09-10 Tue 16:02]
+CLOCK: [2024-09-10 Tue 14:50]--[2024-09-10 Tue 16:02] =>  1:12
+CLOCK: [2024-09-10 Tue 10:20]--[2024-09-10 Tue 10:45] =>  0:25
 CLOCK: [2024-09-08 Sun 18:42]--[2024-09-08 Sun 20:51] =>  2:09
 CLOCK: [2024-09-08 Sun 17:12]--[2024-09-08 Sun 18:02] =>  0:50
 CLOCK: [2024-09-08 Sun 12:03]--[2024-09-08 Sun 16:35] =>  4:32
@@ -295,7 +297,7 @@ $ nix-shell -p qbe gcc
 **** DONE Demo
 CLOSED: [2024-09-08 Sun 23:17]
 - Maybe using [[https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/AddingACompiler.md][godbolt]]?
-*** TODO 2 Layer 1 [1/5]
+*** TODO 2 Layer 1 [1/6]
 :LOGBOOK:
 CLOCK: [2024-09-10 Tue 02:01]--[2024-09-10 Tue 02:23] =>  0:22
 CLOCK: [2024-09-09 Mon 12:40]--[2024-09-09 Mon 14:55] =>  2:15
@@ -306,6 +308,7 @@ functions between them, and tests for those functions.
 CLOSED: [2024-09-10 Tue 02:17]
 ***** NO Side effects?
 CLOSED: [2024-09-10 Tue 02:16]
+Decided against, primarily due to top-level side-effects.
 ****** Impure
 ******* Pros
 - Rely less on optimisations — use =ref= types.
@@ -347,6 +350,7 @@ We can postpone this thought.
 ***** TODO =-ddump-hoist=
 ***** TODO =-ddump-qbe=
 **** TODO Tests
+**** TODO Record demo
 ** Other
 :LOGBOOK:
 CLOCK: [2024-09-07 Sat 11:02]--[2024-09-07 Sat 12:17] =>  1:15
