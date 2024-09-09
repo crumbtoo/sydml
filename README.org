@@ -59,6 +59,10 @@ following:
 - Add support for allocation instructions. This patch is the work of [[https://todo.sr.ht/~fgaz/qbe-hs/1][Ellis
   Kesterton]], whose merge request to =qbe-hs= has been idle upstream for over a
   year.
+*** =compiler-explorer=
+A tool for viewing compiler output and IRS. My patches include:
+- Add a Nix flake.
+- Add support for presydml.
 ** =doc=
 Documentation. Currently, this solely serves as a home for the rendered HTML of the README.
 ** =src=
@@ -89,28 +93,28 @@ Houses Sydc's parser.
 | cc              | Machine           |
 * Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
-#+CAPTION: Clock summary at [2024-09-08 Sun 10:46]
-| Headline                          | Time    |          |         |
-|-----------------------------------+---------+----------+---------|
-| *Total time*                        | *2d 0:52* |          |         |
-|-----------------------------------+---------+----------+---------|
-| Progress                          | 2d 0:52 |          |         |
-| \_  Milestones                    |         | 1d 14:01 |         |
-| \_    0 Preemptive Planning [6/6] |         |          |    5:29 |
-| \_    1 Research Toys [6/7]       |         |          | 1d 8:32 |
-| \_  Other                         |         |    10:51 |         |
-| \_    Nix setup                   |         |          |    7:26 |
-| \_    Documentation               |         |          |    1:44 |
-| \_    GitHub Pages action         |         |          |    0:26 |
+#+CAPTION: Clock summary at [2024-09-08 Sun 23:18]
+| Headline                          | Time    |          |          |
+|-----------------------------------+---------+----------+----------|
+| *Total time*                        | *2d 9:25* |          |          |
+|-----------------------------------+---------+----------+----------|
+| Progress                          | 2d 9:25 |          |          |
+| \_  Milestones                    |         | 1d 22:34 |          |
+| \_    0 Preemptive Planning [6/6] |         |          |     5:29 |
+| \_    1 Research Toys [7/7]       |         |          | 1d 17:05 |
+| \_  Other                         |         |    10:51 |          |
+| \_    Nix setup                   |         |          |     7:26 |
+| \_    Documentation               |         |          |     1:44 |
+| \_    GitHub Pages action         |         |          |     0:26 |
 #+END:
 
 ** Milestones
-| *Milestone*        | Parser | Elab | Type-checker | Closure-conv. | Hoist | ->ANF | ->SSA | ->QBE |
-|------------------+--------+------+--------------+---------------+-------+-------+-------+-------|
-| Empty module     |        |      |              |               |       |       |       |       |
-| Int literal decl |        |      |              |               |       |       |       |       |
-| The identity fn  |        |      |              |               |       |       |       |       |
-|------------------+--------+------+--------------+---------------+-------+-------+-------+-------|
+| *Milestone*        | Parser | Elab | Type-checker | ->ANF | Closure-conv. | Hoist | ->QBE |
+|------------------+--------+------+--------------+-------+---------------+-------+-------|
+| Empty module     |        |      |              |       |               |       |       |
+| Int literal decl |        |      |              |       |               |       |       |
+| The identity fn  |        |      |              |       |               |       |       |
+|------------------+--------+------+--------------+-------+---------------+-------+-------|
 
 *** DONE 0 Preemptive Planning [6/6]
 CLOSED: [2024-09-06 Fri 20:42] SCHEDULED: <2024-08-27 Tue>
@@ -145,8 +149,10 @@ DEADLINE: <2024-09-03 Tue>
 +   ...
   #+end_src
 **** DONE Define Milestone 2.
-*** TODO 1 Research Toys [6/7]
+*** DONE 1 Research Toys [7/7]
+CLOSED: [2024-09-08 Sun 23:17]
 :LOGBOOK:
+CLOCK: [2024-09-08 Sun 18:42]--[2024-09-08 Sun 20:51] =>  2:09
 CLOCK: [2024-09-08 Sun 17:12]--[2024-09-08 Sun 18:02] =>  0:50
 CLOCK: [2024-09-08 Sun 12:03]--[2024-09-08 Sun 16:35] =>  4:32
 CLOCK: [2024-09-08 Sun 10:57]--[2024-09-08 Sun 11:59] =>  1:02
@@ -259,8 +265,38 @@ $ nix-shell -p qbe gcc
 [nix-shell]$ ./t
 1
   #+end_src
-**** STRT Demo
+**** DONE Demo
+CLOSED: [2024-09-08 Sun 23:17]
 - Maybe using [[https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/AddingACompiler.md][godbolt]]?
+*** TODO 2 Layer 1 [0/4]
+Round three of planning. Define the core data structures, signatures for
+functions between them, and tests for those functions.
+**** TODO Core data structures [0/9]
+***** TODO =Syd= monad
+***** TODO Error effect and ADT
+***** TODO =Located=
+***** TODO Surface AST
+***** TODO Core AST
+***** TODO ANF AST
+***** TODO Closure-converted AST
+***** TODO Hoisted AST
+***** TODO CodeGen record à la [[https://github.com/idris-lang/Idris2/blob/5459e1726582c7326c3846bd98dfaeb9ac25cdfc/src/Compiler/Common.idr#L38][Idris]]
+**** TODO Pass signatures [0/7]
+***** TODO Parse
+***** TODO Elaborate
+***** TODO TypeCheck
+***** TODO ClosureConvert
+***** TODO Hoist
+***** TODO ToQBE
+**** TODO Debug flags [0/7]
+***** TODO =-ddump-ast=
+***** TODO =-ddump-core=
+***** TODO =-ddump-type-check=
+***** TODO =-ddump-anf=
+***** TODO =-ddump-closure-convert=
+***** TODO =-ddump-hoist=
+***** TODO =-ddump-qbe=
+**** TODO Tests
 ** Other
 :LOGBOOK:
 CLOCK: [2024-09-07 Sat 11:02]--[2024-09-07 Sat 12:17] =>  1:15
