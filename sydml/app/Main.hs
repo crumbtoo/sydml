@@ -8,8 +8,6 @@ import Command.Batch qualified as Batch
 import System.Environment (getArgs)
 --------------------------------------------------------------------------------
 
-data Command = CmdBatch SydBatchOptions
-
 -- parser :: Parser SydOptions
 -- parser = subparser . mconcat $
 --   [ batchCommand

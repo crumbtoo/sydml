@@ -8,6 +8,12 @@ const PREC =
 module.exports = grammar
   ({ name: "sydml"
    , rules:
-     { source_file: $ => "hello worms"
+     { source_file: $ => "hello"
      }
+   // , extras: $ =>
+     // [ /\p{Zs}/
+     // , /\n/
+     // , /\r/
+     // , $.comment
+     // ]
    })

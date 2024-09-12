@@ -1,7 +1,7 @@
 module Sydc.Monad
-  ( SydT(..), SydIO, Syd
-  , unSydT
-  , evalSyd
+  ( Syd
+  , unSyd
+  , evalSydE
   , pattern Syd
   , addError
   -- , evalSyd
@@ -17,25 +17,33 @@ import Sydc.Error
 import Control.Monad.Except
 import Control.Monad.Writer.CPS
 import SydPrelude
+import Sydc.Types
+import Control.Monad.Reader
+import Data.Sequence (Seq)
 --------------------------------------------------------------------------------
 
-newtype SydT m a = SydT { unSydT :: WriterT (List SydError) m a }
-  deriving (Functor, Applicative, Monad)
-  deriving (MonadTrans, MonadIO)
+newtype SydE es a = Syd {
+    unSydE :: ReaderT SydOptions (WriterT (Seq SydError) (Eff es)) a
+  }
 
-addError :: Monad m => SydError -> SydT m ()
-addError err = SydT (tell [err])
+addError :: forall es. SydError -> SydE es ()
+addError err = Syd (tell . pure $ err)
 
-unSydT (SydT x) = x
+unSydE (Syd x) = x
 
-type SydIO = SydT IO
-type Syd = SydT Identity
+type Syd = SydE '[]
 
-pattern Syd :: Writer (List SydError) a -> Syd a
-pattern Syd w = (SydT w)
+unSyd :: Syd a -> (a, List SydError)
+unSyd (Syd x) = _
 
-evalSyd :: Syd a -> (List SydError, a)
-evalSyd (Syd w) = swap $ runWriter w
+-- type SydIO = SydT IO
+-- type Syd = SydT Identity
+
+-- pattern Syd :: Writer (List SydError) a -> Syd a
+-- pattern Syd w = (SydT w)
+
+evalSydE :: SydE es a -> Eff es (a, _)
+evalSydE (Syd w) = _
 
 -- evalSyd :: Syd a -> Either SydError a
 -- evalSyd syd = runExcept (unSydT syd)

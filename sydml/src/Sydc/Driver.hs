@@ -1,5 +1,6 @@
 module Sydc.Driver
   ( rules
+  , runSydTask
   )
   where
 --------------------------------------------------------------------------------
@@ -14,14 +15,26 @@ import Rock
 import Control.Monad.Writer.CPS     (runWriter)
 import Sydc.Monad
 import SydPrelude
+import Sydc (SydOptions)
+import Language.SydML.Parse (parseSydML)
+import Data.IORef
+import Control.Concurrent
+import Data.HashMap.Strict (HashMap)
+import Control.Monad
+import qualified Data.Dependent.HashMap as DHashMap
+import Data.Functor.Const
+import Data.Dependent.HashMap (DHashMap)
 --------------------------------------------------------------------------------
 
-fromSyd :: Syd a -> Task Query (a, List SydError)
-fromSyd = pure . runWriter . unSydT
-
-rules :: GenRules (Writer (List SydError) Query) Query
-rules (Writer query) = case query of
-    FileText fp -> input $ liftIO (Lazy.readFile fp)
+rules :: SydOptions -> GenRules (Writer (List SydError) Query) Query
+rules opts (Writer query) = case query of
+    FileText fp -> input . liftIO . T.readFile $ fp
+    ParsedFile fp -> do
+      s <- fetch (FileText fp)
+      liftIO (parseSydML fp s) >>= \case
+        Right m -> input $ pure m
+        _ -> _
+    ModuleFile nm -> todo "look for filepath of module on opts.sourecDirs"
     -- SystemF_ParsedText s -> _
     -- SystemF_ParsedFile fp -> do
     --     s <- fetch (FileText fp)
@@ -40,3 +53,19 @@ rules (Writer query) = case query of
 -- rules (FileText fp) = liftIO (T.readFile fp)
 -- rules (SystemF_ParsedText s) = pure $ SystemF.parse s
 
+runSydTask :: SydOptions -> Task Query a -> IO a
+runSydTask opts task = do
+  startedVar <- newIORef mempty
+  errorsVar <- newIORef (mempty :: DHashMap Query (Const (List SydError)))
+  depsVar <- newIORef (mempty :: HashMap ThreadId ThreadId)
+  let writeErrors :: Query a -> List SydError -> Task Query ()
+      writeErrors q errs =
+        unless (null errs) $
+          liftIO . atomicModifyIORef' errorsVar $
+            (,()) . DHashMap.insert q (Const errs)
+  let rules' :: Rules Query
+      rules' =
+        memoiseWithCycleDetection startedVar depsVar $
+          writer writeErrors $
+            rules opts
+  Rock.runTask rules' task

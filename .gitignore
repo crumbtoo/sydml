@@ -27,8 +27,11 @@ cabal.project.local~
 .HTF/
 .ghc.environment.*
 
-tree-sitter-sydml/*
-!tree-sitter-sydml/grammar.js
-!tree-sitter-sydml/test
+# tree-sitter-sydml/*
+# !tree-sitter-sydml/grammar.js
+# !tree-sitter-sydml/test
+# !tree-sitter-sydml/tree-sitter-sydml.cabal
 
 result/
+
+TAGS

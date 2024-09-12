@@ -16,19 +16,19 @@
 #define PRODUCTION_ID_COUNT 1
 
 enum ts_symbol_identifiers {
-  anon_sym_helloworms = 1,
+  anon_sym_hello = 1,
   sym_source_file = 2,
 };
 
 static const char * const ts_symbol_names[] = {
   [ts_builtin_sym_end] = "end",
-  [anon_sym_helloworms] = "hello worms",
+  [anon_sym_hello] = "hello",
   [sym_source_file] = "source_file",
 };
 
 static const TSSymbol ts_symbol_map[] = {
   [ts_builtin_sym_end] = ts_builtin_sym_end,
-  [anon_sym_helloworms] = anon_sym_helloworms,
+  [anon_sym_hello] = anon_sym_hello,
   [sym_source_file] = sym_source_file,
 };
 
@@ -37,7 +37,7 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = false,
     .named = true,
   },
-  [anon_sym_helloworms] = {
+  [anon_sym_hello] = {
     .visible = true,
     .named = false,
   },
@@ -67,46 +67,28 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
   eof = lexer->eof(lexer);
   switch (state) {
     case 0:
-      if (eof) ADVANCE(11);
-      if (lookahead == 'h') ADVANCE(2);
+      if (eof) ADVANCE(5);
+      if (lookahead == 'h') ADVANCE(1);
       if (('\t' <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') SKIP(0);
       END_STATE();
     case 1:
-      if (lookahead == ' ') ADVANCE(10);
+      if (lookahead == 'e') ADVANCE(3);
       END_STATE();
     case 2:
-      if (lookahead == 'e') ADVANCE(4);
+      if (lookahead == 'l') ADVANCE(4);
       END_STATE();
     case 3:
-      if (lookahead == 'l') ADVANCE(6);
+      if (lookahead == 'l') ADVANCE(2);
       END_STATE();
     case 4:
-      if (lookahead == 'l') ADVANCE(3);
+      if (lookahead == 'o') ADVANCE(6);
       END_STATE();
     case 5:
-      if (lookahead == 'm') ADVANCE(9);
-      END_STATE();
-    case 6:
-      if (lookahead == 'o') ADVANCE(1);
-      END_STATE();
-    case 7:
-      if (lookahead == 'o') ADVANCE(8);
-      END_STATE();
-    case 8:
-      if (lookahead == 'r') ADVANCE(5);
-      END_STATE();
-    case 9:
-      if (lookahead == 's') ADVANCE(12);
-      END_STATE();
-    case 10:
-      if (lookahead == 'w') ADVANCE(7);
-      END_STATE();
-    case 11:
       ACCEPT_TOKEN(ts_builtin_sym_end);
       END_STATE();
-    case 12:
-      ACCEPT_TOKEN(anon_sym_helloworms);
+    case 6:
+      ACCEPT_TOKEN(anon_sym_hello);
       END_STATE();
     default:
       return false;
@@ -123,11 +105,11 @@ static const TSLexMode ts_lex_modes[STATE_COUNT] = {
 static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
   [0] = {
     [ts_builtin_sym_end] = ACTIONS(1),
-    [anon_sym_helloworms] = ACTIONS(1),
+    [anon_sym_hello] = ACTIONS(1),
   },
   [1] = {
     [sym_source_file] = STATE(3),
-    [anon_sym_helloworms] = ACTIONS(3),
+    [anon_sym_hello] = ACTIONS(3),
   },
 };
 

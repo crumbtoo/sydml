@@ -178,7 +178,6 @@ DEADLINE: <2024-09-03 Tue>
 **** DONE Define Milestone 2.
 *** DONE 1 Research Toys [7/7]
 :LOGBOOK:
-CLOCK: [2024-09-10 Tue 16:02]
 CLOCK: [2024-09-10 Tue 14:50]--[2024-09-10 Tue 16:02] =>  1:12
 CLOCK: [2024-09-10 Tue 10:20]--[2024-09-10 Tue 10:45] =>  0:25
 CLOCK: [2024-09-08 Sun 18:42]--[2024-09-08 Sun 20:51] =>  2:09
@@ -297,12 +296,24 @@ $ nix-shell -p qbe gcc
 **** DONE Demo
 CLOSED: [2024-09-08 Sun 23:17]
 - Maybe using [[https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/AddingACompiler.md][godbolt]]?
-*** TODO 2 Layer 1 [1/6]
+*** TODO 2 Layer 1 [5/7]
 :LOGBOOK:
+CLOCK: [2024-09-14 Sat 15:50]
+CLOCK: [2024-09-14 Sat 13:50]--[2024-09-14 Sat 14:34] =>  0:44
+CLOCK: [2024-09-14 Sat 10:39]--[2024-09-14 Sat 13:46] =>  3:07
+CLOCK: [2024-09-13 Fri 18:07]--[2024-09-13 Fri 18:51] =>  0:44
+CLOCK: [2024-09-13 Fri 14:49]--[2024-09-13 Fri 15:34] =>  0:45
+CLOCK: [2024-09-13 Fri 12:49]--[2024-09-13 Fri 14:36] =>  1:47
+CLOCK: [2024-09-12 Thu 12:54]--[2024-09-12 Thu 13:52] =>  0:58
+CLOCK: [2024-09-12 Thu 00:22]--[2024-09-12 Thu 02:24] =>  2:02
+CLOCK: [2024-09-11 Wed 17:24]--[2024-09-11 Wed 18:04] =>  0:40
+CLOCK: [2024-09-11 Wed 14:49]--[2024-09-11 Wed 15:48] =>  0:59
+CLOCK: [2024-09-11 Wed 10:18]--[2024-09-11 Wed 10:47] =>  0:29
+CLOCK: [2024-09-11 Wed 09:11]--[2024-09-11 Wed 09:42] =>  0:31
 CLOCK: [2024-09-10 Tue 02:01]--[2024-09-10 Tue 02:23] =>  0:22
 CLOCK: [2024-09-09 Mon 12:40]--[2024-09-09 Mon 14:55] =>  2:15
 :END:
-Round three of planning. Define the core data structures, signatures for
+Round   three of planning. Define the core data structures, signatures for
 functions between them, and tests for those functions.
 **** DONE [#A] Big decisions!
 CLOSED: [2024-09-10 Tue 02:17]
@@ -324,32 +335,62 @@ Decided against, primarily due to top-level side-effects.
 ***** OKAY ML Modules?
 CLOSED: [2024-09-10 Tue 02:01]
 We can postpone this thought.
-**** TODO Core data structures [0/9]
-***** TODO =Syd= monad
-***** TODO Error effect and ADT
-***** TODO =Located=
-***** TODO Surface AST
-***** TODO Core AST
-***** TODO ANF AST
-***** TODO Closure-converted AST
-***** TODO Hoisted AST
-***** TODO CodeGen record à la [[https://github.com/idris-lang/Idris2/blob/5459e1726582c7326c3846bd98dfaeb9ac25cdfc/src/Compiler/Common.idr#L38][Idris]]
-**** TODO Pass signatures [0/7]
-***** TODO Parse
-***** TODO Elaborate
-***** TODO TypeCheck
-***** TODO ClosureConvert
-***** TODO Hoist
-***** TODO ToQBE
-**** TODO Debug flags [0/7]
-***** TODO =-ddump-ast=
-***** TODO =-ddump-core=
-***** TODO =-ddump-type-check=
-***** TODO =-ddump-anf=
-***** TODO =-ddump-closure-convert=
-***** TODO =-ddump-hoist=
-***** TODO =-ddump-qbe=
-**** TODO Tests
+**** DONE Core data structures [9/9]
+CLOSED: [2024-09-14 Sat 13:13]
+***** DONE =Syd= monad
+CLOSED: [2024-09-11 Wed 17:36]
+***** DONE Error effect and ADT
+CLOSED: [2024-09-11 Wed 17:37]
+***** DONE =Located=
+CLOSED: [2024-09-11 Wed 17:37]
+***** DONE Surface AST
+CLOSED: [2024-09-14 Sat 12:24]
+***** DONE Core AST
+CLOSED: [2024-09-14 Sat 12:24]
+***** DONE ANF AST
+CLOSED: [2024-09-14 Sat 12:24]
+***** KILL Closure-converted AST
+CLOSED: [2024-09-14 Sat 13:13]
+***** KILL Hoisted AST
+CLOSED: [2024-09-14 Sat 13:13]
+***** KILL CodeGen record à la [[https://github.com/idris-lang/Idris2/blob/5459e1726582c7326c3846bd98dfaeb9ac25cdfc/src/Compiler/Common.idr#L38][Idris]]
+CLOSED: [2024-09-14 Sat 13:13]
+**** DONE Pass signatures [6/6]
+CLOSED: [2024-09-14 Sat 13:12]
+***** DONE Parse
+CLOSED: [2024-09-14 Sat 12:34]
+***** DONE Elaborate
+CLOSED: [2024-09-14 Sat 12:46]
+***** DONE TypeCheck
+CLOSED: [2024-09-14 Sat 13:10]
+***** DONE ClosureConvert
+CLOSED: [2024-09-14 Sat 13:11]
+***** DONE Hoist
+CLOSED: [2024-09-14 Sat 13:12]
+***** DONE ToQBE
+CLOSED: [2024-09-14 Sat 13:12]
+**** KILL Debug flags [0/7]
+CLOSED: [2024-09-14 Sat 12:44]
+Pushed back. These can be implemented once the ASTs in question are more fleshed
+out.
+***** KILL =-ddump-ast=
+CLOSED: [2024-09-14 Sat 12:43]
+***** KILL =-ddump-core=
+CLOSED: [2024-09-14 Sat 12:43]
+***** KILL =-ddump-type-check=
+CLOSED: [2024-09-14 Sat 12:43]
+***** KILL =-ddump-anf=
+CLOSED: [2024-09-14 Sat 12:43]
+***** KILL =-ddump-closure-convert=
+CLOSED: [2024-09-14 Sat 12:43]
+***** KILL =-ddump-hoist=
+CLOSED: [2024-09-14 Sat 12:43]
+***** KILL =-ddump-qbe=
+CLOSED: [2024-09-14 Sat 12:43]
+**** DONE Tests
+CLOSED: [2024-09-14 Sat 13:46]
+**** TODO CI/CD
+- w/ [[https://omnix.page/om/ci.html][omnix]]
 **** TODO Record demo
 ** Other
 :LOGBOOK:
@@ -380,6 +421,15 @@ CLOCK: [2024-09-05 Thu 15:02]--[2024-09-05 Thu 15:28] =>  0:26
 - the latter is a rewrite of the former.
 - the leading example of demand-driven compilers.
 - implemented in glorious haskell.
+*** [[https://github.com/luc-tielen/eclair-lang][eclair]]
+- implements datalog.
+- targets llvm.
+- demand-driven, using rock.
+- implemented in glorious haskell.
+*** [[https://hackage.haskell.org/package/hnix][hnix]]
+- an interpreter for the nix language.
+- noted only for its use of recursion schemes.
+- implemented in glorious haskell.
 *** [[https://github.com/Kleidukos/boreal][Hécate — boreal]]
 - [[https://github.com/Kleidukos/boreal/tree/main/boreal-daemon/tree-sitter-boreal][parses with tree-sitter]].
 - [[https://github.com/Kleidukos/boreal/blob/main/boreal-daemon/compiler/Boreal/IR/ANFCore/Types.hs][ANF-based IR]].
@@ -394,12 +444,12 @@ CLOCK: [2024-09-05 Thu 15:02]--[2024-09-05 Thu 15:28] =>  0:26
 - written by a moron. 💔
 - implemented in glorious haskell.
 *** [[https://github.com/purescript/purescript][purescript]]
-- haskell-like.
+- haskell-like source language.
 - implemented in glorious haskell.
 *** [[http://mlton.org/CompilerOverview][MLton]] :SML:
 - many different IRs.
 - whole-program optimising.
-- [[http://mlton.org/CompilerOverview][pretty decent documentation]].
+- [[http://mlton.org/CompilerOverview][pretty high-level decent documentation]].
 - implemented in SML.
 *** [[https://github.com/kfl/mosml][Moscow ML]] :SML:
 *** [[https://github.com/rossberg/hamlet][HaMLet]] :SML:
@@ -426,12 +476,14 @@ CLOCK: [2024-09-05 Thu 15:02]--[2024-09-05 Thu 15:28] =>  0:26
 ** IRs — SSA, ANF, and CPS
 *** SSA vs ANF: [[Https://github.com/jacobstanley/ssa-anf][source code]], [[http://code.ouroborus.net/fp-syd/past/2015/2015-07-Stanley-SSAvsANF.pdf][slides]].
 *** [[https://www.reddit.com/r/Compilers/s/rBZDFjXHwl][Reddit discussion about ANF between Hécate and Colin]]
-*** [[https://matt.might.net/articles/a-normalization/][Matt Might — A-Normalization: Why and How]]
+*** [X] [[https://matt.might.net/articles/a-normalization/][Matt Might — A-Normalization: Why and How]]
+CLOSED: [2024-09-12 Thu 04:21]
 *** [[https://www.cs.indiana.edu/~achauhan/Teaching/B629/2006-Fall/CourseMaterial/1998-notices-appel-ssa_fnprog.pdf][SSA is Functional Programming ]]
-*** [[https://news.ycombinator.com/item?id=7150095][How to compile with continuations ]]
+*** [X] [[https://matt.might.net/articles/cps-conversion/][How to compile with continuations]]
+CLOSED: [2024-09-12 Thu 04:21]
 *** [[ftp://ftp.cs.princeton.edu/techreports/1988/183.pdf][Appel — Continuation Passing, Closure Passing Style]]
 *** [[http://manticore.cs.uchicago.edu/papers/ml16-cwc-llvm.pdf][Compiling with Continuations and LLVM ]]
-*** [#A] [[https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/compiling-without-continuations.pdf][Compiling without continuations]]
+*** [-] [#A] [[https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/compiling-without-continuations.pdf][Compiling without continuations]]
 Describes ANF and join points as used in GHC.
 - [[https://youtu.be/LMTr8yw0Gk4][talk]]
 - Formalises join points with typing, operational semantics, and syntax.
@@ -454,11 +506,14 @@ should focus on recursive functions. Explains lots of optimizations with a
 lambda calculus IR
 *** [[https://pdfs.semanticscholar.org/55bc/5ceee768223f4b233de568a7181297eb2c4d.pdf][Paper summarizing the Tarditi thesis]]
 *** [[ftp://mumble.net/~kelsey/papers/cps-ssa.ps.gz][A Correspondence between CPS and SSA]]
-*** [[https://compiler.club/compiling-lambda-calculus/][Colin — Compiling the λ-calculus]]
+*** [X] [[https://compiler.club/compiling-lambda-calculus/][Colin — Compiling the λ-calculus]]
+CLOSED: [2024-09-12 Thu 04:21]
 ** Compiler Architecture
 *** [[https://rustc-dev-guide.rust-lang.org/query.html][rustc demand-driven-compilation]]
-*** [[https://ollef.github.io/blog/posts/query-based-compilers.html)][Query-based compiler architectures]]
-*** [[https://rust-analyzer.github.io/blog/2020/07/20/three-architectures-for-responsive-ide.html][Three Architectures for a Responsive IDE]]
+*** [X] [[https://ollef.github.io/blog/posts/query-based-compilers.html][Query-based compiler architectures]]
+CLOSED: [2024-09-12 Thu 04:20]
+*** [X] [[https://rust-analyzer.github.io/blog/2020/07/20/three-architectures-for-responsive-ide.html][Three Architectures for a Responsive IDE]]
+CLOSED: [2024-09-12 Thu 04:20]
 *** [[https://www2.eecs.berkeley.edu/Pubs/TechRpts/1997/CSD-97-946.pdf][Practical Algorithms for Incremental Software Development Environments]]
 *** [[https://youtu.be/3D-ngGIP4fQ][Query-based compiler architectures]] :TALK:
 *** [[https://www.youtube.com/watch?v=DSuX-LIAU-I][A journey through incremental computation]] :TALK:
@@ -468,12 +523,15 @@ lambda calculus IR
 *** [[https://www.youtube.com/watch?v=wSdV1M7n4gQ)][Anders Hejlsberg on Modern Compiler Construction]] :TALK:
 *** [[https://www.youtube.com/watch?v=N6b44kMS6OM))][Responsive compilers]] :TALK:
 ** Miscellaneous
-*** [#A] [[https://borretti.me/article/lessons-writing-compiler#err][Lessons from Writing a Compiler]]
+*** [-] [#A] [[https://borretti.me/article/lessons-writing-compiler][Lessons from Writing a Compiler]]
+CLOSED: [2024-09-12 Thu 04:19]
 Covers a lot of topics that textbooks miss.
-*** [[https://matt.might.net/articles/closure-conversion/][Matt Might — Closure Conversion]]
+*** [X] [[https://matt.might.net/articles/closure-conversion/][Matt Might — Closure Conversion]]
+CLOSED: [2024-09-12 Thu 04:19]
 *** [[https://www.cse.chalmers.se/~ulfn/papers/thesis.pdf][Towards a practical programming language based on dependent type theory]]
 *** [[https://www.stephendiehl.com/llvm/][Implementing a JIT Compiled Language with Haskell and LLVM]]
-*** [[https://www.cambridge.org/core/services/aop-cambridge-core/content/view/097CE52C750E69BD16B78C318754C7A4/S0956796820000088a.pdf/div-class-title-build-systems-a-la-carte-theory-and-practice-div.pdf][Build systems à la carte: Theory and Practice]]
+*** [X] [[https://www.cambridge.org/core/services/aop-cambridge-core/content/view/097CE52C750E69BD16B78C318754C7A4/S0956796820000088a.pdf/div-class-title-build-systems-a-la-carte-theory-and-practice-div.pdf][Build systems à la carte: Theory and Practice]]
+CLOSED: [2024-09-12 Thu 04:19]
 *** [[https://www.reddit.com/r/ProgrammingLanguages/comments/8ggx2n/comment/dybo3rl/][A Reddit thread about functional IRs]]
 Nearly all of their linked resources are included in this document.
 *** [#A] [[https://simonmar.github.io/bib/papers/eval-apply.pdf][Making a Fast Curry: Push/Enter vs. Eval/Apply for Higher-order Languages]]

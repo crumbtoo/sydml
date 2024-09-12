@@ -1,5 +1,6 @@
 packages:
   ./*.cabal
+  ./tree-sitter-sydml/*.cabal
   ./vendor/*/*.cabal
 
 source-repository-package

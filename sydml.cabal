@@ -32,8 +32,8 @@ common common
     MultiWayIf
     NoFieldSelectors
     OverloadedLabels
-    OverloadedStrings
     OverloadedRecordDot
+    OverloadedStrings
     PartialTypeSignatures
     PatternSynonyms
     StandaloneDeriving
@@ -53,15 +53,31 @@ library
   exposed-modules:
     Data.Located
     Data.PrettyP
+    Effect.Unique
+    Language.ANF.ClosureConvert
+    Language.ANF.Hoist
+    Language.ANF.LowerToQBE
+    Language.ANF.Syntax
+    Language.Core.LowerToANF
+    Language.Core.Syntax
+    Language.Core.Typecheck
+    Language.Shared
+    Language.SydML.LowerToCore
+    Language.SydML.Parse
+    Language.SydML.Syntax
+    Language.SydML.Typecheck
     Sydc
+    Sydc.Command.Batch
     Sydc.Driver
     Sydc.Error
     Sydc.Monad
+    Sydc.Name
     Sydc.Query
     Sydc.Types
     SydPrelude
 
   default-language: GHC2021
+
   -- include-dirs:     tree-sitter-sydml/src
   -- includes:         tree_sitter/parser.h
   -- install-includes: tree_sitter/parser.h
@@ -72,6 +88,7 @@ library
     , comonad
     , containers
     , data-fix
+    , dependent-hashmap
     , dependent-sum-template     ^>=0.2.0.1
     , deriving-compat
     , effectful
@@ -97,6 +114,7 @@ library
     , these
     , transformers
     , tree-sitter
+    , tree-sitter-sydml
     , unordered-containers
     , witherable
 
@@ -147,26 +165,26 @@ library presydml
 
   default-language: GHC2021
   build-depends:
-                    base                  ^>=4.19.1.0
-                , aeson
-                , bytestring
-                , containers
-                , effectful
-                , generic-lens          ^>=2.2.0.0
-                , hashable
-                , lens                  >=5.3.0     && <6.0.0
-                , megaparsec
-                , mtl
-                , parser-combinators
-                , pretty-simple
-                , prettyprinter
-                , qbe
-                , rock                  >=0.3.1.0   && <0.4.0.0.0
-                , semigroupoids
-                , text                  >=2.0       && <2.2
-                , text-short
-                , transformers
-                , unordered-containers
+    , aeson
+    , base                  ^>=4.19.1.0
+    , bytestring
+    , containers
+    , effectful
+    , generic-lens          ^>=2.2.0.0
+    , hashable
+    , lens                  >=5.3.0     && <6.0.0
+    , megaparsec
+    , mtl
+    , parser-combinators
+    , pretty-simple
+    , prettyprinter
+    , qbe
+    , rock                  >=0.3.1.0   && <0.4.0.0.0
+    , semigroupoids
+    , text                  >=2.0       && <2.2
+    , text-short
+    , transformers
+    , unordered-containers
 
   hs-source-dirs:   presydml/src
 
@@ -175,17 +193,17 @@ executable presydc
   main-is:          Main.hs
   default-language: GHC2021
   build-depends:
-                  base           ^>=4.19.1.0
-                , effectful
-                , generic-lens   ^>=2.2.0.0
-                , lens           >=5.3.0     && <6.0.0
-                , optparse-applicative
-                , presydml
-                , pretty-simple
-                , prettyprinter
-                , process
-                , aeson
-                , qbe
-                , rock           >=0.3.1.0   && <0.4.0.0.0
-                , text           >=2.0       && <2.2
-                , unordered-containers
+    , aeson
+    , base                  ^>=4.19.1.0
+    , effectful
+    , generic-lens          ^>=2.2.0.0
+    , lens                  >=5.3.0     && <6.0.0
+    , optparse-applicative
+    , presydml
+    , pretty-simple
+    , prettyprinter
+    , process
+    , qbe
+    , rock                  >=0.3.1.0   && <0.4.0.0.0
+    , text                  >=2.0       && <2.2
+    , unordered-containers

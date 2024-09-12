@@ -4,11 +4,12 @@ import Control.Lens
 import Data.Located
 import GHC.Generics
 import Sydc.Types
+import Sydc.Name qualified as Name
 import SydPrelude
 --------------------------------------------------------------------------------
 
--- temp definition.
-type ErrorText = Text
+data ErrorText = ErrText Text
+               deriving (Show, Generic)
 
 data ErrorKind = ParseError
                | TypeError
@@ -17,11 +18,10 @@ data ErrorKind = ParseError
                deriving (Show, Generic)
 
 data SydError = SydError
-  { modulePath :: Maybe Namespace
+  { modulePath :: Maybe Name.Module
   , kind       :: ErrorKind
   , srcSpan    :: Maybe SrcSpan
   , text       :: ErrorText
-  , sourceCtx  :: Maybe SourceCtx
   }
   deriving (Show, Generic)
 
@@ -31,7 +31,6 @@ minimalError k t = SydError
   , kind = k
   , srcSpan = Nothing
   , text = t
-  , sourceCtx = Nothing
   }
 
 adornWithSpan :: SrcSpan -> SydError -> SydError

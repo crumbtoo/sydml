@@ -7,6 +7,9 @@ module SydPrelude
   , Natural
   -- ** Lists
   , List, List1, NE.NonEmpty((:|))
+  -- * Effectful
+  , Eff
+  , (:>)
   -- * Classes
   , MonadIO(liftIO)
   , Generic
@@ -38,9 +41,11 @@ module SydPrelude
   -- * Debug
   , trace, traceShow
   , tracePretty
+  , todo
   )
   where
 --------------------------------------------------------------------------------
+import Effectful
 import Control.Lens hiding (para)
 import Data.Generics.Labels ()
 import Control.Monad.IO.Class
@@ -72,6 +77,7 @@ import Prettyprinter
 import Text.Pretty.Simple
 import Debug.Trace
 import Numeric.Natural
+import Effectful.Dispatch.Dynamic (HasCallStack)
 --------------------------------------------------------------------------------
 
 type List1 = NE.NonEmpty
@@ -84,3 +90,6 @@ infixr 9 .:
 
 tracePretty :: Show a => a -> b -> b
 tracePretty a = trace (view unpacked $ pShow a)
+
+todo :: HasCallStack => String -> a
+todo s = error $ "todo: " <> s
