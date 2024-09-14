@@ -1,6 +1,7 @@
 #+title: SydML
 #+author: Madeleine Sydney Ślaga
-#+setupfile: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
+# #+setupfile: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
+#+setupfile: org-html-themes/org/theme-bigblow-local.setup
 #+options: tags
 #+options: pri
 #+export_file_name: index.html
