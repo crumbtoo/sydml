@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    /* Module resolution */
+    "target": "esnext",
+    "module": "es2015",
+    "moduleResolution": "bundler",
+    /* Code generation */
+    "typeRoots": ["../node_modules/@types"],
+    /* https://github.com/cypress-io/cypress/issues/26203#issuecomment-1571861397 */
+    "sourceMap": false
+  }
+}

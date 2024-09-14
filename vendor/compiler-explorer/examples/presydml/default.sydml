@@ -1,0 +1,3 @@
+(\f -> (\x -> f (\v -> x x v)) (\x -> f (\v -> x x v)))
+  (\rec -> \n -> if n then 1 else int* n (rec (int- n 1)))
+  3

@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    /* Module resolution */
+    "target": "es5",
+    "rootDirs": ["./static", "./types"],
+    /* Code generation */
+    "inlineSources": true,
+    "strictPropertyInitialization": false,
+    "lib": ["dom", "es5", "dom.iterable"]
+  },
+  "exclude": [
+    "out",
+    "test",
+    "etc",
+    "examples",
+    "app.ts",
+    "compiler-args-app.ts",
+    "lib",
+    "examples",
+    "webpack.config.esm.ts",
+    "cypress"
+  ]
+}

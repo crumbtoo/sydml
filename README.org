@@ -1,0 +1,541 @@
+#+title: SydML
+#+author: Madeleine Sydney Ślaga
+#+setupfile: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
+#+options: tags
+#+options: pri
+#+export_file_name: index.html
+
+* About
+SydML is currently planned to be a functional programming language with strict
+semantics.
+
+Github renders this document very poorly, which conflicts with my style of
+organisation. See the rendered HTML [[https://crumbtoo.github.io/sydml][here]].
+* Motivation
+** Demonstrate that I've learned from last year's failures
+The entire project collapsed at the last minute, likely as a result of the
+following points.
+
+*** Very poor planning.
+A lack of thorough planning led to extreme unstability, ultimately leaving me
+with a broken compiler days before the project was due.
+
+To prevent this, I intend to /thoroughly/ architect the compiler and each pass
+beforehand, down to the individual signatures of key components. This plan would
+be sure to account for not only high-level passes, but also
+- where errors are thrown and caught,
+- how line and column information is retained,
+*** Not enough testing.
+The volatile codebase did not mesh will with my tests against internal APIs. The
+few tests that I had could not keep up with the rapidly-changing code, and often
+didn't even compile.
+
+To address this, tests will be written against a stable command-line interface,
+treating the entire compiler as a black box.
+
+- I plan on following a /Golden testing/ model.
+- For source–to-machine-code compilations, this is a straightforward check that
+  an example input matches an output file, bit-for-bit.
+- Testing other functions, such as type-checking, will require serialisation to
+  (JSON|S-expressions), which is useful feature for debugging in any case.
+- Github CI/CD.
+** New goals
+While last year's compiler was primarily language-focused, I now intend to focus
+on compiler techniques.
+*** IRs — ANF and SSA
+* Project structure
+** =sydml=
+*** =app=
+*** =src=
+*** =test=
+** =presydml=
+** =vendor=
+Vendored dependencies.
+*** =tree-sitter=
+The tree-sitter bindings for Haskell leave a lot to be desired. My patches
+include the following:
+- Add binding to =ts_node_string()=.
+- Add bindings to the "edit" API.
+*** =qbe=
+This library provides a Haskell representation of QBE's IL. Patches include the
+following:
+- Bump the version bounds of =base=, =text=, =bytestring=, and =deepseq=.
+- Add support for allocation instructions. This patch is the work of [[https://todo.sr.ht/~fgaz/qbe-hs/1][Ellis
+  Kesterton]], whose merge request to =qbe-hs= has been idle upstream for over a
+  year.
+*** =compiler-explorer=
+A tool for viewing compiler output and IRS. My patches include:
+- Add a Nix flake.
+- Add support for presydml.
+** =doc=
+Documentation. Currently, this solely serves as a home for the rendered HTML of the README.
+** =tree-sitter-sydml=
+Houses Sydc's parser.
+* Compiler overview
+| *Pass*            | *Produced IL*       |
+|-----------------+-------------------|
+| Sydc            |                   |
+|-----------------+-------------------|
+|                 | Source            |
+| Parse           | Tree-sitter AST   |
+| Reparse         | AST               |
+| Elaborate       | Core              |
+| Type-check      | Typed Core        |
+| Rename          | Typed Unique Core |
+| Closure-convert | Typed Unique Core |
+| Hoist           | Typed Unique Core |
+| LowerANF        | ANF               |
+| LowerSSA        | SSA               |
+| ToQBE           | QBE               |
+| RenderQBE       | Text              |
+|-----------------+-------------------|
+| External        |                   |
+|-----------------+-------------------|
+| qbe             | Assembly          |
+| cc              | Machine           |
+* Languages
+** The SydML language
+*** Syntax
+- We use Haskell-style layouts, meaning that one can group productions by either
+  alignment, or semicolons and braces.
+** Core
+Core is an explicitly-typed IL based on System F_ω. Internally
+#+begin_src fundamental
+e ::= x                     Variables
+   |  λx:τ. e               Term abstractions
+   |  Λx:κ. e               Type abstractions
+   |  e e                   Term applications
+   |  e @τ                  Type applications
+   |  let x = e in e        Let-bindings
+   |  letrec (x = e)* in e  Recursive let-bindings
+
+τ ::= K                     Type constructors
+   |  τ τ                   Constructor application
+   |  τ → τ                 Function types
+   |  ∀x:k. τ               Universal quantification
+
+k ::= Type                  The kind of all types
+   |  k → k                 Higher kinds
+#+end_src
+* Progress
+#+BEGIN: clocktable :scope subtree :maxlevel 3
+#+CAPTION: Clock summary at [2024-09-08 Sun 23:18]
+| Headline                          | Time    |          |          |
+|-----------------------------------+---------+----------+----------|
+| *Total time*                        | *2d 9:25* |          |          |
+|-----------------------------------+---------+----------+----------|
+| Progress                          | 2d 9:25 |          |          |
+| \_  Milestones                    |         | 1d 22:34 |          |
+| \_    0 Preemptive Planning [6/6] |         |          |     5:29 |
+| \_    1 Research Toys [7/7]       |         |          | 1d 17:05 |
+| \_  Other                         |         |    10:51 |          |
+| \_    Nix setup                   |         |          |     7:26 |
+| \_    Documentation               |         |          |     1:44 |
+| \_    GitHub Pages action         |         |          |     0:26 |
+#+END:
+
+** Milestones
+| *Milestone*          | Parser | Elab | Type-checker | ->ANF | Closure-conv. | Hoist | ->QBE |
+|--------------------+--------+------+--------------+-------+---------------+-------+-------|
+| Empty module       |        |      |              |       |               |       |       |
+| Int literal decl   |        |      |              |       |               |       |       |
+| if 1 then 2 else 3 |        |      |              |       |               |       |       |
+| The identity fn    |        |      |              |       |               |       |       |
+|--------------------+--------+------+--------------+-------+---------------+-------+-------|
+
+*** DONE 0 Preemptive Planning [6/6]
+CLOSED: [2024-09-06 Fri 20:42] SCHEDULED: <2024-08-27 Tue>
+:LOGBOOK:
+CLOCK: [2024-09-01 Sun 16:03]--[2024-09-01 Sun 16:22] =>  0:19
+CLOCK: [2024-09-01 Sun 12:32]--[2024-09-01 Sun 13:15] =>  0:43
+CLOCK: [2024-08-29 Thu 19:14]--[2024-08-29 Thu 19:46] =>  0:32
+CLOCK: [2024-08-29 Thu 18:24]--[2024-08-29 Thu 18:54] =>  0:30
+CLOCK: [2024-08-28 Wed 12:49]--[2024-08-28 Wed 13:21] =>  0:32
+CLOCK: [2024-08-28 Wed 09:52]--[2024-08-28 Wed 10:09] =>  0:17
+CLOCK: [2024-08-27 Tue 13:22]--[2024-08-27 Tue 13:47] =>  0:25
+CLOCK: [2024-08-27 Tue 10:40]--[2024-08-27 Tue 12:51] =>  2:11
+:END:
+DEADLINE: <2024-09-03 Tue>
+**** DONE MLton-esque overview.
+**** DONE Create a skeleton project.
+**** DONE Milestone table.
+**** DONE Define a CLI.
+**** DONE Write tests for empty files.
+- Current blocker: I'm not sure how to uniformly run tests both against
+  black-box executables, as well as typical unit tests. Ideally, both would be
+  run by =cabal test=.
+- Potential solution:
+  #+begin_src diff
+  main :: IO ()
+- main = ...
++ main = getArgs >>= main'
+
++ main' :: List String -> IO ()
++ main' xs = do
++   opts <- execParserPure _ _
++   ...
+  #+end_src
+**** DONE Define Milestone 2.
+*** DONE 1 Research Toys [7/7]
+:LOGBOOK:
+CLOCK: [2024-09-10 Tue 14:50]--[2024-09-10 Tue 16:02] =>  1:12
+CLOCK: [2024-09-10 Tue 10:20]--[2024-09-10 Tue 10:45] =>  0:25
+CLOCK: [2024-09-08 Sun 18:42]--[2024-09-08 Sun 20:51] =>  2:09
+CLOCK: [2024-09-08 Sun 17:12]--[2024-09-08 Sun 18:02] =>  0:50
+CLOCK: [2024-09-08 Sun 12:03]--[2024-09-08 Sun 16:35] =>  4:32
+CLOCK: [2024-09-08 Sun 10:57]--[2024-09-08 Sun 11:59] =>  1:02
+CLOCK: [2024-09-08 Sun 10:16]--[2024-09-08 Sun 10:46] =>  0:30
+CLOCK: [2024-09-08 Sun 02:57]--[2024-09-08 Sun 03:29] =>  0:32
+CLOCK: [2024-09-08 Sun 02:05]--[2024-09-08 Sun 02:43] =>  0:38
+CLOCK: [2024-09-07 Sat 17:23]--[2024-09-07 Sat 18:52] =>  1:29
+CLOCK: [2024-09-07 Sat 14:30]--[2024-09-07 Sat 17:03] =>  2:33
+CLOCK: [2024-09-07 Sat 14:07]--[2024-09-07 Sat 14:27] =>  0:20
+CLOCK: [2024-09-06 Fri 19:02]--[2024-09-06 Fri 20:22] =>  1:20
+CLOCK: [2024-09-06 Fri 14:59]--[2024-09-06 Fri 16:19] =>  1:20
+CLOCK: [2024-09-06 Fri 11:12]--[2024-09-06 Fri 14:30] =>  3:18
+CLOCK: [2024-09-05 Thu 11:17]--[2024-09-05 Thu 14:24] =>  3:07
+CLOCK: [2024-09-05 Thu 00:09]--[2024-09-05 Thu 01:32] =>  1:23
+CLOCK: [2024-09-04 Wed 18:28]--[2024-09-04 Wed 21:30] =>  3:02
+CLOCK: [2024-09-04 Wed 17:40]--[2024-09-04 Wed 18:03] =>  0:23
+CLOCK: [2024-09-04 Wed 14:13]--[2024-09-04 Wed 16:03] =>  1:50
+CLOCK: [2024-09-02 Mon 13:57]--[2024-09-02 Mon 14:12] =>  0:15
+CLOCK: [2024-09-02 Mon 10:24]--[2024-09-02 Mon 13:14] =>  2:50
+CLOCK: [2024-09-02 Mon 08:18]--[2024-09-02 Mon 09:45] =>  1:27
+CLOCK: [2024-09-01 Sun 16:22]--[2024-09-01 Sun 22:37] =>  6:15
+:END:
+Implement the core algorithms as toys with toothpick scaffolding.
+
+- After implementing closure-conversion, I think it may be a good idea to
+  initially work uncurried by default, à la SML, and implement the necessary
+  optimisations for curry-heavy code later.
+- The value of statically-typed IRs is not to be undermined.
+- [X] Known issue: There is some problem with closure conversion. Try compiling:
+  #+begin_src ghci
+λ> pretty . upToConvert $ Lam.Prim $ PrimPrintInt $ Lam.zCombinator `Lam.App` ((Lam.Lam "x" $ Lam.Lam "y" $ Lam.Var "x") `Lam.App` Lam.IntVal 3)
+  #+end_src
+
+**** DONE The Untyped λ-calculus
+- Augmented with tuples.
+**** DONE Rename
+**** DONE LowerANF
+**** DONE Closure-convert
+CLOSED: [2024-09-05 Thu 11:50]
+**** DONE Hoist
+CLOSED: [2024-09-05 Thu 13:29]
+**** DONE ToQBE
+CLOSED: [2024-09-08 Sun 02:55]
+- As of [[https://github.com/crumbtoo/sydml/commit/1342b377e9dfceda86831548eb39466830ac6ef5][this commit]], the toy compiler can compile its first program:
+  #+begin_src ghci
+λ> :m + *Presydc.SSA
+λ> writePipeline "/tmp/t/t.qbe" $ Lam.IntVal 123
+  #+end_src
+  #+begin_src shell
+$ nix-shell -p qbe gcc
+[nix-shell]$ qbe t.qbe > t.s && gcc t.s -o t
+[nix-shell]$ ./t ; echo $?
+123
+  #+end_src
+- As of [[https://github.com/crumbtoo/sydml/commit/acf74f12dc4327efce54610e5e1ffb81d57a5eba][this commit]], it can compile arithmetic primitives and impure =print= calls:
+  #+begin_src ghci
+λ> :m + *Presydc.SSA
+λ> writePipeline "/tmp/t/t.qbe" $ Lam.Prim $ PrimPrintInt $ Lam.Prim $ Lam.PrimAdd (Lam.IntVal 2) (Lam.IntVal 3)
+  #+end_src
+  #+begin_src shell
+$ nix-shell -p qbe gcc
+[nix-shell]$ qbe t.qbe > t.s && gcc t.s -o t
+[nix-shell]$ ./t
+5
+  #+end_src
+- As of [[https://github.com/crumbtoo/sydml/commit/6379d5647e89414331949f3206d3cdb1af2f9223][this commit]], it can compile trivial conditional expressions:
+  #+begin_src ghci
+λ> writePipeline "/tmp/t/t.qbe" $ Lam.IfThenElse (Lam.IntVal 1) (Lam.IntVal 2) (Lam.IntVal 3)
+  #+end_src
+  #+begin_src shell
+[nix-shell]$ qbe t.qbe > t.s && gcc t.s -o t
+[nix-shell]$ ./t ; echo $?
+2
+  #+end_src
+- As of [[https://github.com/crumbtoo/sydml/commit/08ef987a563eabb199610a26546305dcbb6dd76a][this commit]], the factorial program sucessfully compiles and executes.
+  Two hidden bugs were fixed in the process:
+  - =freeVars= did not function as expects on application nodes.
+    #+begin_src diff
+ freeVars (LetApp x f ys m) = toHashSetOf (each . #Var) ys
++                           <> HS.singleton f
+                           <> (freeVars m & HS.delete x)
+    #+end_src
+  - Three typos in the =hoist= function led to both branches of an if-expression
+    being the unhoisted 'true' branch — I have no idea how this happened. :P
+    #+begin_src diff
+ go (IfThenElse c t f) = do
+   Hoisted fs js t' <- go t
+-   Hoisted fs' js' t' <- go f
++   Hoisted fs' js' f' <- go f
+   (th,el) <- each mkFresh ("then","else")
+-   let bt = Join th Nothing t
++   let bt = Join th Nothing t'
+-       bf = Join el Nothing t
++       bf = Join el Nothing f'
+   pure $ Hoisted (fs >< fs') (Seq.fromList [bt,bf] >< js >< js') $
+     IfThenElse c (Jump th Nothing) (Jump el Nothing)
+    #+end_src
+  #+begin_src ghci
+-- (λf. (λx. f (λv. x x v)) (λx. f (λv. x x v))) (λ rec n. if n then n * rec (n - 1) else 1) 3
+)
+λ> writePipeline "/tmp/t/t.qbe" $ Lam.Prim $ PrimPrintInt $ Lam.zCombinator `Lam.App` (Lam.Lam "rec" $ Lam.Lam "n" $ Lam.IfThenElse (Lam.Var "n") (Lam.Prim $ PrimMul (Lam.Var "n") (Lam.Var "rec" `Lam.App` (Lam.Prim $ PrimSub (Lam.Var "n") (Lam.IntVal 1)))) (Lam.IntVal 1)) `Lam.App` Lam.IntVal 3
+  #+end_src
+- As of [[https://github.com/crumbtoo/sydml/commit/e27f4664af156d3862100e21c4396423165e8469][this commit]], it can compile closures and applications thereupon,
+  marking the completion of the ToQBE pass!
+  #+begin_src ghci
+λ> writePipeline "/tmp/t/t.qbe" $ Lam.Prim $ PrimPrintInt $ (Lam.Lam "x" $ Lam.Lam "y" $ Lam.Var "x") `Lam.App` Lam.IntVal 1 `Lam.App` Lam.IntVal 2
+  #+end_src
+  #+begin_src shell
+[nix-shell]$ qbe t.qbe > t.s && gcc t.s -o t
+[nix-shell]$ ./t
+1
+  #+end_src
+**** DONE Demo
+CLOSED: [2024-09-08 Sun 23:17]
+- Maybe using [[https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/AddingACompiler.md][godbolt]]?
+*** TODO 2 Layer 1 [5/7]
+:LOGBOOK:
+CLOCK: [2024-09-14 Sat 15:50]
+CLOCK: [2024-09-14 Sat 13:50]--[2024-09-14 Sat 14:34] =>  0:44
+CLOCK: [2024-09-14 Sat 10:39]--[2024-09-14 Sat 13:46] =>  3:07
+CLOCK: [2024-09-13 Fri 18:07]--[2024-09-13 Fri 18:51] =>  0:44
+CLOCK: [2024-09-13 Fri 14:49]--[2024-09-13 Fri 15:34] =>  0:45
+CLOCK: [2024-09-13 Fri 12:49]--[2024-09-13 Fri 14:36] =>  1:47
+CLOCK: [2024-09-12 Thu 12:54]--[2024-09-12 Thu 13:52] =>  0:58
+CLOCK: [2024-09-12 Thu 00:22]--[2024-09-12 Thu 02:24] =>  2:02
+CLOCK: [2024-09-11 Wed 17:24]--[2024-09-11 Wed 18:04] =>  0:40
+CLOCK: [2024-09-11 Wed 14:49]--[2024-09-11 Wed 15:48] =>  0:59
+CLOCK: [2024-09-11 Wed 10:18]--[2024-09-11 Wed 10:47] =>  0:29
+CLOCK: [2024-09-11 Wed 09:11]--[2024-09-11 Wed 09:42] =>  0:31
+CLOCK: [2024-09-10 Tue 02:01]--[2024-09-10 Tue 02:23] =>  0:22
+CLOCK: [2024-09-09 Mon 12:40]--[2024-09-09 Mon 14:55] =>  2:15
+:END:
+Round   three of planning. Define the core data structures, signatures for
+functions between them, and tests for those functions.
+**** DONE [#A] Big decisions!
+CLOSED: [2024-09-10 Tue 02:17]
+***** NO Side effects?
+CLOSED: [2024-09-10 Tue 02:16]
+Decided against, primarily due to top-level side-effects.
+****** Impure
+******* Pros
+- Rely less on optimisations — use =ref= types.
+- Easy implementation.
+******* Cons
+- Top-level side effects lead to a lot of pain in implementation and use.
+****** Pure
+******* Pros
+- I have Haskellbrain.
+- More interesting implementation.
+******* Cons
+- Potentially complicated to make effecient.
+***** OKAY ML Modules?
+CLOSED: [2024-09-10 Tue 02:01]
+We can postpone this thought.
+**** DONE Core data structures [9/9]
+CLOSED: [2024-09-14 Sat 13:13]
+***** DONE =Syd= monad
+CLOSED: [2024-09-11 Wed 17:36]
+***** DONE Error effect and ADT
+CLOSED: [2024-09-11 Wed 17:37]
+***** DONE =Located=
+CLOSED: [2024-09-11 Wed 17:37]
+***** DONE Surface AST
+CLOSED: [2024-09-14 Sat 12:24]
+***** DONE Core AST
+CLOSED: [2024-09-14 Sat 12:24]
+***** DONE ANF AST
+CLOSED: [2024-09-14 Sat 12:24]
+***** KILL Closure-converted AST
+CLOSED: [2024-09-14 Sat 13:13]
+***** KILL Hoisted AST
+CLOSED: [2024-09-14 Sat 13:13]
+***** KILL CodeGen record à la [[https://github.com/idris-lang/Idris2/blob/5459e1726582c7326c3846bd98dfaeb9ac25cdfc/src/Compiler/Common.idr#L38][Idris]]
+CLOSED: [2024-09-14 Sat 13:13]
+**** DONE Pass signatures [6/6]
+CLOSED: [2024-09-14 Sat 13:12]
+***** DONE Parse
+CLOSED: [2024-09-14 Sat 12:34]
+***** DONE Elaborate
+CLOSED: [2024-09-14 Sat 12:46]
+***** DONE TypeCheck
+CLOSED: [2024-09-14 Sat 13:10]
+***** DONE ClosureConvert
+CLOSED: [2024-09-14 Sat 13:11]
+***** DONE Hoist
+CLOSED: [2024-09-14 Sat 13:12]
+***** DONE ToQBE
+CLOSED: [2024-09-14 Sat 13:12]
+**** KILL Debug flags [0/7]
+CLOSED: [2024-09-14 Sat 12:44]
+Pushed back. These can be implemented once the ASTs in question are more fleshed
+out.
+***** KILL =-ddump-ast=
+CLOSED: [2024-09-14 Sat 12:43]
+***** KILL =-ddump-core=
+CLOSED: [2024-09-14 Sat 12:43]
+***** KILL =-ddump-type-check=
+CLOSED: [2024-09-14 Sat 12:43]
+***** KILL =-ddump-anf=
+CLOSED: [2024-09-14 Sat 12:43]
+***** KILL =-ddump-closure-convert=
+CLOSED: [2024-09-14 Sat 12:43]
+***** KILL =-ddump-hoist=
+CLOSED: [2024-09-14 Sat 12:43]
+***** KILL =-ddump-qbe=
+CLOSED: [2024-09-14 Sat 12:43]
+**** DONE Tests
+CLOSED: [2024-09-14 Sat 13:46]
+**** TODO CI/CD
+- w/ [[https://omnix.page/om/ci.html][omnix]]
+**** TODO Record demo
+** Other
+:LOGBOOK:
+CLOCK: [2024-09-07 Sat 11:02]--[2024-09-07 Sat 12:17] =>  1:15
+:END:
+I am not convinced that some of these tasks should count towards "work time;"
+regardless, I choose to log them.
+*** Nix setup
+:LOGBOOK:
+CLOCK: [2024-09-06 Fri 16:45]--[2024-09-06 Fri 18:57] =>  2:12
+CLOCK: [2024-09-04 Wed 12:38]--[2024-09-04 Wed 13:05] =>  0:27
+CLOCK: [2024-08-31 Sat 23:21]--[2024-09-01 Sun 00:35] =>  1:14
+CLOCK: [2024-09-01 Sun 07:02]--[2024-09-01 Sun 10:35] =>  3:33
+:END:
+*** Documentation
+:LOGBOOK:
+CLOCK: [2024-09-06 Fri 20:30]--[2024-09-06 Fri 20:40] =>  0:10
+CLOCK: [2024-09-06 Fri 14:23]--[2024-09-06 Fri 14:53] =>  0:30
+CLOCK: [2024-09-03 Tue 10:32]--[2024-09-03 Tue 11:36] =>  1:04
+:END:
+*** GitHub Pages action
+:LOGBOOK:
+CLOCK: [2024-09-05 Thu 15:02]--[2024-09-05 Thu 15:28] =>  0:26
+:END:
+* Resources
+** Reference projects
+*** [[https://github.com/ollef/sixten][sixten]]/[[https://github.com/ollef/sixty][sixty]]
+- the latter is a rewrite of the former.
+- the leading example of demand-driven compilers.
+- implemented in glorious haskell.
+*** [[https://github.com/luc-tielen/eclair-lang][eclair]]
+- implements datalog.
+- targets llvm.
+- demand-driven, using rock.
+- implemented in glorious haskell.
+*** [[https://hackage.haskell.org/package/hnix][hnix]]
+- an interpreter for the nix language.
+- noted only for its use of recursion schemes.
+- implemented in glorious haskell.
+*** [[https://github.com/Kleidukos/boreal][Hécate — boreal]]
+- [[https://github.com/Kleidukos/boreal/tree/main/boreal-daemon/tree-sitter-boreal][parses with tree-sitter]].
+- [[https://github.com/Kleidukos/boreal/blob/main/boreal-daemon/compiler/Boreal/IR/ANFCore/Types.hs][ANF-based IR]].
+- demand-driven.
+- haskell-like source language.
+- client-server.
+- targets lua.
+- implemented in glorious haskell.
+*** [[https://github.com/elm/compiler][elm]]
+- targets JS.
+- haskell-like.
+- written by a moron. 💔
+- implemented in glorious haskell.
+*** [[https://github.com/purescript/purescript][purescript]]
+- haskell-like source language.
+- implemented in glorious haskell.
+*** [[http://mlton.org/CompilerOverview][MLton]] :SML:
+- many different IRs.
+- whole-program optimising.
+- [[http://mlton.org/CompilerOverview][pretty high-level decent documentation]].
+- implemented in SML.
+*** [[https://github.com/kfl/mosml][Moscow ML]] :SML:
+*** [[https://github.com/rossberg/hamlet][HaMLet]] :SML:
+- Self-described as a reference implementation.
+*** [[https://github.com/jdreaver/amy][amy]]
+- targets LLVM.
+- ANF-based IR.
+- strict.
+- otherwise haskell-like.
+- implemented in glorious haskell.
+*** [[https://github.com/idris-lang/Idris2/][Idris 2]]
+- Elegantly supports multiple and third-party backends.
+- [[https://github.com/idris-lang/Idris2/blob/main/src/Compiler/ANF.idr][Uses ANF]].
+*** [[https://github.com/IUCompilerCourse/Essentials-of-Compilation?tab=readme-ov-file][Essentials of Compilation]]
+- A book about compiling Racket and Python to x86-64 assembly.
+** Parsing
+*** [[https://www.researchgate.net/profile/Sl-Graham/publication/2377179_Efficient_and_Flexible_Incremental_Parsing/links/004635294e13f23ef1000000/Efficient-and-Flexible-Incremental-Parsing.pdf)][Efficient and Flexible Incremental Parsing]]
+*** [[https://www.pc-freak.net/blog/files/NCR_ATM_terminals/www.thecorememory.com/Incremental_analyzis_of_RPL.pdf][Incremental Analysis of Real Programming Languages]]
+*** [[https://what-when-how.com/compiler-writing/bottom-up-parsing-compiler-writing-part-13/)][Error Detection and Recovery in LR Parsers]]
+*** [[https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.129.7206&rep=rep1&type=pdf)][Automatic Error Recovery for LR Parsers]]
+*** [[https://www.youtube.com/watch?v=Jes3bD6P0To][Treesitter]] :TALK:
+*** [[https://www.youtube.com/watch?v=a1rC79DHpmY][Treesitter]] :TALK:
+*** [[https://www.youtube.com/watch?v=0CGzC_iss-8][Treesitter]] :TALK:
+** IRs — SSA, ANF, and CPS
+*** SSA vs ANF: [[Https://github.com/jacobstanley/ssa-anf][source code]], [[http://code.ouroborus.net/fp-syd/past/2015/2015-07-Stanley-SSAvsANF.pdf][slides]].
+*** [[https://www.reddit.com/r/Compilers/s/rBZDFjXHwl][Reddit discussion about ANF between Hécate and Colin]]
+*** [X] [[https://matt.might.net/articles/a-normalization/][Matt Might — A-Normalization: Why and How]]
+CLOSED: [2024-09-12 Thu 04:21]
+*** [[https://www.cs.indiana.edu/~achauhan/Teaching/B629/2006-Fall/CourseMaterial/1998-notices-appel-ssa_fnprog.pdf][SSA is Functional Programming ]]
+*** [X] [[https://matt.might.net/articles/cps-conversion/][How to compile with continuations]]
+CLOSED: [2024-09-12 Thu 04:21]
+*** [[ftp://ftp.cs.princeton.edu/techreports/1988/183.pdf][Appel — Continuation Passing, Closure Passing Style]]
+*** [[http://manticore.cs.uchicago.edu/papers/ml16-cwc-llvm.pdf][Compiling with Continuations and LLVM ]]
+*** [-] [#A] [[https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/compiling-without-continuations.pdf][Compiling without continuations]]
+Describes ANF and join points as used in GHC.
+- [[https://youtu.be/LMTr8yw0Gk4][talk]]
+- Formalises join points with typing, operational semantics, and syntax.
+- Describes heavyweight optimisations for join points.
+- The paper's implementation allows for /recursive/ join points.
+*** [[https://www.microsoft.com/en-us/research/wp-content/uploads/2007/10/compilingwithcontinuationscontinued.pdf][Compiling with Continuations, Continued ]]
+*** [[http://code.ouroborus.net/fp-syd/past/2014/2014-08-Sloane-CPS.pdf][Slides implementing Compiling with Continuations, Continued ]]
+*** [[https://jozefg.bitbucket.io/posts/2015-04-30-cps.html][Compiling with CPS]]
+*** [[https://slang.soe.ucsc.edu/cormac/papers/pldi93.pdf][Original ANF paper: The Essence of Compiling with Continuations]]
+*** [[http://mlton.org/pipermail/mlton/2003-January/023054.html][Email discussing MLton's IR and some history]]
+*** [[https://www.jantar.org/talks/zadarnowski03languages.pdf][Comparing CPS, ANF, and SSA for compiling functional languages]]
+*** [[https://www.jantar.org/papers/chakravarty03perspective.pdf][A Functional Perspective on SSA Optimisation Algorithms]]
+*** [[http://www.ccs.neu.edu/home/matthias/369-s10/Transcript/anf-vs-cps.pdf][The CPS/ANF saga]]
+*** [[http://www.dtic.mil/dtic/tr/fulltext/u2/a326493.pdf][Tarditi — Design and Implementation of Code Optimiziations for a Type-Directed Compiler for Standard ML (ANF)]]
+This thesis emphasizes a "pay as you go" compilation strategy
+where simple, monorphic code should not be slower simply because the language
+supports higher-level code. Also, monomorphic functions should get specialized
+to machine-type functions. C compilers focus on loops, so functional compilers
+should focus on recursive functions. Explains lots of optimizations with a
+lambda calculus IR
+*** [[https://pdfs.semanticscholar.org/55bc/5ceee768223f4b233de568a7181297eb2c4d.pdf][Paper summarizing the Tarditi thesis]]
+*** [[ftp://mumble.net/~kelsey/papers/cps-ssa.ps.gz][A Correspondence between CPS and SSA]]
+*** [X] [[https://compiler.club/compiling-lambda-calculus/][Colin — Compiling the λ-calculus]]
+CLOSED: [2024-09-12 Thu 04:21]
+** Compiler Architecture
+*** [[https://rustc-dev-guide.rust-lang.org/query.html][rustc demand-driven-compilation]]
+*** [X] [[https://ollef.github.io/blog/posts/query-based-compilers.html][Query-based compiler architectures]]
+CLOSED: [2024-09-12 Thu 04:20]
+*** [X] [[https://rust-analyzer.github.io/blog/2020/07/20/three-architectures-for-responsive-ide.html][Three Architectures for a Responsive IDE]]
+CLOSED: [2024-09-12 Thu 04:20]
+*** [[https://www2.eecs.berkeley.edu/Pubs/TechRpts/1997/CSD-97-946.pdf][Practical Algorithms for Incremental Software Development Environments]]
+*** [[https://youtu.be/3D-ngGIP4fQ][Query-based compiler architectures]] :TALK:
+*** [[https://www.youtube.com/watch?v=DSuX-LIAU-I][A journey through incremental computation]] :TALK:
+*** [[https://www.youtube.com/watch?v=S2dK5lLFD_0][Making Fast Incremental Compiler for Huge Codebase]] :TALK:
+*** [[https://www.youtube.com/watch?v=vVFEROmdCkQ][How to load 1m lines of Ruby in 5s]] :TALK:
+*** [[https://www.youtube.com/watch?v=WxyyJyB_Ssc)][Compilers are Databases]] :TALK:
+*** [[https://www.youtube.com/watch?v=wSdV1M7n4gQ)][Anders Hejlsberg on Modern Compiler Construction]] :TALK:
+*** [[https://www.youtube.com/watch?v=N6b44kMS6OM))][Responsive compilers]] :TALK:
+** Miscellaneous
+*** [-] [#A] [[https://borretti.me/article/lessons-writing-compiler][Lessons from Writing a Compiler]]
+CLOSED: [2024-09-12 Thu 04:19]
+Covers a lot of topics that textbooks miss.
+*** [X] [[https://matt.might.net/articles/closure-conversion/][Matt Might — Closure Conversion]]
+CLOSED: [2024-09-12 Thu 04:19]
+*** [[https://www.cse.chalmers.se/~ulfn/papers/thesis.pdf][Towards a practical programming language based on dependent type theory]]
+*** [[https://www.stephendiehl.com/llvm/][Implementing a JIT Compiled Language with Haskell and LLVM]]
+*** [X] [[https://www.cambridge.org/core/services/aop-cambridge-core/content/view/097CE52C750E69BD16B78C318754C7A4/S0956796820000088a.pdf/div-class-title-build-systems-a-la-carte-theory-and-practice-div.pdf][Build systems à la carte: Theory and Practice]]
+CLOSED: [2024-09-12 Thu 04:19]
+*** [[https://www.reddit.com/r/ProgrammingLanguages/comments/8ggx2n/comment/dybo3rl/][A Reddit thread about functional IRs]]
+Nearly all of their linked resources are included in this document.
+*** [#A] [[https://simonmar.github.io/bib/papers/eval-apply.pdf][Making a Fast Curry: Push/Enter vs. Eval/Apply for Higher-order Languages]]
+*** [[https://cabal.readthedocs.io/en/3.4/cabal-package.html?highlight=build-type%20configure#pkg-field-build-type][Custom Cabal builds]]
+- Will be necessary to build tree-sitter-sydml.
+*** [[https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/development/tools/parsing/tree-sitter/grammar.nix][Nix tree-sitter examples]]
+*** [[https://dl.acm.org/doi/pdf/10.1145/151333.151343][Tarditi — No Assembly Required: Compiling SML to C]]
