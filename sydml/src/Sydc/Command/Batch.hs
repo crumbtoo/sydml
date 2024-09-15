@@ -9,12 +9,12 @@ import SydPrelude
 --------------------------------------------------------------------------------
 
 compile :: SydOptions -> IO ()
-compile opts = runContT (withCompiledExecutable opts) (const $ pure ())
+compile = void . compileExecutable
 
 -- compile = flip withCompiledExecutable $ const $ pure ()
 
-withCompiledExecutable :: SydOptions -> ContT () IO FilePath
-withCompiledExecutable = _
+compileExecutable :: SydOptions -> IO FilePath
+compileExecutable = _
 
 rev :: List a -> Cont (List a) (List a)
 rev []     = pure []

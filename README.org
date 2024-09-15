@@ -120,15 +120,16 @@ k ::= Type                  The kind of all types
 #+end_src
 * Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
-#+CAPTION: Clock summary at [2024-09-08 Sun 23:18]
+#+CAPTION: Clock summary at [2024-09-14 Sat 23:26]
 | Headline                          | Time    |          |          |
 |-----------------------------------+---------+----------+----------|
-| *Total time*                        | *2d 9:25* |          |          |
+| *Total time*                        | *3d 5:55* |          |          |
 |-----------------------------------+---------+----------+----------|
-| Progress                          | 2d 9:25 |          |          |
-| \_  Milestones                    |         | 1d 22:34 |          |
+| Progress                          | 3d 5:55 |          |          |
+| \_  Milestones                    |         | 2d 19:04 |          |
 | \_    0 Preemptive Planning [6/6] |         |          |     5:29 |
-| \_    1 Research Toys [7/7]       |         |          | 1d 17:05 |
+| \_    1 Research Toys [7/7]       |         |          | 1d 18:42 |
+| \_    2 Layer 1 [5/7]             |         |          |    18:53 |
 | \_  Other                         |         |    10:51 |          |
 | \_    Nix setup                   |         |          |     7:26 |
 | \_    Documentation               |         |          |     1:44 |
@@ -299,7 +300,7 @@ CLOSED: [2024-09-08 Sun 23:17]
 - Maybe using [[https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/AddingACompiler.md][godbolt]]?
 *** TODO 2 Layer 1 [5/7]
 :LOGBOOK:
-CLOCK: [2024-09-14 Sat 15:50]
+CLOCK: [2024-09-14 Sat 15:50]--[2024-09-14 Sat 19:20] =>  3:30
 CLOCK: [2024-09-14 Sat 13:50]--[2024-09-14 Sat 14:34] =>  0:44
 CLOCK: [2024-09-14 Sat 10:39]--[2024-09-14 Sat 13:46] =>  3:07
 CLOCK: [2024-09-13 Fri 18:07]--[2024-09-13 Fri 18:51] =>  0:44
