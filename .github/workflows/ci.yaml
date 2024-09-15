@@ -11,23 +11,26 @@ permissions:
 
 jobs:
   build-docs:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
-    - uses: DeterminateSystems/nix-installer-action@main
-    - name: Clone theme
-      run: |
-        git clone https://github.com/fniessen/org-html-themes.git
-        cp -r org-html-themes/src .
-    - name: Build docs
-      run: nix-shell -p emacs --run "emacs README.org --batch -f org-html-export-to-html --kill"
-    - name: Deploy docs
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        branch: gh-pages # The branch the action should deploy to.
-        folder: . # The folder the action should deploy.
-    # - name: Install omnix
-    #   run: nix --accept-flake-config profile install "github:juspay/omnix"
-    # - run: om ci
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - name: Clone theme
+        run: |
+          git clone https://github.com/fniessen/org-html-themes.git
+          cp -r org-html-themes/src .
+      - name: Build docs
+        run: nix-shell -p emacs --run "emacs README.org --batch -f org-html-export-to-html --kill"
+      - name: Deploy docs
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: . # The folder the action should deploy.
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - name: Install Omnix
+        run: nix --accept-flake-config profile install "github:juspay/omnix"
+      - run: om ci
