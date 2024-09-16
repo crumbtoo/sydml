@@ -12,15 +12,20 @@ import Control.Lens
 import qualified Data.HashSet as HS
 import Data.Hashable (Hashable)
 import System.Directory
+import System.FilePath (takeDirectory)
 --------------------------------------------------------------------------------
 
 batchCompile :: SydBatchOptions -> IO ()
 batchCompile batchOpts = do
     srcDirs <- batchOpts
-             & foldMapOf (#files . each) (fmap HS.singleton . makeAbsolute)
+             & foldMapOf (#files . each)
+                 (fmap HS.singleton . sourceDirectoryOfFile)
     let opts = batchOpts.sydOptions
              & #sourceDirectories <>~ srcDirs
     Driver.runSydTask opts (Driver.compile opts)
+
+sourceDirectoryOfFile :: FilePath -> IO FilePath
+sourceDirectoryOfFile = fmap takeDirectory . makeAbsolute
 
 rev :: List a -> Cont (List a) (List a)
 rev []     = pure []
