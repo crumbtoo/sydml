@@ -1,6 +1,7 @@
 module Sydc.Driver
   ( rules
   , runSydTask
+  , compile
   )
   where
 --------------------------------------------------------------------------------
@@ -69,3 +70,6 @@ runSydTask opts task = do
           writer writeErrors $
             rules opts
   Rock.runTask rules' task
+
+compile :: SydOptions -> Task Query ()
+compile opts = liftIO $ print opts

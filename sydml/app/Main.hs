@@ -1,11 +1,13 @@
 {-# LANGUAGE ApplicativeDo #-}
 module Main where
 --------------------------------------------------------------------------------
+import Data.HashSet qualified as HS
 import Options.Applicative
 import SydPrelude
 import Sydc
 import Command.Batch qualified as Batch
 import System.Environment (getArgs)
+import System.Posix.Internals (newFilePath)
 --------------------------------------------------------------------------------
 
 -- parser :: Parser SydOptions
@@ -16,10 +18,20 @@ import System.Environment (getArgs)
 parser :: ParserInfo (IO ())
 parser = info (helper <*> opts) idm
   where
-    opts = subparser Batch.batchCommand
+    opts = commonOpts <**> subparser Batch.batchCommand
+
+commonOpts :: Parser SydOptions
+commonOpts = do
+  debugFlags <- pure mempty
+  buildDir <- pure "./build"
+  sourceDirectories <- pure mempty
+  pure $ SydOptions
+    { debugFlags = debugFlags
+    , buildDir = buildDir
+    , sourceDirectories = sourceDirectories
+    }
 
 main :: IO ()
--- main = join $ execParser (info parser idm)
 main = getArgs >>= main'
 
 main' :: List String -> IO ()

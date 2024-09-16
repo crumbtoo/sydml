@@ -13,6 +13,8 @@ jobs:
   build-docs:
     runs-on: ubuntu-latest
     steps:
+      # TODO: can we factor this out into a single job that runs before
+      # `build-docs` and `build`?
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
       - name: Clone theme
@@ -29,8 +31,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # TODO: can we factor this out into a single job that runs before
+      # `build-docs` and `build`?
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
-      - name: Install Omnix
-        run: nix --accept-flake-config profile install "github:juspay/omnix"
-      - run: om ci
+      - run: nix build
+      # - name: Install Omnix
+      #   run: nix --accept-flake-config profile install "github:juspay/omnix"
+      # - run: om ci

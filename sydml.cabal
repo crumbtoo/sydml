@@ -83,40 +83,41 @@ library
   -- install-includes: tree_sitter/parser.h
   -- cxx-sources:      tree-sitter-sydml/src/parser.c
   build-depends:
-    , base                       ^>=4.19.1.0
-    , bytestring
-    , comonad
-    , containers
-    , data-fix
-    , dependent-hashmap
-    , dependent-sum-template     ^>=0.2.0.1
-    , deriving-compat
-    , effectful
-    , filepath
-    , free
-    , generic-lens               ^>=2.2.0.0
-    , hashable
-    , lens                       >=5.3.0     && <6.0.0
-    , lsp
-    , megaparsec
-    , monadic-recursion-schemes
-    , mtl
-    , parser-combinators
-    , pretty-simple
-    , prettyprinter
-    , qbe
-    , recursion-schemes          >=5.0.0     && <6.0.0.0
-    , rock                       >=0.3.1.0   && <0.4.0.0.0
-    , semigroupoids
-    , some
-    , text                       >=2.0       && <2.2
-    , text-short
-    , these
-    , transformers
-    , tree-sitter
-    , tree-sitter-sydml
-    , unordered-containers
-    , witherable
+                  base                       ^>=4.19.1.0
+                , bytestring
+                , comonad
+                , containers
+                , data-fix
+                , dependent-hashmap
+                , dependent-sum-template     ^>=0.2.0.1
+                , deriving-compat
+                , directory
+                , effectful
+                , filepath
+                , free
+                , generic-lens               ^>=2.2.0.0
+                , hashable
+                , lens                       >=5.3.0     && <6.0.0
+                , lsp
+                , megaparsec
+                , monadic-recursion-schemes
+                , mtl
+                , parser-combinators
+                , pretty-simple
+                , prettyprinter
+                , qbe
+                , recursion-schemes          >=5.0.0     && <6.0.0.0
+                , rock                       >=0.3.1.0   && <0.4.0.0.0
+                , semigroupoids
+                , some
+                , text                       >=2.0       && <2.2
+                , text-short
+                , these
+                , transformers
+                , tree-sitter
+                , tree-sitter-sydml
+                , unordered-containers
+                , witherable
 
   hs-source-dirs:   sydml/src
 
@@ -128,10 +129,11 @@ executable sydc
 
   -- other-extensions:
   build-depends:
-    , base                  ^>=4.19.1.0
-    , lens
-    , optparse-applicative
-    , sydml
+                  base                  ^>=4.19.1.0
+                , lens
+                , optparse-applicative
+                , sydml
+                , unordered-containers
 
   hs-source-dirs:   sydml/app
 

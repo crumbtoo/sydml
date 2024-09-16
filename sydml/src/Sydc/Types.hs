@@ -12,17 +12,21 @@ import SydPrelude
 data SydOptions = SydOptions
   { debugFlags :: DebugFlags
   , buildDir :: FilePath
-  , command :: Command
   , sourceDirectories :: H.HashSet FilePath
   }
+  deriving (Show, Generic)
 
 data Command = BatchCmd SydBatchOptions
+  deriving (Show, Generic)
 
 data SydBatchOptions = SydBatchOptions
-  { files :: List FilePath
+  { sydOptions :: SydOptions
+  , files :: List FilePath
   }
-  deriving (Generic)
+  deriving (Show, Generic)
 
 --------------------------------------------------------------------------------
 
 newtype DebugFlags = DebugFlags (H.HashSet Text)
+  deriving stock (Show, Generic)
+  deriving newtype (Semigroup, Monoid)
