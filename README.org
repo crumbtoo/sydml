@@ -16,11 +16,11 @@ organisation. See the rendered HTML [[https://crumbtoo.github.io/sydml][here]].
 ** Status
 [2024-09-18 Wed]
 I've been off my meds since [2024-08-20 Tue], and caffeine lost its kick about a
-week-and-a-half ago; consequently, my productivity has plumetted.
+week-and-a-half ago; consequently, my productivity has plummeted.
 
 #+begin_quote
 His colleague Alfréd Rényi said, "a mathematician is a machine for turning
-coffee into theorems", and Erdős drank copious quantities; this quotation is
+coffee into theorems", and Erd  ős drank copious quantities; this quotation is
 often attributed incorrectly to Erdős, but Erdős himself ascribed it to Rényi.
 After his mother's death in 1971 he started taking antidepressants and
 amphetamines, despite the concern of his friends, one of whom (Ron Graham) bet
@@ -320,7 +320,7 @@ CLOSED: [2024-09-08 Sun 23:17]
 - Maybe using [[https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/AddingACompiler.md][godbolt]]?
 *** TODO 2 Layer 1 [5/7]
 :LOGBOOK:
-CLOCK: [2024-09-18 Wed 02:46]
+CLOCK: [2024-09-18 Wed 02:46]--[2024-09-18 Wed 03:06] =>  0:20
 CLOCK: [2024-09-18 Wed 00:41]--[2024-09-18 Wed 00:54] =>  0:13
 CLOCK: [2024-09-18 Wed 00:25]--[2024-09-18 Wed 00:32] =>  0:07
 CLOCK: [2024-09-17 Tue 14:45]--[2024-09-17 Tue 16:09] =>  1:24
