@@ -34,7 +34,7 @@ data Position = Position
   { line   :: !Natural
   , column :: !Natural
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Ord, Show, Generic, Data)
 
 -- | A description of a span of text.
 -- INVARIANT: @start < end@.
@@ -43,7 +43,7 @@ data SrcSpan = SrcSpan
   , start :: !Position
   , end   :: !Position
   }
-  deriving (Eq, Ord, Show, Generic)
+  deriving (Eq, Ord, Show, Generic, Data)
 
 -- | Take the "hull" of the two spans; i.e., @a <> b@ is the smallest 'SrcSpan'
 -- containing both @a@ and @b@. This is seldom used with spans from different
