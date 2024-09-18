@@ -12,6 +12,26 @@ semantics.
 
 Github renders this document very poorly, which conflicts with my style of
 organisation. See the rendered HTML [[https://crumbtoo.github.io/sydml][here]].
+
+** Status
+[2024-09-18 Wed]
+I've been off my meds since [2024-08-20 Tue], and caffeine lost it's kick about
+a week-and-a-half ago; consequently, my productivity has plumetted.
+
+#+begin_quote
+His colleague Alfréd Rényi said, "a mathematician is a machine for turning
+coffee into theorems", and Erdős drank copious quantities; this quotation is
+often attributed incorrectly to Erdős, but Erdős himself ascribed it to Rényi.
+After his mother's death in 1971 he started taking antidepressants and
+amphetamines, despite the concern of his friends, one of whom (Ron Graham) bet
+him $500 that he could not stop taking them for a month. Erdős won the bet, but
+complained that it impacted his performance: "You've showed me I'm not an
+addict. But I didn't get any work done. I'd get up in the morning and stare at a
+blank piece of paper. I'd have no ideas, just like an ordinary person. You've
+set mathematics back a month." After he won the bet, he promptly resumed his use
+of Ritalin and Benzedrine.
+#+end_quote
+
 * Motivation
 ** Demonstrate that I've learned from last year's failures
 The entire project collapsed at the last minute, likely as a result of the
@@ -300,7 +320,13 @@ CLOSED: [2024-09-08 Sun 23:17]
 - Maybe using [[https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/AddingACompiler.md][godbolt]]?
 *** TODO 2 Layer 1 [5/7]
 :LOGBOOK:
-CLOCK: [2024-09-16 Mon 16:25]
+CLOCK: [2024-09-18 Wed 02:46]
+CLOCK: [2024-09-18 Wed 00:41]--[2024-09-18 Wed 00:54] =>  0:13
+CLOCK: [2024-09-18 Wed 00:25]--[2024-09-18 Wed 00:32] =>  0:07
+CLOCK: [2024-09-17 Tue 14:45]--[2024-09-17 Tue 16:09] =>  1:24
+CLOCK: [2024-09-17 Tue 13:20]--[2024-09-17 Tue 13:29] =>  0:09
+CLOCK: [2024-09-16 Mon 20:36]--[2024-09-16 Mon 21:05] =>  0:29
+CLOCK: [2024-09-16 Mon 16:25]--[2024-09-16 Mon 18:05] =>  1:40
 CLOCK: [2024-09-16 Mon 15:13]--[2024-09-16 Mon 16:05] =>  0:52
 CLOCK: [2024-09-15 Sun 12:12]--[2024-09-15 Sun 12:34] =>  0:22
 CLOCK: [2024-09-14 Sat 15:50]--[2024-09-14 Sat 19:20] =>  3:30
@@ -318,7 +344,7 @@ CLOCK: [2024-09-11 Wed 09:11]--[2024-09-11 Wed 09:42] =>  0:31
 CLOCK: [2024-09-10 Tue 02:01]--[2024-09-10 Tue 02:23] =>  0:22
 CLOCK: [2024-09-09 Mon 12:40]--[2024-09-09 Mon 14:55] =>  2:15
 :END:
-Round   three of planning. Define the core data structures, signatures for
+Round three of planning. Define the core data structures, signatures for
 functions between them, and tests for those functions.
 **** DONE [#A] Big decisions!
 CLOSED: [2024-09-10 Tue 02:17]
