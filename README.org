@@ -15,8 +15,8 @@ organisation. See the rendered HTML [[https://crumbtoo.github.io/sydml][here]].
 
 ** Status
 [2024-09-18 Wed]
-I've been off my meds since [2024-08-20 Tue], and caffeine lost it's kick about
-a week-and-a-half ago; consequently, my productivity has plumetted.
+I've been off my meds since [2024-08-20 Tue], and caffeine lost its kick about a
+week-and-a-half ago; consequently, my productivity has plumetted.
 
 #+begin_quote
 His colleague Alfréd Rényi said, "a mathematician is a machine for turning
