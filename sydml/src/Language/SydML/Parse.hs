@@ -1,5 +1,8 @@
 module Language.SydML.Parse
   ( parseSydML
+
+  -- * Pass
+  , Parse
   )
   where
 --------------------------------------------------------------------------------
@@ -22,10 +25,15 @@ import qualified Language.SydML.Syntax as Surface
 import qualified Sydc.Name as Name
 --------------------------------------------------------------------------------
 
-parseSydML :: FilePath -> Text -> IO (Either DesexpError Surface.Module)
+data Parse
+
+type instance Surface.PassGlobal Parse = Located Text
+type instance Surface.PassVar Parse = Located Text
+
+parseSydML :: FilePath -> Text -> IO (Either DesexpError (Surface.Module Parse))
 parseSydML fp = const . pure . Right $ Surface.Module
   { Surface.info = Surface.ModuleInfo
-    { Surface.name =  fromMaybe (error "fp mod") $ Name.filePathModule fp
+    { Surface.name = fromMaybe (error "fp mod") $ Name.filePathModule fp
     , Surface.imports = []
     }
   , Surface.content = []

@@ -11,6 +11,7 @@ module SydPrelude
   , Eff
   , (:>)
   -- * Classes
+  , Data
   , MonadIO(liftIO)
   , Generic
   , Data.Foldable.fold
@@ -20,6 +21,7 @@ module SydPrelude
   , Foldable1(foldMap1)
   -- * Functions
   , ($>), (&), on, (.:), bimap, first, second
+  , (<&>)
   , fromMaybe
   , fromRight
   , printf
@@ -78,6 +80,7 @@ import Text.Pretty.Simple
 import Debug.Trace
 import Numeric.Natural
 import Effectful.Dispatch.Dynamic (HasCallStack)
+import Data.Data (Data)
 --------------------------------------------------------------------------------
 
 type List1 = NE.NonEmpty
