@@ -1,46 +1,38 @@
 module Language.SydML.Syntax
-  -- * Syntax tree
   ( ModuleInfo(..)
-  -- ** Modules
   , Qualification(..)
   , Import(..)
   , Decl(..)
   , Module(..)
-  -- * Extension points
-  , PassGlobal
-  , PassVar
   )
   where
 --------------------------------------------------------------------------------
 import SydPrelude
 import Sydc.Name qualified as Name
-import Language.Common qualified as Shared
+import Language.Shared qualified as Shared
 --------------------------------------------------------------------------------
 
-type family PassGlobal p :: Type
-type family PassVar p :: Type
-
-data Decl p
-  deriving (Show, Eq, Generic, Data)
-
 data Qualification = Qualified | Unqualified
-  deriving (Show, Eq, Generic, Data)
+  deriving (Show, Eq, Generic)
 
 data Import = Import
   { module_   :: Name.Module
   , qualified :: Qualification
   , as        :: Name.Module
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving (Show, Eq, Generic)
+
+data Decl
+  deriving (Show, Eq, Generic)
 
 data ModuleInfo = ModuleInfo
   { name    :: Name.Module
   , imports :: List Import
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving (Show, Eq, Generic)
 
-data Module p = Module
+data Module = Module
   { info :: ModuleInfo
-  , content :: List (Decl p)
+  , content :: List Decl
   }
-  deriving (Generic)
+  deriving (Show, Eq, Generic)

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-21 Sat 13:00 -->
+<!-- 2024-09-21 Sat 13:16 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SydML</title>
@@ -27,161 +27,161 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8700282">1. About</a></li>
-<li><a href="#orgf247c4b">2. Notice board</a>
+<li><a href="#org69308df">1. About</a></li>
+<li><a href="#org4bcae17">2. Notice board</a>
 <ul>
-<li><a href="#orgf5ac370">2.1. <span class="timestamp-wrapper"><span class="timestamp">[2024-09-18 Wed] </span></span> Productivity</a></li>
-<li><a href="#org5b25e8f">2.2. <span class="timestamp-wrapper"><span class="timestamp">[2024-09-20 Fri] </span></span> We're so back!!!</a></li>
+<li><a href="#org53a4473">2.1. <span class="timestamp-wrapper"><span class="timestamp">[2024-09-18 Wed] </span></span> Productivity</a></li>
+<li><a href="#org739826d">2.2. <span class="timestamp-wrapper"><span class="timestamp">[2024-09-20 Fri] </span></span> We're so back!!!</a></li>
 </ul>
 </li>
-<li><a href="#org724d376">3. Motivation</a>
+<li><a href="#org6104bd9">3. Motivation</a>
 <ul>
-<li><a href="#orgd14f294">3.1. Demonstrate that I've learned from last year's failures</a>
+<li><a href="#orga0ba1d7">3.1. Demonstrate that I've learned from last year's failures</a>
 <ul>
-<li><a href="#org4c14b62">3.1.1. Very poor planning.</a></li>
-<li><a href="#orgd1b296f">3.1.2. Not enough testing.</a></li>
+<li><a href="#org39bbc3f">3.1.1. Very poor planning.</a></li>
+<li><a href="#org52de2b3">3.1.2. Not enough testing.</a></li>
 </ul>
 </li>
-<li><a href="#org5c5d2d8">3.2. New goals</a>
+<li><a href="#org4c2a196">3.2. New goals</a>
 <ul>
-<li><a href="#orgce4eb07">3.2.1. IRs — ANF and SSA</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org4672d96">4. Project structure</a>
-<ul>
-<li><a href="#org883bacd">4.1. <code>sydml</code></a>
-<ul>
-<li><a href="#org750c797">4.1.1. <code>app</code></a></li>
-<li><a href="#org4e87c3d">4.1.2. <code>src</code></a></li>
-<li><a href="#org8d488d3">4.1.3. <code>test</code></a></li>
-</ul>
-</li>
-<li><a href="#org158ef63">4.2. <code>presydml</code></a></li>
-<li><a href="#org151fd81">4.3. <code>vendor</code></a>
-<ul>
-<li><a href="#orgcae62dc">4.3.1. <code>tree-sitter</code></a></li>
-<li><a href="#orgfe371ce">4.3.2. <code>qbe</code></a></li>
-<li><a href="#org22a2889">4.3.3. <code>compiler-explorer</code></a></li>
-</ul>
-</li>
-<li><a href="#org9826128">4.4. <code>doc</code></a></li>
-<li><a href="#org9a69c30">4.5. <code>tree-sitter-sydml</code></a></li>
-</ul>
-</li>
-<li><a href="#orgab0de7c">5. Compiler overview</a></li>
-<li><a href="#org83d085a">6. Languages</a>
-<ul>
-<li><a href="#orgc198e71">6.1. SydML</a>
-<ul>
-<li><a href="#org7c0f9d0">6.1.1. Syntax</a></li>
-</ul>
-</li>
-<li><a href="#orgdf85578">6.2. Core</a></li>
-<li><a href="#org9114595">6.3. ANF</a></li>
-<li><a href="#org607a257">6.4. QBE</a></li>
-</ul>
-</li>
-<li><a href="#org978d937">7. Progress</a>
-<ul>
-<li><a href="#orgb335567">7.1. Milestones</a>
-<ul>
-<li><a href="#org88b063f">7.1.1. <span class="done DONE">DONE</span> 0 Preemptive Planning <code>[6/6]</code></a></li>
-<li><a href="#orgdb46242">7.1.2. <span class="done DONE">DONE</span> 1 Research Toys <code>[7/7]</code></a></li>
-<li><a href="#orgec89a67">7.1.3. <span class="todo TODO">TODO</span> 2 Layer 1 <code>[6/7]</code></a></li>
-<li><a href="#orgf17d8d3">7.1.4. <span class="todo TODO">TODO</span> 3 The Empty Module <code>[0/8]</code></a></li>
-</ul>
-</li>
-<li><a href="#org6ad9f36">7.2. Other</a>
-<ul>
-<li><a href="#orgb0afa5f">7.2.1. Nix setup</a></li>
-<li><a href="#org2c2a4d5">7.2.2. Documentation</a></li>
-<li><a href="#org21e8380">7.2.3. GitHub Pages action</a></li>
+<li><a href="#org13f748b">3.2.1. IRs — ANF and SSA</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgb2079b4">8. Resources</a>
+<li><a href="#org916a66e">4. Project structure</a>
 <ul>
-<li><a href="#orgfa2c970">8.1. Reference projects</a>
+<li><a href="#org7c98e07">4.1. <code>sydml</code></a>
 <ul>
-<li><a href="#org9b12f08">8.1.1. sixten/sixty</a></li>
-<li><a href="#orgc707d70">8.1.2. eclair</a></li>
-<li><a href="#org79bc012">8.1.3. hnix</a></li>
-<li><a href="#orgf565499">8.1.4. Hécate — boreal</a></li>
-<li><a href="#orgc3a02e2">8.1.5. elm</a></li>
-<li><a href="#orgff74656">8.1.6. purescript</a></li>
-<li><a href="#orgecf6029">8.1.7. MLton&#xa0;&#xa0;&#xa0;<span class="tag"><span class="SML">SML</span></span></a></li>
-<li><a href="#org9f01e03">8.1.8. Moscow ML&#xa0;&#xa0;&#xa0;<span class="tag"><span class="SML">SML</span></span></a></li>
-<li><a href="#orgc5fc0b6">8.1.9. HaMLet&#xa0;&#xa0;&#xa0;<span class="tag"><span class="SML">SML</span></span></a></li>
-<li><a href="#org59fbe82">8.1.10. amy</a></li>
-<li><a href="#orgd16394e">8.1.11. Idris 2</a></li>
-<li><a href="#orgfe2a737">8.1.12. Essentials of Compilation</a></li>
+<li><a href="#org2b65a00">4.1.1. <code>app</code></a></li>
+<li><a href="#orgdc80eda">4.1.2. <code>src</code></a></li>
+<li><a href="#org3f335cb">4.1.3. <code>test</code></a></li>
 </ul>
 </li>
-<li><a href="#org3597068">8.2. Parsing</a>
+<li><a href="#org82ea748">4.2. <code>presydml</code></a></li>
+<li><a href="#org8ca7df5">4.3. <code>vendor</code></a>
 <ul>
-<li><a href="#org2dd2694">8.2.1. Efficient and Flexible Incremental Parsing</a></li>
-<li><a href="#org7c79421">8.2.2. Incremental Analysis of Real Programming Languages</a></li>
-<li><a href="#org8afc517">8.2.3. Error Detection and Recovery in LR Parsers</a></li>
-<li><a href="#orgee2c091">8.2.4. Automatic Error Recovery for LR Parsers</a></li>
-<li><a href="#orgd7dd585">8.2.5. Treesitter&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
-<li><a href="#org6114187">8.2.6. Treesitter&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
-<li><a href="#org348ddd2">8.2.7. Treesitter&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
+<li><a href="#org328e4eb">4.3.1. <code>tree-sitter</code></a></li>
+<li><a href="#orgad9b0a9">4.3.2. <code>qbe</code></a></li>
+<li><a href="#org1f38f4b">4.3.3. <code>compiler-explorer</code></a></li>
 </ul>
 </li>
-<li><a href="#org3da7f20">8.3. IRs — SSA, ANF, and CPS</a>
-<ul>
-<li><a href="#org25b5561">8.3.1. SSA vs ANF: source code, slides.</a></li>
-<li><a href="#org8db9b95">8.3.2. Reddit discussion about ANF between Hécate and Colin</a></li>
-<li><a href="#org7a4d941">8.3.3. [X] Matt Might — A-Normalization: Why and How</a></li>
-<li><a href="#org6a639f0">8.3.4. SSA is Functional Programming </a></li>
-<li><a href="#orgc11455c">8.3.5. [X] How to compile with continuations</a></li>
-<li><a href="#org74965f0">8.3.6. Appel — Continuation Passing, Closure Passing Style</a></li>
-<li><a href="#org950ee0b">8.3.7. Compiling with Continuations and LLVM </a></li>
-<li><a href="#org1c984e3">8.3.8. [-] [#A] Compiling without continuations</a></li>
-<li><a href="#org0116de5">8.3.9. Compiling with Continuations, Continued </a></li>
-<li><a href="#orgdf59015">8.3.10. Slides implementing Compiling with Continuations, Continued </a></li>
-<li><a href="#org313dbaf">8.3.11. Compiling with CPS</a></li>
-<li><a href="#org4e92664">8.3.12. Original ANF paper: The Essence of Compiling with Continuations</a></li>
-<li><a href="#org780d36e">8.3.13. Email discussing MLton's IR and some history</a></li>
-<li><a href="#org4321138">8.3.14. Comparing CPS, ANF, and SSA for compiling functional languages</a></li>
-<li><a href="#org587f800">8.3.15. A Functional Perspective on SSA Optimisation Algorithms</a></li>
-<li><a href="#orgc8bc190">8.3.16. The CPS/ANF saga</a></li>
-<li><a href="#orgcbad7e2">8.3.17. Tarditi — Design and Implementation of Code Optimiziations for a Type-Directed Compiler for Standard ML (ANF)</a></li>
-<li><a href="#org6240c42">8.3.18. Paper summarizing the Tarditi thesis</a></li>
-<li><a href="#orge0b920a">8.3.19. A Correspondence between CPS and SSA</a></li>
-<li><a href="#org46286a7">8.3.20. [X] Colin — Compiling the λ-calculus</a></li>
+<li><a href="#orgba887b7">4.4. <code>doc</code></a></li>
+<li><a href="#org16cc794">4.5. <code>tree-sitter-sydml</code></a></li>
 </ul>
 </li>
-<li><a href="#org88bcb6e">8.4. Compiler Architecture</a>
+<li><a href="#org0d56c2d">5. Compiler overview</a></li>
+<li><a href="#org0fe07ff">6. Languages</a>
 <ul>
-<li><a href="#org4bbb097">8.4.1. rustc demand-driven-compilation</a></li>
-<li><a href="#org72c94f4">8.4.2. [X] Query-based compiler architectures</a></li>
-<li><a href="#orgbd089cb">8.4.3. [X] Three Architectures for a Responsive IDE</a></li>
-<li><a href="#org7411fee">8.4.4. Practical Algorithms for Incremental Software Development Environments</a></li>
-<li><a href="#org4e9e7a9">8.4.5. Query-based compiler architectures&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
-<li><a href="#orgefb6831">8.4.6. A journey through incremental computation&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
-<li><a href="#org8407d37">8.4.7. Making Fast Incremental Compiler for Huge Codebase&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
-<li><a href="#orgef8d060">8.4.8. How to load 1m lines of Ruby in 5s&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
-<li><a href="#orgb6ff347">8.4.9. Compilers are Databases&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
-<li><a href="#org79d4354">8.4.10. Anders Hejlsberg on Modern Compiler Construction&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
-<li><a href="#orga57d343">8.4.11. Responsive compilers&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
+<li><a href="#org888c709">6.1. SydML</a>
+<ul>
+<li><a href="#org25c456b">6.1.1. Syntax</a></li>
 </ul>
 </li>
-<li><a href="#orgb00094d">8.5. Miscellaneous</a>
+<li><a href="#orgd0871db">6.2. Core</a></li>
+<li><a href="#orge8ac305">6.3. ANF</a></li>
+<li><a href="#orgb63bf3b">6.4. QBE</a></li>
+</ul>
+</li>
+<li><a href="#orgf11ad0d">7. Progress</a>
 <ul>
-<li><a href="#orgecde9f8">8.5.1. [-] [#A] Lessons from Writing a Compiler</a></li>
-<li><a href="#orgdeb7e0d">8.5.2. [X] Matt Might — Closure Conversion</a></li>
-<li><a href="#org999fce6">8.5.3. Towards a practical programming language based on dependent type theory</a></li>
-<li><a href="#org9501817">8.5.4. Implementing a JIT Compiled Language with Haskell and LLVM</a></li>
-<li><a href="#orgb608a71">8.5.5. [X] Build systems à la carte: Theory and Practice</a></li>
-<li><a href="#org15f00ab">8.5.6. A Reddit thread about functional IRs</a></li>
-<li><a href="#org71add91">8.5.7. Making a Fast Curry: Push/Enter vs. Eval/Apply for Higher-order Languages</a></li>
-<li><a href="#orgab5067b">8.5.8. Custom Cabal builds</a></li>
-<li><a href="#orgddf5385">8.5.9. Nix tree-sitter examples</a></li>
-<li><a href="#org3c319aa">8.5.10. Tarditi — No Assembly Required: Compiling SML to C</a></li>
+<li><a href="#orgdee8441">7.1. Milestones</a>
+<ul>
+<li><a href="#org5c19bbc">7.1.1. <span class="done DONE">DONE</span> 0 Preemptive Planning <code>[6/6]</code></a></li>
+<li><a href="#org49a1c58">7.1.2. <span class="done DONE">DONE</span> 1 Research Toys <code>[7/7]</code></a></li>
+<li><a href="#org4bde67d">7.1.3. <span class="todo TODO">TODO</span> 2 Layer 1 <code>[6/7]</code></a></li>
+<li><a href="#org8454ea9">7.1.4. <span class="todo TODO">TODO</span> 3 The Empty Module <code>[0/8]</code></a></li>
+</ul>
+</li>
+<li><a href="#org8a734d7">7.2. Other</a>
+<ul>
+<li><a href="#orgf179a4a">7.2.1. Nix setup</a></li>
+<li><a href="#orgf834079">7.2.2. Documentation</a></li>
+<li><a href="#orgb8e7235">7.2.3. GitHub Pages action</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgcdfd551">8. Resources</a>
+<ul>
+<li><a href="#org1500f15">8.1. Reference projects</a>
+<ul>
+<li><a href="#org596d376">8.1.1. sixten/sixty</a></li>
+<li><a href="#org04da8cb">8.1.2. eclair</a></li>
+<li><a href="#org320d35f">8.1.3. hnix</a></li>
+<li><a href="#org661551f">8.1.4. Hécate — boreal</a></li>
+<li><a href="#orge018235">8.1.5. elm</a></li>
+<li><a href="#org34a1497">8.1.6. purescript</a></li>
+<li><a href="#org6e1af2e">8.1.7. MLton&#xa0;&#xa0;&#xa0;<span class="tag"><span class="SML">SML</span></span></a></li>
+<li><a href="#org819d817">8.1.8. Moscow ML&#xa0;&#xa0;&#xa0;<span class="tag"><span class="SML">SML</span></span></a></li>
+<li><a href="#org09928cc">8.1.9. HaMLet&#xa0;&#xa0;&#xa0;<span class="tag"><span class="SML">SML</span></span></a></li>
+<li><a href="#org5989396">8.1.10. amy</a></li>
+<li><a href="#orge9c0207">8.1.11. Idris 2</a></li>
+<li><a href="#org0c3f620">8.1.12. Essentials of Compilation</a></li>
+</ul>
+</li>
+<li><a href="#orgcbee247">8.2. Parsing</a>
+<ul>
+<li><a href="#org63153d9">8.2.1. Efficient and Flexible Incremental Parsing</a></li>
+<li><a href="#orgdbbe86f">8.2.2. Incremental Analysis of Real Programming Languages</a></li>
+<li><a href="#orga788a35">8.2.3. Error Detection and Recovery in LR Parsers</a></li>
+<li><a href="#orgef8e4d1">8.2.4. Automatic Error Recovery for LR Parsers</a></li>
+<li><a href="#org5c97e2a">8.2.5. Treesitter&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
+<li><a href="#org220d6f4">8.2.6. Treesitter&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
+<li><a href="#org0be928a">8.2.7. Treesitter&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
+</ul>
+</li>
+<li><a href="#org60e7d0a">8.3. IRs — SSA, ANF, and CPS</a>
+<ul>
+<li><a href="#org0d755a9">8.3.1. SSA vs ANF: source code, slides.</a></li>
+<li><a href="#org1f9b312">8.3.2. Reddit discussion about ANF between Hécate and Colin</a></li>
+<li><a href="#org0d74a57">8.3.3. [X] Matt Might — A-Normalization: Why and How</a></li>
+<li><a href="#org8e23f18">8.3.4. SSA is Functional Programming </a></li>
+<li><a href="#org9b166c6">8.3.5. [X] How to compile with continuations</a></li>
+<li><a href="#org9f2c12b">8.3.6. Appel — Continuation Passing, Closure Passing Style</a></li>
+<li><a href="#org4ed6550">8.3.7. Compiling with Continuations and LLVM </a></li>
+<li><a href="#org0a0f9f9">8.3.8. [-] [#A] Compiling without continuations</a></li>
+<li><a href="#orgeb50f2d">8.3.9. Compiling with Continuations, Continued </a></li>
+<li><a href="#org90a7a87">8.3.10. Slides implementing Compiling with Continuations, Continued </a></li>
+<li><a href="#org6afad64">8.3.11. Compiling with CPS</a></li>
+<li><a href="#org78e913a">8.3.12. Original ANF paper: The Essence of Compiling with Continuations</a></li>
+<li><a href="#orgf7a80da">8.3.13. Email discussing MLton's IR and some history</a></li>
+<li><a href="#org1d60365">8.3.14. Comparing CPS, ANF, and SSA for compiling functional languages</a></li>
+<li><a href="#orgd41881d">8.3.15. A Functional Perspective on SSA Optimisation Algorithms</a></li>
+<li><a href="#org57bbb5d">8.3.16. The CPS/ANF saga</a></li>
+<li><a href="#org83e2f31">8.3.17. Tarditi — Design and Implementation of Code Optimiziations for a Type-Directed Compiler for Standard ML (ANF)</a></li>
+<li><a href="#org646fb5a">8.3.18. Paper summarizing the Tarditi thesis</a></li>
+<li><a href="#orge14fab5">8.3.19. A Correspondence between CPS and SSA</a></li>
+<li><a href="#orgd2324fe">8.3.20. [X] Colin — Compiling the λ-calculus</a></li>
+</ul>
+</li>
+<li><a href="#orgd9417ce">8.4. Compiler Architecture</a>
+<ul>
+<li><a href="#orgbd81b01">8.4.1. rustc demand-driven-compilation</a></li>
+<li><a href="#orgffdf78e">8.4.2. [X] Query-based compiler architectures</a></li>
+<li><a href="#org9c8db05">8.4.3. [X] Three Architectures for a Responsive IDE</a></li>
+<li><a href="#orgc41f214">8.4.4. Practical Algorithms for Incremental Software Development Environments</a></li>
+<li><a href="#org9922c9f">8.4.5. Query-based compiler architectures&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
+<li><a href="#org95cc1d1">8.4.6. A journey through incremental computation&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
+<li><a href="#orgac3c75f">8.4.7. Making Fast Incremental Compiler for Huge Codebase&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
+<li><a href="#org37f7863">8.4.8. How to load 1m lines of Ruby in 5s&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
+<li><a href="#org4ead18e">8.4.9. Compilers are Databases&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
+<li><a href="#org3c8fef3">8.4.10. Anders Hejlsberg on Modern Compiler Construction&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
+<li><a href="#orgf2b3d44">8.4.11. Responsive compilers&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></a></li>
+</ul>
+</li>
+<li><a href="#org4d879af">8.5. Miscellaneous</a>
+<ul>
+<li><a href="#org1a8abc5">8.5.1. [-] [#A] Lessons from Writing a Compiler</a></li>
+<li><a href="#org6067200">8.5.2. [X] Matt Might — Closure Conversion</a></li>
+<li><a href="#org1730ad3">8.5.3. Towards a practical programming language based on dependent type theory</a></li>
+<li><a href="#org21c7345">8.5.4. Implementing a JIT Compiled Language with Haskell and LLVM</a></li>
+<li><a href="#orgef6cd25">8.5.5. [X] Build systems à la carte: Theory and Practice</a></li>
+<li><a href="#org745c4dc">8.5.6. A Reddit thread about functional IRs</a></li>
+<li><a href="#orge28c377">8.5.7. Making a Fast Curry: Push/Enter vs. Eval/Apply for Higher-order Languages</a></li>
+<li><a href="#org2dbdae8">8.5.8. Custom Cabal builds</a></li>
+<li><a href="#org021ff00">8.5.9. Nix tree-sitter examples</a></li>
+<li><a href="#org8db1b71">8.5.10. Tarditi — No Assembly Required: Compiling SML to C</a></li>
 </ul>
 </li>
 </ul>
@@ -190,8 +190,8 @@
 </div>
 </div>
 
-<div id="outline-container-org8700282" class="outline-2">
-<h2 id="org8700282"><span class="section-number-2">1.</span> About</h2>
+<div id="outline-container-org69308df" class="outline-2">
+<h2 id="org69308df"><span class="section-number-2">1.</span> About</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 SydML is currently planned to be a functional programming language with strict
@@ -205,12 +205,12 @@ organisation. See the rendered HTML <a href="https://crumbtoo.github.io/sydml">h
 </div>
 </div>
 
-<div id="outline-container-orgf247c4b" class="outline-2">
-<h2 id="orgf247c4b"><span class="section-number-2">2.</span> Notice board</h2>
+<div id="outline-container-org4bcae17" class="outline-2">
+<h2 id="org4bcae17"><span class="section-number-2">2.</span> Notice board</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgf5ac370" class="outline-3">
-<h3 id="orgf5ac370"><span class="section-number-3">2.1.</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-09-18 Wed] </span></span> Productivity</h3>
+<div id="outline-container-org53a4473" class="outline-3">
+<h3 id="org53a4473"><span class="section-number-3">2.1.</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-09-18 Wed] </span></span> Productivity</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 I've been off my meds since <span class="timestamp-wrapper"><span class="timestamp">[2024-08-20 Tue]</span></span>, and caffeine lost its kick about a
@@ -234,8 +234,8 @@ of Ritalin and Benzedrine.
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org5b25e8f" class="outline-3">
-<h3 id="org5b25e8f"><span class="section-number-3">2.2.</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-09-20 Fri] </span></span> We're so back!!!</h3>
+<div id="outline-container-org739826d" class="outline-3">
+<h3 id="org739826d"><span class="section-number-3">2.2.</span> <span class="timestamp-wrapper"><span class="timestamp">[2024-09-20 Fri] </span></span> We're so back!!!</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 I am medicated again, for the first time in about a month!
@@ -243,12 +243,12 @@ I am medicated again, for the first time in about a month!
 </div>
 </div>
 </div>
-<div id="outline-container-org724d376" class="outline-2">
-<h2 id="org724d376"><span class="section-number-2">3.</span> Motivation</h2>
+<div id="outline-container-org6104bd9" class="outline-2">
+<h2 id="org6104bd9"><span class="section-number-2">3.</span> Motivation</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orgd14f294" class="outline-3">
-<h3 id="orgd14f294"><span class="section-number-3">3.1.</span> Demonstrate that I've learned from last year's failures</h3>
+<div id="outline-container-orga0ba1d7" class="outline-3">
+<h3 id="orga0ba1d7"><span class="section-number-3">3.1.</span> Demonstrate that I've learned from last year's failures</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 The entire project collapsed at the last minute, likely as a result of the
@@ -256,8 +256,8 @@ following points.
 </p>
 </div>
 
-<div id="outline-container-org4c14b62" class="outline-4">
-<h4 id="org4c14b62"><span class="section-number-4">3.1.1.</span> Very poor planning.</h4>
+<div id="outline-container-org39bbc3f" class="outline-4">
+<h4 id="org39bbc3f"><span class="section-number-4">3.1.1.</span> Very poor planning.</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 A lack of thorough planning led to extreme unstability, ultimately leaving me
@@ -275,8 +275,8 @@ be sure to account for not only high-level passes, but also
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd1b296f" class="outline-4">
-<h4 id="orgd1b296f"><span class="section-number-4">3.1.2.</span> Not enough testing.</h4>
+<div id="outline-container-org52de2b3" class="outline-4">
+<h4 id="org52de2b3"><span class="section-number-4">3.1.2.</span> Not enough testing.</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <p>
 The volatile codebase did not mesh will with my tests against internal APIs. The
@@ -300,49 +300,49 @@ an example input matches an output file, bit-for-bit.</li>
 </div>
 </div>
 </div>
-<div id="outline-container-org5c5d2d8" class="outline-3">
-<h3 id="org5c5d2d8"><span class="section-number-3">3.2.</span> New goals</h3>
+<div id="outline-container-org4c2a196" class="outline-3">
+<h3 id="org4c2a196"><span class="section-number-3">3.2.</span> New goals</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 While last year's compiler was primarily language-focused, I now intend to focus
 on compiler techniques.
 </p>
 </div>
-<div id="outline-container-orgce4eb07" class="outline-4">
-<h4 id="orgce4eb07"><span class="section-number-4">3.2.1.</span> IRs — ANF and SSA</h4>
+<div id="outline-container-org13f748b" class="outline-4">
+<h4 id="org13f748b"><span class="section-number-4">3.2.1.</span> IRs — ANF and SSA</h4>
 </div>
 </div>
 </div>
-<div id="outline-container-org4672d96" class="outline-2">
-<h2 id="org4672d96"><span class="section-number-2">4.</span> Project structure</h2>
+<div id="outline-container-org916a66e" class="outline-2">
+<h2 id="org916a66e"><span class="section-number-2">4.</span> Project structure</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org883bacd" class="outline-3">
-<h3 id="org883bacd"><span class="section-number-3">4.1.</span> <code>sydml</code></h3>
+<div id="outline-container-org7c98e07" class="outline-3">
+<h3 id="org7c98e07"><span class="section-number-3">4.1.</span> <code>sydml</code></h3>
 <div class="outline-text-3" id="text-4-1">
 </div>
-<div id="outline-container-org750c797" class="outline-4">
-<h4 id="org750c797"><span class="section-number-4">4.1.1.</span> <code>app</code></h4>
+<div id="outline-container-org2b65a00" class="outline-4">
+<h4 id="org2b65a00"><span class="section-number-4">4.1.1.</span> <code>app</code></h4>
 </div>
-<div id="outline-container-org4e87c3d" class="outline-4">
-<h4 id="org4e87c3d"><span class="section-number-4">4.1.2.</span> <code>src</code></h4>
+<div id="outline-container-orgdc80eda" class="outline-4">
+<h4 id="orgdc80eda"><span class="section-number-4">4.1.2.</span> <code>src</code></h4>
 </div>
-<div id="outline-container-org8d488d3" class="outline-4">
-<h4 id="org8d488d3"><span class="section-number-4">4.1.3.</span> <code>test</code></h4>
+<div id="outline-container-org3f335cb" class="outline-4">
+<h4 id="org3f335cb"><span class="section-number-4">4.1.3.</span> <code>test</code></h4>
 </div>
 </div>
-<div id="outline-container-org158ef63" class="outline-3">
-<h3 id="org158ef63"><span class="section-number-3">4.2.</span> <code>presydml</code></h3>
+<div id="outline-container-org82ea748" class="outline-3">
+<h3 id="org82ea748"><span class="section-number-3">4.2.</span> <code>presydml</code></h3>
 </div>
-<div id="outline-container-org151fd81" class="outline-3">
-<h3 id="org151fd81"><span class="section-number-3">4.3.</span> <code>vendor</code></h3>
+<div id="outline-container-org8ca7df5" class="outline-3">
+<h3 id="org8ca7df5"><span class="section-number-3">4.3.</span> <code>vendor</code></h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 Vendored dependencies.
 </p>
 </div>
-<div id="outline-container-orgcae62dc" class="outline-4">
-<h4 id="orgcae62dc"><span class="section-number-4">4.3.1.</span> <code>tree-sitter</code></h4>
+<div id="outline-container-org328e4eb" class="outline-4">
+<h4 id="org328e4eb"><span class="section-number-4">4.3.1.</span> <code>tree-sitter</code></h4>
 <div class="outline-text-4" id="text-4-3-1">
 <p>
 The tree-sitter bindings for Haskell leave a lot to be desired. My patches
@@ -354,8 +354,8 @@ include the following:
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfe371ce" class="outline-4">
-<h4 id="orgfe371ce"><span class="section-number-4">4.3.2.</span> <code>qbe</code></h4>
+<div id="outline-container-orgad9b0a9" class="outline-4">
+<h4 id="orgad9b0a9"><span class="section-number-4">4.3.2.</span> <code>qbe</code></h4>
 <div class="outline-text-4" id="text-4-3-2">
 <p>
 This library provides a Haskell representation of QBE's IL. Patches include the
@@ -369,8 +369,8 @@ year.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org22a2889" class="outline-4">
-<h4 id="org22a2889"><span class="section-number-4">4.3.3.</span> <code>compiler-explorer</code></h4>
+<div id="outline-container-org1f38f4b" class="outline-4">
+<h4 id="org1f38f4b"><span class="section-number-4">4.3.3.</span> <code>compiler-explorer</code></h4>
 <div class="outline-text-4" id="text-4-3-3">
 <p>
 A tool for viewing compiler output and IRS. My patches include:
@@ -382,16 +382,16 @@ A tool for viewing compiler output and IRS. My patches include:
 </div>
 </div>
 </div>
-<div id="outline-container-org9826128" class="outline-3">
-<h3 id="org9826128"><span class="section-number-3">4.4.</span> <code>doc</code></h3>
+<div id="outline-container-orgba887b7" class="outline-3">
+<h3 id="orgba887b7"><span class="section-number-3">4.4.</span> <code>doc</code></h3>
 <div class="outline-text-3" id="text-4-4">
 <p>
 Documentation. Currently, this solely serves as a home for the rendered HTML of the README.
 </p>
 </div>
 </div>
-<div id="outline-container-org9a69c30" class="outline-3">
-<h3 id="org9a69c30"><span class="section-number-3">4.5.</span> <code>tree-sitter-sydml</code></h3>
+<div id="outline-container-org16cc794" class="outline-3">
+<h3 id="org16cc794"><span class="section-number-3">4.5.</span> <code>tree-sitter-sydml</code></h3>
 <div class="outline-text-3" id="text-4-5">
 <p>
 Houses Sydc's parser.
@@ -399,8 +399,8 @@ Houses Sydc's parser.
 </div>
 </div>
 </div>
-<div id="outline-container-orgab0de7c" class="outline-2">
-<h2 id="orgab0de7c"><span class="section-number-2">5.</span> Compiler overview</h2>
+<div id="outline-container-org0d56c2d" class="outline-2">
+<h2 id="org0d56c2d"><span class="section-number-2">5.</span> Compiler overview</h2>
 <div class="outline-text-2" id="text-5">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -457,56 +457,56 @@ Houses Sydc's parser.
 <tr>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">Parse</td>
-<td class="org-left"><a href="#orgc198e71">AST</a></td>
+<td class="org-left"><a href="#org888c709">AST</a></td>
 <td class="org-left"><code>Surface.Module Parse</code></td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">Rename</td>
-<td class="org-left"><a href="#orgc198e71">AST</a></td>
+<td class="org-left"><a href="#org888c709">AST</a></td>
 <td class="org-left"><code>Surface.Module Rename</code></td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">Type-check</td>
-<td class="org-left"><a href="#orgc198e71">Typed AST</a></td>
+<td class="org-left"><a href="#org888c709">Typed AST</a></td>
 <td class="org-left">TBD</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">Elaborate</td>
-<td class="org-left"><a href="#orgdf85578">Core</a></td>
+<td class="org-left"><a href="#orgd0871db">Core</a></td>
 <td class="org-left"><code>Core.Module</code></td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">ToANF</td>
-<td class="org-left"><a href="#org9114595">ANF</a></td>
+<td class="org-left"><a href="#orge8ac305">ANF</a></td>
 <td class="org-left"><code>ANF.Module</code></td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">Closure-convert</td>
-<td class="org-left"><a href="#org9114595">ANF</a></td>
+<td class="org-left"><a href="#orge8ac305">ANF</a></td>
 <td class="org-left"><code>ANF.Module</code></td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">LambdaLift</td>
-<td class="org-left"><a href="#org9114595">Lambda-lifted ANF</a></td>
+<td class="org-left"><a href="#orge8ac305">Lambda-lifted ANF</a></td>
 <td class="org-left"><code>ANF.LambdaLiftedModule</code></td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">ToQBE</td>
-<td class="org-left"><a href="#org607a257">QBE</a></td>
+<td class="org-left"><a href="#orgb63bf3b">QBE</a></td>
 <td class="org-left"><code>QBE.Program</code></td>
 </tr>
 
@@ -543,16 +543,16 @@ Houses Sydc's parser.
 </table>
 </div>
 </div>
-<div id="outline-container-org83d085a" class="outline-2">
-<h2 id="org83d085a"><span class="section-number-2">6.</span> Languages</h2>
+<div id="outline-container-org0fe07ff" class="outline-2">
+<h2 id="org0fe07ff"><span class="section-number-2">6.</span> Languages</h2>
 <div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-orgc198e71" class="outline-3">
-<h3 id="orgc198e71"><span class="section-number-3">6.1.</span> SydML</h3>
+<div id="outline-container-org888c709" class="outline-3">
+<h3 id="org888c709"><span class="section-number-3">6.1.</span> SydML</h3>
 <div class="outline-text-3" id="text-6-1">
 </div>
-<div id="outline-container-org7c0f9d0" class="outline-4">
-<h4 id="org7c0f9d0"><span class="section-number-4">6.1.1.</span> Syntax</h4>
+<div id="outline-container-org25c456b" class="outline-4">
+<h4 id="org25c456b"><span class="section-number-4">6.1.1.</span> Syntax</h4>
 <div class="outline-text-4" id="text-6-1-1">
 <ul class="org-ul">
 <li>We use Haskell-style layouts, meaning that one can group productions by either
@@ -561,8 +561,8 @@ alignment, or semicolons and braces.</li>
 </div>
 </div>
 </div>
-<div id="outline-container-orgdf85578" class="outline-3">
-<h3 id="orgdf85578"><span class="section-number-3">6.2.</span> Core</h3>
+<div id="outline-container-orgd0871db" class="outline-3">
+<h3 id="orgd0871db"><span class="section-number-3">6.2.</span> Core</h3>
 <div class="outline-text-3" id="text-6-2">
 <p>
 Core is an explicitly-typed IL based on System F<sub>ω</sub>. Internally
@@ -588,15 +588,15 @@ k ::= Type                  The kind of all types
 </div>
 </div>
 </div>
-<div id="outline-container-org9114595" class="outline-3">
-<h3 id="org9114595"><span class="section-number-3">6.3.</span> ANF</h3>
+<div id="outline-container-orge8ac305" class="outline-3">
+<h3 id="orge8ac305"><span class="section-number-3">6.3.</span> ANF</h3>
 </div>
-<div id="outline-container-org607a257" class="outline-3">
-<h3 id="org607a257"><span class="section-number-3">6.4.</span> QBE</h3>
+<div id="outline-container-orgb63bf3b" class="outline-3">
+<h3 id="orgb63bf3b"><span class="section-number-3">6.4.</span> QBE</h3>
 </div>
 </div>
-<div id="outline-container-org978d937" class="outline-2">
-<h2 id="org978d937"><span class="section-number-2">7.</span> Progress</h2>
+<div id="outline-container-orgf11ad0d" class="outline-2">
+<h2 id="orgf11ad0d"><span class="section-number-2">7.</span> Progress</h2>
 <div class="outline-text-2" id="text-7">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 1:</span> Clock summary at <span class="timestamp-wrapper"><span class="timestamp">[2024-09-21 Sat 03:26]</span></span></caption>
@@ -700,8 +700,8 @@ k ::= Type                  The kind of all types
 </table>
 </div>
 
-<div id="outline-container-orgb335567" class="outline-3">
-<h3 id="orgb335567"><span class="section-number-3">7.1.</span> Milestones</h3>
+<div id="outline-container-orgdee8441" class="outline-3">
+<h3 id="orgdee8441"><span class="section-number-3">7.1.</span> Milestones</h3>
 <div class="outline-text-3" id="text-7-1">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -783,19 +783,19 @@ k ::= Type                  The kind of all types
 </table>
 </div>
 
-<div id="outline-container-org88b063f" class="outline-4">
-<h4 id="org88b063f"><span class="section-number-4">7.1.1.</span> <span class="done DONE">DONE</span> 0 Preemptive Planning <code>[6/6]</code></h4>
+<div id="outline-container-org5c19bbc" class="outline-4">
+<h4 id="org5c19bbc"><span class="section-number-4">7.1.1.</span> <span class="done DONE">DONE</span> 0 Preemptive Planning <code>[6/6]</code></h4>
 <div class="outline-text-4" id="text-7-1-1">
 <p>
 DEADLINE: <span class="timestamp-wrapper"><span class="timestamp">&lt;2024-09-03 Tue&gt;</span></span>
 </p>
 </div>
 <ol class="org-ol">
-<li><a id="orgcfda442"></a><span class="done DONE">DONE</span> MLton-esque overview.<br /></li>
-<li><a id="org675bcb7"></a><span class="done DONE">DONE</span> Create a skeleton project.<br /></li>
-<li><a id="org296cf10"></a><span class="done DONE">DONE</span> Milestone table.<br /></li>
-<li><a id="org63627f7"></a><span class="done DONE">DONE</span> Define a CLI.<br /></li>
-<li><a id="org26d01a6"></a><span class="done DONE">DONE</span> Write tests for empty files.<br />
+<li><a id="org4740ac5"></a><span class="done DONE">DONE</span> MLton-esque overview.<br /></li>
+<li><a id="orga45b60a"></a><span class="done DONE">DONE</span> Create a skeleton project.<br /></li>
+<li><a id="org774f1b0"></a><span class="done DONE">DONE</span> Milestone table.<br /></li>
+<li><a id="org3f5040d"></a><span class="done DONE">DONE</span> Define a CLI.<br /></li>
+<li><a id="org69888b9"></a><span class="done DONE">DONE</span> Write tests for empty files.<br />
 <div class="outline-text-5" id="text-7-1-1-5">
 <ul class="org-ul">
 <li>Current blocker: I'm not sure how to uniformly run tests both against
@@ -818,11 +818,11 @@ Potential solution:
 </ul>
 </div>
 </li>
-<li><a id="org786e42a"></a><span class="done DONE">DONE</span> Define Milestone 2.<br /></li>
+<li><a id="orgb9d573b"></a><span class="done DONE">DONE</span> Define Milestone 2.<br /></li>
 </ol>
 </div>
-<div id="outline-container-orgdb46242" class="outline-4">
-<h4 id="orgdb46242"><span class="section-number-4">7.1.2.</span> <span class="done DONE">DONE</span> 1 Research Toys <code>[7/7]</code></h4>
+<div id="outline-container-org49a1c58" class="outline-4">
+<h4 id="org49a1c58"><span class="section-number-4">7.1.2.</span> <span class="done DONE">DONE</span> 1 Research Toys <code>[7/7]</code></h4>
 <div class="outline-text-4" id="text-7-1-2">
 <p>
 Implement the core algorithms as toys with toothpick scaffolding.
@@ -844,24 +844,24 @@ Known issue: There is some problem with closure conversion. Try compiling:
 </div>
 
 <ol class="org-ol">
-<li><a id="org04c6d49"></a><span class="done DONE">DONE</span> The Untyped λ-calculus<br />
+<li><a id="orgb8dd58c"></a><span class="done DONE">DONE</span> The Untyped λ-calculus<br />
 <div class="outline-text-5" id="text-7-1-2-1">
 <ul class="org-ul">
 <li>Augmented with tuples.</li>
 </ul>
 </div>
 </li>
-<li><a id="org6d32edf"></a><span class="done DONE">DONE</span> Rename<br /></li>
-<li><a id="orgf9e9873"></a><span class="done DONE">DONE</span> LowerANF<br /></li>
-<li><a id="org71398a6"></a><span class="done DONE">DONE</span> Closure-convert<br />
+<li><a id="org34ca543"></a><span class="done DONE">DONE</span> Rename<br /></li>
+<li><a id="orgd30b9ad"></a><span class="done DONE">DONE</span> LowerANF<br /></li>
+<li><a id="org778e40b"></a><span class="done DONE">DONE</span> Closure-convert<br />
 <div class="outline-text-5" id="text-7-1-2-4">
 </div>
 </li>
-<li><a id="org007048e"></a><span class="done DONE">DONE</span> Hoist<br />
+<li><a id="org2e480ea"></a><span class="done DONE">DONE</span> Hoist<br />
 <div class="outline-text-5" id="text-7-1-2-5">
 </div>
 </li>
-<li><a id="org0bd499e"></a><span class="done DONE">DONE</span> ToQBE<br />
+<li><a id="org79f559a"></a><span class="done DONE">DONE</span> ToQBE<br />
 <div class="outline-text-5" id="text-7-1-2-6">
 <ul class="org-ul">
 <li><p>
@@ -963,7 +963,7 @@ marking the completion of the ToQBE pass!
 </ul>
 </div>
 </li>
-<li><a id="orgb35f850"></a><span class="done DONE">DONE</span> Demo<br />
+<li><a id="orge4bcbad"></a><span class="done DONE">DONE</span> Demo<br />
 <div class="outline-text-5" id="text-7-1-2-7">
 <ul class="org-ul">
 <li>Maybe using <a href="https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/AddingACompiler.md">godbolt</a>?</li>
@@ -972,8 +972,8 @@ marking the completion of the ToQBE pass!
 </li>
 </ol>
 </div>
-<div id="outline-container-orgec89a67" class="outline-4">
-<h4 id="orgec89a67"><span class="section-number-4">7.1.3.</span> <span class="todo TODO">TODO</span> 2 Layer 1 <code>[6/7]</code></h4>
+<div id="outline-container-org4bde67d" class="outline-4">
+<h4 id="org4bde67d"><span class="section-number-4">7.1.3.</span> <span class="todo TODO">TODO</span> 2 Layer 1 <code>[6/7]</code></h4>
 <div class="outline-text-4" id="text-7-1-3">
 <p>
 Round three of planning. Define the core data structures, signatures for
@@ -981,20 +981,20 @@ functions between them, and tests for those functions.
 </p>
 </div>
 <ol class="org-ol">
-<li><a id="org73b5f5e"></a><span class="done DONE">DONE</span> Big decisions!<br />
+<li><a id="org55eafde"></a><span class="done DONE">DONE</span> Big decisions!<br />
 <div class="outline-text-5" id="text-7-1-3-1">
 </div>
 <ol class="org-ol">
-<li><a id="orge460bca"></a>NO Side effects?<br />
+<li><a id="org68ca876"></a>NO Side effects?<br />
 <div class="outline-text-6" id="text-7-1-3-1-1">
 <p>
 Decided against, primarily due to top-level side-effects.
 </p>
 </div>
 <ol class="org-ol">
-<li><a id="orgf754831"></a>Impure<br />
+<li><a id="org96b77da"></a>Impure<br />
 <ol class="org-ol">
-<li><a id="org26794f0"></a>Pros<br />
+<li><a id="org70653da"></a>Pros<br />
 <div class="outline-text-8" id="text-7-1-3-1-1-1-1">
 <ul class="org-ul">
 <li>Rely less on optimisations — use <code>ref</code> types.</li>
@@ -1002,7 +1002,7 @@ Decided against, primarily due to top-level side-effects.
 </ul>
 </div>
 </li>
-<li><a id="orga62813e"></a>Cons<br />
+<li><a id="org7a42b60"></a>Cons<br />
 <div class="outline-text-8" id="text-7-1-3-1-1-1-2">
 <ul class="org-ul">
 <li>Top-level side effects lead to a lot of pain in implementation and use.</li>
@@ -1011,9 +1011,9 @@ Decided against, primarily due to top-level side-effects.
 </li>
 </ol>
 </li>
-<li><a id="org2badf4a"></a>Pure<br />
+<li><a id="org34b3134"></a>Pure<br />
 <ol class="org-ol">
-<li><a id="org3366caf"></a>Pros<br />
+<li><a id="org66e34bf"></a>Pros<br />
 <div class="outline-text-8" id="text-7-1-3-1-1-2-1">
 <ul class="org-ul">
 <li>I have Haskellbrain.</li>
@@ -1021,7 +1021,7 @@ Decided against, primarily due to top-level side-effects.
 </ul>
 </div>
 </li>
-<li><a id="orgb650b82"></a>Cons<br />
+<li><a id="org261c919"></a>Cons<br />
 <div class="outline-text-8" id="text-7-1-3-1-1-2-2">
 <ul class="org-ul">
 <li>Potentially complicated to make effecient.</li>
@@ -1032,7 +1032,7 @@ Decided against, primarily due to top-level side-effects.
 </li>
 </ol>
 </li>
-<li><a id="orgaccdac2"></a>OKAY ML Modules?<br />
+<li><a id="org36f79b0"></a>OKAY ML Modules?<br />
 <div class="outline-text-6" id="text-7-1-3-1-2">
 <p>
 We can postpone this thought.
@@ -1041,79 +1041,79 @@ We can postpone this thought.
 </li>
 </ol>
 </li>
-<li><a id="org138c74c"></a><span class="done DONE">DONE</span> Core data structures <code>[9/9]</code><br />
+<li><a id="org9107f9a"></a><span class="done DONE">DONE</span> Core data structures <code>[9/9]</code><br />
 <div class="outline-text-5" id="text-7-1-3-2">
 </div>
 <ol class="org-ol">
-<li><a id="org1c75e18"></a><span class="done DONE">DONE</span> <code>Syd</code> monad<br />
+<li><a id="org73f36e6"></a><span class="done DONE">DONE</span> <code>Syd</code> monad<br />
 <div class="outline-text-6" id="text-7-1-3-2-1">
 </div>
 </li>
-<li><a id="org6d36255"></a><span class="done DONE">DONE</span> Error effect and ADT<br />
+<li><a id="org49c91dc"></a><span class="done DONE">DONE</span> Error effect and ADT<br />
 <div class="outline-text-6" id="text-7-1-3-2-2">
 </div>
 </li>
-<li><a id="org11fbdcb"></a><span class="done DONE">DONE</span> <code>Located</code><br />
+<li><a id="org9485f89"></a><span class="done DONE">DONE</span> <code>Located</code><br />
 <div class="outline-text-6" id="text-7-1-3-2-3">
 </div>
 </li>
-<li><a id="org2d87480"></a><span class="done DONE">DONE</span> Surface AST<br />
+<li><a id="org269e93b"></a><span class="done DONE">DONE</span> Surface AST<br />
 <div class="outline-text-6" id="text-7-1-3-2-4">
 </div>
 </li>
-<li><a id="orgc07490a"></a><span class="done DONE">DONE</span> Core AST<br />
+<li><a id="org8802f86"></a><span class="done DONE">DONE</span> Core AST<br />
 <div class="outline-text-6" id="text-7-1-3-2-5">
 </div>
 </li>
-<li><a id="org73a9fe1"></a><span class="done DONE">DONE</span> ANF AST<br />
+<li><a id="org1d6310c"></a><span class="done DONE">DONE</span> ANF AST<br />
 <div class="outline-text-6" id="text-7-1-3-2-6">
 </div>
 </li>
-<li><a id="orgcbd940f"></a>KILL Closure-converted AST<br />
+<li><a id="org97cdf5e"></a>KILL Closure-converted AST<br />
 <div class="outline-text-6" id="text-7-1-3-2-7">
 </div>
 </li>
-<li><a id="orgb26a0dd"></a>KILL Hoisted AST<br />
+<li><a id="org400ec72"></a>KILL Hoisted AST<br />
 <div class="outline-text-6" id="text-7-1-3-2-8">
 </div>
 </li>
-<li><a id="orga750ab7"></a>KILL CodeGen record à la <a href="https://github.com/idris-lang/Idris2/blob/5459e1726582c7326c3846bd98dfaeb9ac25cdfc/src/Compiler/Common.idr#L38">Idris</a><br />
+<li><a id="orgf88a4ab"></a>KILL CodeGen record à la <a href="https://github.com/idris-lang/Idris2/blob/5459e1726582c7326c3846bd98dfaeb9ac25cdfc/src/Compiler/Common.idr#L38">Idris</a><br />
 <div class="outline-text-6" id="text-7-1-3-2-9">
 </div>
 </li>
 </ol>
 </li>
-<li><a id="org222914b"></a><span class="done DONE">DONE</span> Pass signatures <code>[6/6]</code><br />
+<li><a id="orgb18abf0"></a><span class="done DONE">DONE</span> Pass signatures <code>[6/6]</code><br />
 <div class="outline-text-5" id="text-7-1-3-3">
 </div>
 <ol class="org-ol">
-<li><a id="org9d25191"></a><span class="done DONE">DONE</span> Parse<br />
+<li><a id="org989bcb4"></a><span class="done DONE">DONE</span> Parse<br />
 <div class="outline-text-6" id="text-7-1-3-3-1">
 </div>
 </li>
-<li><a id="orge6bc180"></a><span class="done DONE">DONE</span> Elaborate<br />
+<li><a id="org7fd9563"></a><span class="done DONE">DONE</span> Elaborate<br />
 <div class="outline-text-6" id="text-7-1-3-3-2">
 </div>
 </li>
-<li><a id="org52578be"></a><span class="done DONE">DONE</span> TypeCheck<br />
+<li><a id="orgcae1485"></a><span class="done DONE">DONE</span> TypeCheck<br />
 <div class="outline-text-6" id="text-7-1-3-3-3">
 </div>
 </li>
-<li><a id="org427c538"></a><span class="done DONE">DONE</span> ClosureConvert<br />
+<li><a id="org0c54470"></a><span class="done DONE">DONE</span> ClosureConvert<br />
 <div class="outline-text-6" id="text-7-1-3-3-4">
 </div>
 </li>
-<li><a id="orgb2a585d"></a><span class="done DONE">DONE</span> Hoist<br />
+<li><a id="org15010e9"></a><span class="done DONE">DONE</span> Hoist<br />
 <div class="outline-text-6" id="text-7-1-3-3-5">
 </div>
 </li>
-<li><a id="org80b67ba"></a><span class="done DONE">DONE</span> ToQBE<br />
+<li><a id="org9602321"></a><span class="done DONE">DONE</span> ToQBE<br />
 <div class="outline-text-6" id="text-7-1-3-3-6">
 </div>
 </li>
 </ol>
 </li>
-<li><a id="org043c24d"></a>KILL Debug flags <code>[0/7]</code><br />
+<li><a id="orga679cdf"></a>KILL Debug flags <code>[0/7]</code><br />
 <div class="outline-text-5" id="text-7-1-3-4">
 <p>
 Pushed back. These can be implemented once the ASTs in question are more fleshed
@@ -1121,101 +1121,101 @@ out.
 </p>
 </div>
 <ol class="org-ol">
-<li><a id="orgfb63c9b"></a>KILL <code>-ddump-ast</code><br />
+<li><a id="org661f0b4"></a>KILL <code>-ddump-ast</code><br />
 <div class="outline-text-6" id="text-7-1-3-4-1">
 </div>
 </li>
-<li><a id="orgfa5a79f"></a>KILL <code>-ddump-core</code><br />
+<li><a id="org2a5c2b1"></a>KILL <code>-ddump-core</code><br />
 <div class="outline-text-6" id="text-7-1-3-4-2">
 </div>
 </li>
-<li><a id="org0a58cba"></a>KILL <code>-ddump-type-check</code><br />
+<li><a id="org72769f4"></a>KILL <code>-ddump-type-check</code><br />
 <div class="outline-text-6" id="text-7-1-3-4-3">
 </div>
 </li>
-<li><a id="orgc9e26e9"></a>KILL <code>-ddump-anf</code><br />
+<li><a id="org33e5af9"></a>KILL <code>-ddump-anf</code><br />
 <div class="outline-text-6" id="text-7-1-3-4-4">
 </div>
 </li>
-<li><a id="org0d456d3"></a>KILL <code>-ddump-closure-convert</code><br />
+<li><a id="orgd0a813e"></a>KILL <code>-ddump-closure-convert</code><br />
 <div class="outline-text-6" id="text-7-1-3-4-5">
 </div>
 </li>
-<li><a id="orgd327a0b"></a>KILL <code>-ddump-hoist</code><br />
+<li><a id="org0814c56"></a>KILL <code>-ddump-hoist</code><br />
 <div class="outline-text-6" id="text-7-1-3-4-6">
 </div>
 </li>
-<li><a id="org2b0d662"></a>KILL <code>-ddump-qbe</code><br />
+<li><a id="org77f2744"></a>KILL <code>-ddump-qbe</code><br />
 <div class="outline-text-6" id="text-7-1-3-4-7">
 </div>
 </li>
 </ol>
 </li>
-<li><a id="org946032c"></a><span class="done DONE">DONE</span> Tests<br />
+<li><a id="org9d16b32"></a><span class="done DONE">DONE</span> Tests<br />
 <div class="outline-text-5" id="text-7-1-3-5">
 </div>
 </li>
-<li><a id="orgbc2ca24"></a><span class="done DONE">DONE</span> CI/CD<br />
+<li><a id="org7fbd17b"></a><span class="done DONE">DONE</span> CI/CD<br />
 <div class="outline-text-5" id="text-7-1-3-6">
 <ul class="org-ul">
 <li>w/ <a href="https://omnix.page/om/ci.html">omnix</a></li>
 </ul>
 </div>
 </li>
-<li><a id="orgead74f1"></a><span class="todo TODO">TODO</span> Record demo<br /></li>
+<li><a id="orgbdef298"></a><span class="todo TODO">TODO</span> Record demo<br /></li>
 </ol>
 </div>
-<div id="outline-container-orgf17d8d3" class="outline-4">
-<h4 id="orgf17d8d3"><span class="section-number-4">7.1.4.</span> <span class="todo TODO">TODO</span> 3 The Empty Module <code>[0/8]</code></h4>
+<div id="outline-container-org8454ea9" class="outline-4">
+<h4 id="org8454ea9"><span class="section-number-4">7.1.4.</span> <span class="todo TODO">TODO</span> 3 The Empty Module <code>[0/8]</code></h4>
 <div class="outline-text-4" id="text-7-1-4">
 </div>
 <ol class="org-ol">
-<li><a id="orgaf4cc6a"></a><span class="todo TODO">TODO</span> Parse<br /></li>
-<li><a id="org9029edf"></a><span class="todo TODO">TODO</span> Rename<br /></li>
-<li><a id="org6767435"></a><span class="todo TODO">TODO</span> Type-check<br /></li>
-<li><a id="org4329ca0"></a><span class="todo TODO">TODO</span> Elaborate<br /></li>
-<li><a id="orge680c03"></a><span class="todo TODO">TODO</span> Closure-convert<br /></li>
-<li><a id="org1ea1a64"></a><span class="todo TODO">TODO</span> Hoist<br /></li>
-<li><a id="org19698bf"></a><span class="todo TODO">TODO</span> LowerANF<br /></li>
-<li><a id="org669a84e"></a><span class="todo TODO">TODO</span> ToQBE<br /></li>
+<li><a id="org9c88176"></a><span class="todo TODO">TODO</span> Parse<br /></li>
+<li><a id="org86c95a6"></a><span class="todo TODO">TODO</span> Rename<br /></li>
+<li><a id="org8b23d24"></a><span class="todo TODO">TODO</span> Type-check<br /></li>
+<li><a id="org4a7d35c"></a><span class="todo TODO">TODO</span> Elaborate<br /></li>
+<li><a id="orgbb5e281"></a><span class="todo TODO">TODO</span> Closure-convert<br /></li>
+<li><a id="org19e87ef"></a><span class="todo TODO">TODO</span> Hoist<br /></li>
+<li><a id="orgb2375b8"></a><span class="todo TODO">TODO</span> LowerANF<br /></li>
+<li><a id="org19da64d"></a><span class="todo TODO">TODO</span> ToQBE<br /></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org6ad9f36" class="outline-3">
-<h3 id="org6ad9f36"><span class="section-number-3">7.2.</span> Other</h3>
+<div id="outline-container-org8a734d7" class="outline-3">
+<h3 id="org8a734d7"><span class="section-number-3">7.2.</span> Other</h3>
 <div class="outline-text-3" id="text-7-2">
 <p>
 I am not convinced that some of these tasks should count towards "work time;"
 regardless, I choose to log them.
 </p>
 </div>
-<div id="outline-container-orgb0afa5f" class="outline-4">
-<h4 id="orgb0afa5f"><span class="section-number-4">7.2.1.</span> Nix setup</h4>
+<div id="outline-container-orgf179a4a" class="outline-4">
+<h4 id="orgf179a4a"><span class="section-number-4">7.2.1.</span> Nix setup</h4>
 <div class="outline-text-4" id="text-7-2-1">
 </div>
 </div>
-<div id="outline-container-org2c2a4d5" class="outline-4">
-<h4 id="org2c2a4d5"><span class="section-number-4">7.2.2.</span> Documentation</h4>
+<div id="outline-container-orgf834079" class="outline-4">
+<h4 id="orgf834079"><span class="section-number-4">7.2.2.</span> Documentation</h4>
 <div class="outline-text-4" id="text-7-2-2">
 </div>
 </div>
-<div id="outline-container-org21e8380" class="outline-4">
-<h4 id="org21e8380"><span class="section-number-4">7.2.3.</span> GitHub Pages action</h4>
+<div id="outline-container-orgb8e7235" class="outline-4">
+<h4 id="orgb8e7235"><span class="section-number-4">7.2.3.</span> GitHub Pages action</h4>
 <div class="outline-text-4" id="text-7-2-3">
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-orgb2079b4" class="outline-2">
-<h2 id="orgb2079b4"><span class="section-number-2">8.</span> Resources</h2>
+<div id="outline-container-orgcdfd551" class="outline-2">
+<h2 id="orgcdfd551"><span class="section-number-2">8.</span> Resources</h2>
 <div class="outline-text-2" id="text-8">
 </div>
-<div id="outline-container-orgfa2c970" class="outline-3">
-<h3 id="orgfa2c970"><span class="section-number-3">8.1.</span> Reference projects</h3>
+<div id="outline-container-org1500f15" class="outline-3">
+<h3 id="org1500f15"><span class="section-number-3">8.1.</span> Reference projects</h3>
 <div class="outline-text-3" id="text-8-1">
 </div>
-<div id="outline-container-org9b12f08" class="outline-4">
-<h4 id="org9b12f08"><span class="section-number-4">8.1.1.</span> <a href="https://github.com/ollef/sixten">sixten</a>/<a href="https://github.com/ollef/sixty">sixty</a></h4>
+<div id="outline-container-org596d376" class="outline-4">
+<h4 id="org596d376"><span class="section-number-4">8.1.1.</span> <a href="https://github.com/ollef/sixten">sixten</a>/<a href="https://github.com/ollef/sixty">sixty</a></h4>
 <div class="outline-text-4" id="text-8-1-1">
 <ul class="org-ul">
 <li>the latter is a rewrite of the former.</li>
@@ -1224,8 +1224,8 @@ regardless, I choose to log them.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc707d70" class="outline-4">
-<h4 id="orgc707d70"><span class="section-number-4">8.1.2.</span> <a href="https://github.com/luc-tielen/eclair-lang">eclair</a></h4>
+<div id="outline-container-org04da8cb" class="outline-4">
+<h4 id="org04da8cb"><span class="section-number-4">8.1.2.</span> <a href="https://github.com/luc-tielen/eclair-lang">eclair</a></h4>
 <div class="outline-text-4" id="text-8-1-2">
 <ul class="org-ul">
 <li>implements datalog.</li>
@@ -1235,8 +1235,8 @@ regardless, I choose to log them.
 </ul>
 </div>
 </div>
-<div id="outline-container-org79bc012" class="outline-4">
-<h4 id="org79bc012"><span class="section-number-4">8.1.3.</span> <a href="https://hackage.haskell.org/package/hnix">hnix</a></h4>
+<div id="outline-container-org320d35f" class="outline-4">
+<h4 id="org320d35f"><span class="section-number-4">8.1.3.</span> <a href="https://hackage.haskell.org/package/hnix">hnix</a></h4>
 <div class="outline-text-4" id="text-8-1-3">
 <ul class="org-ul">
 <li>an interpreter for the nix language.</li>
@@ -1245,8 +1245,8 @@ regardless, I choose to log them.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf565499" class="outline-4">
-<h4 id="orgf565499"><span class="section-number-4">8.1.4.</span> <a href="https://github.com/Kleidukos/boreal">Hécate — boreal</a></h4>
+<div id="outline-container-org661551f" class="outline-4">
+<h4 id="org661551f"><span class="section-number-4">8.1.4.</span> <a href="https://github.com/Kleidukos/boreal">Hécate — boreal</a></h4>
 <div class="outline-text-4" id="text-8-1-4">
 <p>
 The lovely Hécate's <code>boreal</code> compiler has been an excelent reference. <i>Many</i> of our
@@ -1263,8 +1263,8 @@ design decisions align, which has been invaluably convenient for myself }:3.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc3a02e2" class="outline-4">
-<h4 id="orgc3a02e2"><span class="section-number-4">8.1.5.</span> <a href="https://github.com/elm/compiler">elm</a></h4>
+<div id="outline-container-orge018235" class="outline-4">
+<h4 id="orge018235"><span class="section-number-4">8.1.5.</span> <a href="https://github.com/elm/compiler">elm</a></h4>
 <div class="outline-text-4" id="text-8-1-5">
 <ul class="org-ul">
 <li>targets JS.</li>
@@ -1274,8 +1274,8 @@ design decisions align, which has been invaluably convenient for myself }:3.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgff74656" class="outline-4">
-<h4 id="orgff74656"><span class="section-number-4">8.1.6.</span> <a href="https://github.com/purescript/purescript">purescript</a></h4>
+<div id="outline-container-org34a1497" class="outline-4">
+<h4 id="org34a1497"><span class="section-number-4">8.1.6.</span> <a href="https://github.com/purescript/purescript">purescript</a></h4>
 <div class="outline-text-4" id="text-8-1-6">
 <ul class="org-ul">
 <li>haskell-like source language.</li>
@@ -1283,8 +1283,8 @@ design decisions align, which has been invaluably convenient for myself }:3.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgecf6029" class="outline-4">
-<h4 id="orgecf6029"><span class="section-number-4">8.1.7.</span> <a href="http://mlton.org/CompilerOverview">MLton</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="SML">SML</span></span></h4>
+<div id="outline-container-org6e1af2e" class="outline-4">
+<h4 id="org6e1af2e"><span class="section-number-4">8.1.7.</span> <a href="http://mlton.org/CompilerOverview">MLton</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="SML">SML</span></span></h4>
 <div class="outline-text-4" id="text-8-1-7">
 <ul class="org-ul">
 <li>many different IRs.</li>
@@ -1294,19 +1294,19 @@ design decisions align, which has been invaluably convenient for myself }:3.
 </ul>
 </div>
 </div>
-<div id="outline-container-org9f01e03" class="outline-4">
-<h4 id="org9f01e03"><span class="section-number-4">8.1.8.</span> <a href="https://github.com/kfl/mosml">Moscow ML</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="SML">SML</span></span></h4>
+<div id="outline-container-org819d817" class="outline-4">
+<h4 id="org819d817"><span class="section-number-4">8.1.8.</span> <a href="https://github.com/kfl/mosml">Moscow ML</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="SML">SML</span></span></h4>
 </div>
-<div id="outline-container-orgc5fc0b6" class="outline-4">
-<h4 id="orgc5fc0b6"><span class="section-number-4">8.1.9.</span> <a href="https://github.com/rossberg/hamlet">HaMLet</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="SML">SML</span></span></h4>
+<div id="outline-container-org09928cc" class="outline-4">
+<h4 id="org09928cc"><span class="section-number-4">8.1.9.</span> <a href="https://github.com/rossberg/hamlet">HaMLet</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="SML">SML</span></span></h4>
 <div class="outline-text-4" id="text-8-1-9">
 <ul class="org-ul">
 <li>Self-described as a reference implementation.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org59fbe82" class="outline-4">
-<h4 id="org59fbe82"><span class="section-number-4">8.1.10.</span> <a href="https://github.com/jdreaver/amy">amy</a></h4>
+<div id="outline-container-org5989396" class="outline-4">
+<h4 id="org5989396"><span class="section-number-4">8.1.10.</span> <a href="https://github.com/jdreaver/amy">amy</a></h4>
 <div class="outline-text-4" id="text-8-1-10">
 <ul class="org-ul">
 <li>targets LLVM.</li>
@@ -1317,8 +1317,8 @@ design decisions align, which has been invaluably convenient for myself }:3.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd16394e" class="outline-4">
-<h4 id="orgd16394e"><span class="section-number-4">8.1.11.</span> <a href="https://github.com/idris-lang/Idris2/">Idris 2</a></h4>
+<div id="outline-container-orge9c0207" class="outline-4">
+<h4 id="orge9c0207"><span class="section-number-4">8.1.11.</span> <a href="https://github.com/idris-lang/Idris2/">Idris 2</a></h4>
 <div class="outline-text-4" id="text-8-1-11">
 <ul class="org-ul">
 <li>Elegantly supports multiple and third-party backends.</li>
@@ -1326,8 +1326,8 @@ design decisions align, which has been invaluably convenient for myself }:3.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfe2a737" class="outline-4">
-<h4 id="orgfe2a737"><span class="section-number-4">8.1.12.</span> <a href="https://github.com/IUCompilerCourse/Essentials-of-Compilation?tab=readme-ov-file">Essentials of Compilation</a></h4>
+<div id="outline-container-org0c3f620" class="outline-4">
+<h4 id="org0c3f620"><span class="section-number-4">8.1.12.</span> <a href="https://github.com/IUCompilerCourse/Essentials-of-Compilation?tab=readme-ov-file">Essentials of Compilation</a></h4>
 <div class="outline-text-4" id="text-8-1-12">
 <ul class="org-ul">
 <li>A book about compiling Racket and Python to x86-64 assembly.</li>
@@ -1335,63 +1335,63 @@ design decisions align, which has been invaluably convenient for myself }:3.
 </div>
 </div>
 </div>
-<div id="outline-container-org3597068" class="outline-3">
-<h3 id="org3597068"><span class="section-number-3">8.2.</span> Parsing</h3>
+<div id="outline-container-orgcbee247" class="outline-3">
+<h3 id="orgcbee247"><span class="section-number-3">8.2.</span> Parsing</h3>
 <div class="outline-text-3" id="text-8-2">
 </div>
-<div id="outline-container-org2dd2694" class="outline-4">
-<h4 id="org2dd2694"><span class="section-number-4">8.2.1.</span> <a href="https://www.researchgate.net/profile/Sl-Graham/publication/2377179_Efficient_and_Flexible_Incremental_Parsing/links/004635294e13f23ef1000000/Efficient-and-Flexible-Incremental-Parsing.pdf)">Efficient and Flexible Incremental Parsing</a></h4>
+<div id="outline-container-org63153d9" class="outline-4">
+<h4 id="org63153d9"><span class="section-number-4">8.2.1.</span> <a href="https://www.researchgate.net/profile/Sl-Graham/publication/2377179_Efficient_and_Flexible_Incremental_Parsing/links/004635294e13f23ef1000000/Efficient-and-Flexible-Incremental-Parsing.pdf)">Efficient and Flexible Incremental Parsing</a></h4>
 </div>
-<div id="outline-container-org7c79421" class="outline-4">
-<h4 id="org7c79421"><span class="section-number-4">8.2.2.</span> <a href="https://www.pc-freak.net/blog/files/NCR_ATM_terminals/www.thecorememory.com/Incremental_analyzis_of_RPL.pdf">Incremental Analysis of Real Programming Languages</a></h4>
+<div id="outline-container-orgdbbe86f" class="outline-4">
+<h4 id="orgdbbe86f"><span class="section-number-4">8.2.2.</span> <a href="https://www.pc-freak.net/blog/files/NCR_ATM_terminals/www.thecorememory.com/Incremental_analyzis_of_RPL.pdf">Incremental Analysis of Real Programming Languages</a></h4>
 </div>
-<div id="outline-container-org8afc517" class="outline-4">
-<h4 id="org8afc517"><span class="section-number-4">8.2.3.</span> <a href="https://what-when-how.com/compiler-writing/bottom-up-parsing-compiler-writing-part-13/)">Error Detection and Recovery in LR Parsers</a></h4>
+<div id="outline-container-orga788a35" class="outline-4">
+<h4 id="orga788a35"><span class="section-number-4">8.2.3.</span> <a href="https://what-when-how.com/compiler-writing/bottom-up-parsing-compiler-writing-part-13/)">Error Detection and Recovery in LR Parsers</a></h4>
 </div>
-<div id="outline-container-orgee2c091" class="outline-4">
-<h4 id="orgee2c091"><span class="section-number-4">8.2.4.</span> <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.129.7206&amp;rep=rep1&amp;type=pdf)">Automatic Error Recovery for LR Parsers</a></h4>
+<div id="outline-container-orgef8e4d1" class="outline-4">
+<h4 id="orgef8e4d1"><span class="section-number-4">8.2.4.</span> <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.129.7206&amp;rep=rep1&amp;type=pdf)">Automatic Error Recovery for LR Parsers</a></h4>
 </div>
-<div id="outline-container-orgd7dd585" class="outline-4">
-<h4 id="orgd7dd585"><span class="section-number-4">8.2.5.</span> <a href="https://www.youtube.com/watch?v=Jes3bD6P0To">Treesitter</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
+<div id="outline-container-org5c97e2a" class="outline-4">
+<h4 id="org5c97e2a"><span class="section-number-4">8.2.5.</span> <a href="https://www.youtube.com/watch?v=Jes3bD6P0To">Treesitter</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
 </div>
-<div id="outline-container-org6114187" class="outline-4">
-<h4 id="org6114187"><span class="section-number-4">8.2.6.</span> <a href="https://www.youtube.com/watch?v=a1rC79DHpmY">Treesitter</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
+<div id="outline-container-org220d6f4" class="outline-4">
+<h4 id="org220d6f4"><span class="section-number-4">8.2.6.</span> <a href="https://www.youtube.com/watch?v=a1rC79DHpmY">Treesitter</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
 </div>
-<div id="outline-container-org348ddd2" class="outline-4">
-<h4 id="org348ddd2"><span class="section-number-4">8.2.7.</span> <a href="https://www.youtube.com/watch?v=0CGzC_iss-8">Treesitter</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
+<div id="outline-container-org0be928a" class="outline-4">
+<h4 id="org0be928a"><span class="section-number-4">8.2.7.</span> <a href="https://www.youtube.com/watch?v=0CGzC_iss-8">Treesitter</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
 </div>
 </div>
-<div id="outline-container-org3da7f20" class="outline-3">
-<h3 id="org3da7f20"><span class="section-number-3">8.3.</span> IRs — SSA, ANF, and CPS</h3>
+<div id="outline-container-org60e7d0a" class="outline-3">
+<h3 id="org60e7d0a"><span class="section-number-3">8.3.</span> IRs — SSA, ANF, and CPS</h3>
 <div class="outline-text-3" id="text-8-3">
 </div>
-<div id="outline-container-org25b5561" class="outline-4">
-<h4 id="org25b5561"><span class="section-number-4">8.3.1.</span> SSA vs ANF: <a href="//github.com/jacobstanley/ssa-anf">source code</a>, <a href="http://code.ouroborus.net/fp-syd/past/2015/2015-07-Stanley-SSAvsANF.pdf">slides</a>.</h4>
+<div id="outline-container-org0d755a9" class="outline-4">
+<h4 id="org0d755a9"><span class="section-number-4">8.3.1.</span> SSA vs ANF: <a href="//github.com/jacobstanley/ssa-anf">source code</a>, <a href="http://code.ouroborus.net/fp-syd/past/2015/2015-07-Stanley-SSAvsANF.pdf">slides</a>.</h4>
 </div>
-<div id="outline-container-org8db9b95" class="outline-4">
-<h4 id="org8db9b95"><span class="section-number-4">8.3.2.</span> <a href="https://www.reddit.com/r/Compilers/s/rBZDFjXHwl">Reddit discussion about ANF between Hécate and Colin</a></h4>
+<div id="outline-container-org1f9b312" class="outline-4">
+<h4 id="org1f9b312"><span class="section-number-4">8.3.2.</span> <a href="https://www.reddit.com/r/Compilers/s/rBZDFjXHwl">Reddit discussion about ANF between Hécate and Colin</a></h4>
 </div>
-<div id="outline-container-org7a4d941" class="outline-4">
-<h4 id="org7a4d941"><span class="section-number-4">8.3.3.</span> [X] <a href="https://matt.might.net/articles/a-normalization/">Matt Might — A-Normalization: Why and How</a></h4>
+<div id="outline-container-org0d74a57" class="outline-4">
+<h4 id="org0d74a57"><span class="section-number-4">8.3.3.</span> [X] <a href="https://matt.might.net/articles/a-normalization/">Matt Might — A-Normalization: Why and How</a></h4>
 <div class="outline-text-4" id="text-8-3-3">
 </div>
 </div>
-<div id="outline-container-org6a639f0" class="outline-4">
-<h4 id="org6a639f0"><span class="section-number-4">8.3.4.</span> <a href="https://www.cs.indiana.edu/~achauhan/Teaching/B629/2006-Fall/CourseMaterial/1998-notices-appel-ssa_fnprog.pdf">SSA is Functional Programming </a></h4>
+<div id="outline-container-org8e23f18" class="outline-4">
+<h4 id="org8e23f18"><span class="section-number-4">8.3.4.</span> <a href="https://www.cs.indiana.edu/~achauhan/Teaching/B629/2006-Fall/CourseMaterial/1998-notices-appel-ssa_fnprog.pdf">SSA is Functional Programming </a></h4>
 </div>
-<div id="outline-container-orgc11455c" class="outline-4">
-<h4 id="orgc11455c"><span class="section-number-4">8.3.5.</span> [X] <a href="https://matt.might.net/articles/cps-conversion/">How to compile with continuations</a></h4>
+<div id="outline-container-org9b166c6" class="outline-4">
+<h4 id="org9b166c6"><span class="section-number-4">8.3.5.</span> [X] <a href="https://matt.might.net/articles/cps-conversion/">How to compile with continuations</a></h4>
 <div class="outline-text-4" id="text-8-3-5">
 </div>
 </div>
-<div id="outline-container-org74965f0" class="outline-4">
-<h4 id="org74965f0"><span class="section-number-4">8.3.6.</span> <a href="ftp://ftp.cs.princeton.edu/techreports/1988/183.pdf">Appel — Continuation Passing, Closure Passing Style</a></h4>
+<div id="outline-container-org9f2c12b" class="outline-4">
+<h4 id="org9f2c12b"><span class="section-number-4">8.3.6.</span> <a href="ftp://ftp.cs.princeton.edu/techreports/1988/183.pdf">Appel — Continuation Passing, Closure Passing Style</a></h4>
 </div>
-<div id="outline-container-org950ee0b" class="outline-4">
-<h4 id="org950ee0b"><span class="section-number-4">8.3.7.</span> <a href="http://manticore.cs.uchicago.edu/papers/ml16-cwc-llvm.pdf">Compiling with Continuations and LLVM </a></h4>
+<div id="outline-container-org4ed6550" class="outline-4">
+<h4 id="org4ed6550"><span class="section-number-4">8.3.7.</span> <a href="http://manticore.cs.uchicago.edu/papers/ml16-cwc-llvm.pdf">Compiling with Continuations and LLVM </a></h4>
 </div>
-<div id="outline-container-org1c984e3" class="outline-4">
-<h4 id="org1c984e3"><span class="section-number-4">8.3.8.</span> [-] [#A] <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/compiling-without-continuations.pdf">Compiling without continuations</a></h4>
+<div id="outline-container-org0a0f9f9" class="outline-4">
+<h4 id="org0a0f9f9"><span class="section-number-4">8.3.8.</span> [-] [#A] <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/compiling-without-continuations.pdf">Compiling without continuations</a></h4>
 <div class="outline-text-4" id="text-8-3-8">
 <p>
 Describes ANF and join points as used in GHC.
@@ -1404,32 +1404,32 @@ Describes ANF and join points as used in GHC.
 </ul>
 </div>
 </div>
-<div id="outline-container-org0116de5" class="outline-4">
-<h4 id="org0116de5"><span class="section-number-4">8.3.9.</span> <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2007/10/compilingwithcontinuationscontinued.pdf">Compiling with Continuations, Continued </a></h4>
+<div id="outline-container-orgeb50f2d" class="outline-4">
+<h4 id="orgeb50f2d"><span class="section-number-4">8.3.9.</span> <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2007/10/compilingwithcontinuationscontinued.pdf">Compiling with Continuations, Continued </a></h4>
 </div>
-<div id="outline-container-orgdf59015" class="outline-4">
-<h4 id="orgdf59015"><span class="section-number-4">8.3.10.</span> <a href="http://code.ouroborus.net/fp-syd/past/2014/2014-08-Sloane-CPS.pdf">Slides implementing Compiling with Continuations, Continued </a></h4>
+<div id="outline-container-org90a7a87" class="outline-4">
+<h4 id="org90a7a87"><span class="section-number-4">8.3.10.</span> <a href="http://code.ouroborus.net/fp-syd/past/2014/2014-08-Sloane-CPS.pdf">Slides implementing Compiling with Continuations, Continued </a></h4>
 </div>
-<div id="outline-container-org313dbaf" class="outline-4">
-<h4 id="org313dbaf"><span class="section-number-4">8.3.11.</span> <a href="https://jozefg.bitbucket.io/posts/2015-04-30-cps.html">Compiling with CPS</a></h4>
+<div id="outline-container-org6afad64" class="outline-4">
+<h4 id="org6afad64"><span class="section-number-4">8.3.11.</span> <a href="https://jozefg.bitbucket.io/posts/2015-04-30-cps.html">Compiling with CPS</a></h4>
 </div>
-<div id="outline-container-org4e92664" class="outline-4">
-<h4 id="org4e92664"><span class="section-number-4">8.3.12.</span> <a href="https://slang.soe.ucsc.edu/cormac/papers/pldi93.pdf">Original ANF paper: The Essence of Compiling with Continuations</a></h4>
+<div id="outline-container-org78e913a" class="outline-4">
+<h4 id="org78e913a"><span class="section-number-4">8.3.12.</span> <a href="https://slang.soe.ucsc.edu/cormac/papers/pldi93.pdf">Original ANF paper: The Essence of Compiling with Continuations</a></h4>
 </div>
-<div id="outline-container-org780d36e" class="outline-4">
-<h4 id="org780d36e"><span class="section-number-4">8.3.13.</span> <a href="http://mlton.org/pipermail/mlton/2003-January/023054.html">Email discussing MLton's IR and some history</a></h4>
+<div id="outline-container-orgf7a80da" class="outline-4">
+<h4 id="orgf7a80da"><span class="section-number-4">8.3.13.</span> <a href="http://mlton.org/pipermail/mlton/2003-January/023054.html">Email discussing MLton's IR and some history</a></h4>
 </div>
-<div id="outline-container-org4321138" class="outline-4">
-<h4 id="org4321138"><span class="section-number-4">8.3.14.</span> <a href="https://www.jantar.org/talks/zadarnowski03languages.pdf">Comparing CPS, ANF, and SSA for compiling functional languages</a></h4>
+<div id="outline-container-org1d60365" class="outline-4">
+<h4 id="org1d60365"><span class="section-number-4">8.3.14.</span> <a href="https://www.jantar.org/talks/zadarnowski03languages.pdf">Comparing CPS, ANF, and SSA for compiling functional languages</a></h4>
 </div>
-<div id="outline-container-org587f800" class="outline-4">
-<h4 id="org587f800"><span class="section-number-4">8.3.15.</span> <a href="https://www.jantar.org/papers/chakravarty03perspective.pdf">A Functional Perspective on SSA Optimisation Algorithms</a></h4>
+<div id="outline-container-orgd41881d" class="outline-4">
+<h4 id="orgd41881d"><span class="section-number-4">8.3.15.</span> <a href="https://www.jantar.org/papers/chakravarty03perspective.pdf">A Functional Perspective on SSA Optimisation Algorithms</a></h4>
 </div>
-<div id="outline-container-orgc8bc190" class="outline-4">
-<h4 id="orgc8bc190"><span class="section-number-4">8.3.16.</span> <a href="http://www.ccs.neu.edu/home/matthias/369-s10/Transcript/anf-vs-cps.pdf">The CPS/ANF saga</a></h4>
+<div id="outline-container-org57bbb5d" class="outline-4">
+<h4 id="org57bbb5d"><span class="section-number-4">8.3.16.</span> <a href="http://www.ccs.neu.edu/home/matthias/369-s10/Transcript/anf-vs-cps.pdf">The CPS/ANF saga</a></h4>
 </div>
-<div id="outline-container-orgcbad7e2" class="outline-4">
-<h4 id="orgcbad7e2"><span class="section-number-4">8.3.17.</span> <a href="http://www.dtic.mil/dtic/tr/fulltext/u2/a326493.pdf">Tarditi — Design and Implementation of Code Optimiziations for a Type-Directed Compiler for Standard ML (ANF)</a></h4>
+<div id="outline-container-org83e2f31" class="outline-4">
+<h4 id="org83e2f31"><span class="section-number-4">8.3.17.</span> <a href="http://www.dtic.mil/dtic/tr/fulltext/u2/a326493.pdf">Tarditi — Design and Implementation of Code Optimiziations for a Type-Directed Compiler for Standard ML (ANF)</a></h4>
 <div class="outline-text-4" id="text-8-3-17">
 <p>
 This thesis emphasizes a "pay as you go" compilation strategy
@@ -1441,119 +1441,119 @@ lambda calculus IR
 </p>
 </div>
 </div>
-<div id="outline-container-org6240c42" class="outline-4">
-<h4 id="org6240c42"><span class="section-number-4">8.3.18.</span> <a href="https://pdfs.semanticscholar.org/55bc/5ceee768223f4b233de568a7181297eb2c4d.pdf">Paper summarizing the Tarditi thesis</a></h4>
+<div id="outline-container-org646fb5a" class="outline-4">
+<h4 id="org646fb5a"><span class="section-number-4">8.3.18.</span> <a href="https://pdfs.semanticscholar.org/55bc/5ceee768223f4b233de568a7181297eb2c4d.pdf">Paper summarizing the Tarditi thesis</a></h4>
 </div>
-<div id="outline-container-orge0b920a" class="outline-4">
-<h4 id="orge0b920a"><span class="section-number-4">8.3.19.</span> <a href="ftp://mumble.net/~kelsey/papers/cps-ssa.ps.gz">A Correspondence between CPS and SSA</a></h4>
+<div id="outline-container-orge14fab5" class="outline-4">
+<h4 id="orge14fab5"><span class="section-number-4">8.3.19.</span> <a href="ftp://mumble.net/~kelsey/papers/cps-ssa.ps.gz">A Correspondence between CPS and SSA</a></h4>
 </div>
-<div id="outline-container-org46286a7" class="outline-4">
-<h4 id="org46286a7"><span class="section-number-4">8.3.20.</span> [X] <a href="https://compiler.club/compiling-lambda-calculus/">Colin — Compiling the λ-calculus</a></h4>
+<div id="outline-container-orgd2324fe" class="outline-4">
+<h4 id="orgd2324fe"><span class="section-number-4">8.3.20.</span> [X] <a href="https://compiler.club/compiling-lambda-calculus/">Colin — Compiling the λ-calculus</a></h4>
 <div class="outline-text-4" id="text-8-3-20">
 </div>
 </div>
 </div>
-<div id="outline-container-org88bcb6e" class="outline-3">
-<h3 id="org88bcb6e"><span class="section-number-3">8.4.</span> Compiler Architecture</h3>
+<div id="outline-container-orgd9417ce" class="outline-3">
+<h3 id="orgd9417ce"><span class="section-number-3">8.4.</span> Compiler Architecture</h3>
 <div class="outline-text-3" id="text-8-4">
 </div>
-<div id="outline-container-org4bbb097" class="outline-4">
-<h4 id="org4bbb097"><span class="section-number-4">8.4.1.</span> <a href="https://rustc-dev-guide.rust-lang.org/query.html">rustc demand-driven-compilation</a></h4>
+<div id="outline-container-orgbd81b01" class="outline-4">
+<h4 id="orgbd81b01"><span class="section-number-4">8.4.1.</span> <a href="https://rustc-dev-guide.rust-lang.org/query.html">rustc demand-driven-compilation</a></h4>
 </div>
-<div id="outline-container-org72c94f4" class="outline-4">
-<h4 id="org72c94f4"><span class="section-number-4">8.4.2.</span> [X] <a href="https://ollef.github.io/blog/posts/query-based-compilers.html">Query-based compiler architectures</a></h4>
+<div id="outline-container-orgffdf78e" class="outline-4">
+<h4 id="orgffdf78e"><span class="section-number-4">8.4.2.</span> [X] <a href="https://ollef.github.io/blog/posts/query-based-compilers.html">Query-based compiler architectures</a></h4>
 <div class="outline-text-4" id="text-8-4-2">
 </div>
 </div>
-<div id="outline-container-orgbd089cb" class="outline-4">
-<h4 id="orgbd089cb"><span class="section-number-4">8.4.3.</span> [X] <a href="https://rust-analyzer.github.io/blog/2020/07/20/three-architectures-for-responsive-ide.html">Three Architectures for a Responsive IDE</a></h4>
+<div id="outline-container-org9c8db05" class="outline-4">
+<h4 id="org9c8db05"><span class="section-number-4">8.4.3.</span> [X] <a href="https://rust-analyzer.github.io/blog/2020/07/20/three-architectures-for-responsive-ide.html">Three Architectures for a Responsive IDE</a></h4>
 <div class="outline-text-4" id="text-8-4-3">
 </div>
 </div>
-<div id="outline-container-org7411fee" class="outline-4">
-<h4 id="org7411fee"><span class="section-number-4">8.4.4.</span> <a href="https://www2.eecs.berkeley.edu/Pubs/TechRpts/1997/CSD-97-946.pdf">Practical Algorithms for Incremental Software Development Environments</a></h4>
+<div id="outline-container-orgc41f214" class="outline-4">
+<h4 id="orgc41f214"><span class="section-number-4">8.4.4.</span> <a href="https://www2.eecs.berkeley.edu/Pubs/TechRpts/1997/CSD-97-946.pdf">Practical Algorithms for Incremental Software Development Environments</a></h4>
 </div>
-<div id="outline-container-org4e9e7a9" class="outline-4">
-<h4 id="org4e9e7a9"><span class="section-number-4">8.4.5.</span> <a href="https://youtu.be/3D-ngGIP4fQ">Query-based compiler architectures</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
+<div id="outline-container-org9922c9f" class="outline-4">
+<h4 id="org9922c9f"><span class="section-number-4">8.4.5.</span> <a href="https://youtu.be/3D-ngGIP4fQ">Query-based compiler architectures</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
 </div>
-<div id="outline-container-orgefb6831" class="outline-4">
-<h4 id="orgefb6831"><span class="section-number-4">8.4.6.</span> <a href="https://www.youtube.com/watch?v=DSuX-LIAU-I">A journey through incremental computation</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
+<div id="outline-container-org95cc1d1" class="outline-4">
+<h4 id="org95cc1d1"><span class="section-number-4">8.4.6.</span> <a href="https://www.youtube.com/watch?v=DSuX-LIAU-I">A journey through incremental computation</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
 </div>
-<div id="outline-container-org8407d37" class="outline-4">
-<h4 id="org8407d37"><span class="section-number-4">8.4.7.</span> <a href="https://www.youtube.com/watch?v=S2dK5lLFD_0">Making Fast Incremental Compiler for Huge Codebase</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
+<div id="outline-container-orgac3c75f" class="outline-4">
+<h4 id="orgac3c75f"><span class="section-number-4">8.4.7.</span> <a href="https://www.youtube.com/watch?v=S2dK5lLFD_0">Making Fast Incremental Compiler for Huge Codebase</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
 </div>
-<div id="outline-container-orgef8d060" class="outline-4">
-<h4 id="orgef8d060"><span class="section-number-4">8.4.8.</span> <a href="https://www.youtube.com/watch?v=vVFEROmdCkQ">How to load 1m lines of Ruby in 5s</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
+<div id="outline-container-org37f7863" class="outline-4">
+<h4 id="org37f7863"><span class="section-number-4">8.4.8.</span> <a href="https://www.youtube.com/watch?v=vVFEROmdCkQ">How to load 1m lines of Ruby in 5s</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
 </div>
-<div id="outline-container-orgb6ff347" class="outline-4">
-<h4 id="orgb6ff347"><span class="section-number-4">8.4.9.</span> <a href="https://www.youtube.com/watch?v=WxyyJyB_Ssc)">Compilers are Databases</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
+<div id="outline-container-org4ead18e" class="outline-4">
+<h4 id="org4ead18e"><span class="section-number-4">8.4.9.</span> <a href="https://www.youtube.com/watch?v=WxyyJyB_Ssc)">Compilers are Databases</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
 </div>
-<div id="outline-container-org79d4354" class="outline-4">
-<h4 id="org79d4354"><span class="section-number-4">8.4.10.</span> <a href="https://www.youtube.com/watch?v=wSdV1M7n4gQ)">Anders Hejlsberg on Modern Compiler Construction</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
+<div id="outline-container-org3c8fef3" class="outline-4">
+<h4 id="org3c8fef3"><span class="section-number-4">8.4.10.</span> <a href="https://www.youtube.com/watch?v=wSdV1M7n4gQ)">Anders Hejlsberg on Modern Compiler Construction</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
 </div>
-<div id="outline-container-orga57d343" class="outline-4">
-<h4 id="orga57d343"><span class="section-number-4">8.4.11.</span> <a href="https://www.youtube.com/watch?v=N6b44kMS6OM))">Responsive compilers</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
+<div id="outline-container-orgf2b3d44" class="outline-4">
+<h4 id="orgf2b3d44"><span class="section-number-4">8.4.11.</span> <a href="https://www.youtube.com/watch?v=N6b44kMS6OM))">Responsive compilers</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TALK">TALK</span></span></h4>
 </div>
 </div>
-<div id="outline-container-orgb00094d" class="outline-3">
-<h3 id="orgb00094d"><span class="section-number-3">8.5.</span> Miscellaneous</h3>
+<div id="outline-container-org4d879af" class="outline-3">
+<h3 id="org4d879af"><span class="section-number-3">8.5.</span> Miscellaneous</h3>
 <div class="outline-text-3" id="text-8-5">
 </div>
-<div id="outline-container-orgecde9f8" class="outline-4">
-<h4 id="orgecde9f8"><span class="section-number-4">8.5.1.</span> [-] [#A] <a href="https://borretti.me/article/lessons-writing-compiler">Lessons from Writing a Compiler</a></h4>
+<div id="outline-container-org1a8abc5" class="outline-4">
+<h4 id="org1a8abc5"><span class="section-number-4">8.5.1.</span> [-] [#A] <a href="https://borretti.me/article/lessons-writing-compiler">Lessons from Writing a Compiler</a></h4>
 <div class="outline-text-4" id="text-8-5-1">
 <p>
 Covers a lot of topics that textbooks miss.
 </p>
 </div>
 </div>
-<div id="outline-container-orgdeb7e0d" class="outline-4">
-<h4 id="orgdeb7e0d"><span class="section-number-4">8.5.2.</span> [X] <a href="https://matt.might.net/articles/closure-conversion/">Matt Might — Closure Conversion</a></h4>
+<div id="outline-container-org6067200" class="outline-4">
+<h4 id="org6067200"><span class="section-number-4">8.5.2.</span> [X] <a href="https://matt.might.net/articles/closure-conversion/">Matt Might — Closure Conversion</a></h4>
 <div class="outline-text-4" id="text-8-5-2">
 </div>
 </div>
-<div id="outline-container-org999fce6" class="outline-4">
-<h4 id="org999fce6"><span class="section-number-4">8.5.3.</span> <a href="https://www.cse.chalmers.se/~ulfn/papers/thesis.pdf">Towards a practical programming language based on dependent type theory</a></h4>
+<div id="outline-container-org1730ad3" class="outline-4">
+<h4 id="org1730ad3"><span class="section-number-4">8.5.3.</span> <a href="https://www.cse.chalmers.se/~ulfn/papers/thesis.pdf">Towards a practical programming language based on dependent type theory</a></h4>
 </div>
-<div id="outline-container-org9501817" class="outline-4">
-<h4 id="org9501817"><span class="section-number-4">8.5.4.</span> <a href="https://www.stephendiehl.com/llvm/">Implementing a JIT Compiled Language with Haskell and LLVM</a></h4>
+<div id="outline-container-org21c7345" class="outline-4">
+<h4 id="org21c7345"><span class="section-number-4">8.5.4.</span> <a href="https://www.stephendiehl.com/llvm/">Implementing a JIT Compiled Language with Haskell and LLVM</a></h4>
 </div>
-<div id="outline-container-orgb608a71" class="outline-4">
-<h4 id="orgb608a71"><span class="section-number-4">8.5.5.</span> [X] <a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/097CE52C750E69BD16B78C318754C7A4/S0956796820000088a.pdf/div-class-title-build-systems-a-la-carte-theory-and-practice-div.pdf">Build systems à la carte: Theory and Practice</a></h4>
+<div id="outline-container-orgef6cd25" class="outline-4">
+<h4 id="orgef6cd25"><span class="section-number-4">8.5.5.</span> [X] <a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/097CE52C750E69BD16B78C318754C7A4/S0956796820000088a.pdf/div-class-title-build-systems-a-la-carte-theory-and-practice-div.pdf">Build systems à la carte: Theory and Practice</a></h4>
 <div class="outline-text-4" id="text-8-5-5">
 </div>
 </div>
-<div id="outline-container-org15f00ab" class="outline-4">
-<h4 id="org15f00ab"><span class="section-number-4">8.5.6.</span> <a href="https://www.reddit.com/r/ProgrammingLanguages/comments/8ggx2n/comment/dybo3rl/">A Reddit thread about functional IRs</a></h4>
+<div id="outline-container-org745c4dc" class="outline-4">
+<h4 id="org745c4dc"><span class="section-number-4">8.5.6.</span> <a href="https://www.reddit.com/r/ProgrammingLanguages/comments/8ggx2n/comment/dybo3rl/">A Reddit thread about functional IRs</a></h4>
 <div class="outline-text-4" id="text-8-5-6">
 <p>
 Nearly all of their linked resources are included in this document.
 </p>
 </div>
 </div>
-<div id="outline-container-org71add91" class="outline-4">
-<h4 id="org71add91"><span class="section-number-4">8.5.7.</span> <a href="https://simonmar.github.io/bib/papers/eval-apply.pdf">Making a Fast Curry: Push/Enter vs. Eval/Apply for Higher-order Languages</a></h4>
+<div id="outline-container-orge28c377" class="outline-4">
+<h4 id="orge28c377"><span class="section-number-4">8.5.7.</span> <a href="https://simonmar.github.io/bib/papers/eval-apply.pdf">Making a Fast Curry: Push/Enter vs. Eval/Apply for Higher-order Languages</a></h4>
 </div>
-<div id="outline-container-orgab5067b" class="outline-4">
-<h4 id="orgab5067b"><span class="section-number-4">8.5.8.</span> <a href="https://cabal.readthedocs.io/en/3.4/cabal-package.html?highlight=build-type%20configure#pkg-field-build-type">Custom Cabal builds</a></h4>
+<div id="outline-container-org2dbdae8" class="outline-4">
+<h4 id="org2dbdae8"><span class="section-number-4">8.5.8.</span> <a href="https://cabal.readthedocs.io/en/3.4/cabal-package.html?highlight=build-type%20configure#pkg-field-build-type">Custom Cabal builds</a></h4>
 <div class="outline-text-4" id="text-8-5-8">
 <ul class="org-ul">
 <li>Will be necessary to build tree-sitter-sydml.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgddf5385" class="outline-4">
-<h4 id="orgddf5385"><span class="section-number-4">8.5.9.</span> <a href="https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/development/tools/parsing/tree-sitter/grammar.nix">Nix tree-sitter examples</a></h4>
+<div id="outline-container-org021ff00" class="outline-4">
+<h4 id="org021ff00"><span class="section-number-4">8.5.9.</span> <a href="https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/development/tools/parsing/tree-sitter/grammar.nix">Nix tree-sitter examples</a></h4>
 </div>
-<div id="outline-container-org3c319aa" class="outline-4">
-<h4 id="org3c319aa"><span class="section-number-4">8.5.10.</span> <a href="https://dl.acm.org/doi/pdf/10.1145/151333.151343">Tarditi — No Assembly Required: Compiling SML to C</a></h4>
+<div id="outline-container-org8db1b71" class="outline-4">
+<h4 id="org8db1b71"><span class="section-number-4">8.5.10.</span> <a href="https://dl.acm.org/doi/pdf/10.1145/151333.151343">Tarditi — No Assembly Required: Compiling SML to C</a></h4>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Madeleine Sydney Ślaga</p>
-<p class="date">Created: 2024-09-21 Sat 13:00</p>
+<p class="date">Created: 2024-09-21 Sat 13:16</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

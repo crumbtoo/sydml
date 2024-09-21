@@ -1,9 +1,9 @@
-{- |
--}
-module Language.ANF
-  ( module Language.ANF.Syntax
+module Language.ANF.LowerToQBE
+  (
   )
   where
 --------------------------------------------------------------------------------
-import Language.ANF.Syntax
 --------------------------------------------------------------------------------
+
+lowerToQBE :: _
+lowerToQBE = _
