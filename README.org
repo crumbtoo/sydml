@@ -12,7 +12,6 @@ semantics.
 
 Github renders this document very poorly, which conflicts with my style of
 organisation. See the rendered HTML [[https://crumbtoo.github.io/sydml][here]].
-
 * Notice board
 ** [2024-09-18 Wed] Productivity
 I've been off my meds since [2024-08-20 Tue], and caffeine lost its kick about a
@@ -65,85 +64,6 @@ treating the entire compiler as a black box.
 While last year's compiler was primarily language-focused, I now intend to focus
 on compiler techniques.
 *** IRs — ANF and SSA
-* Project structure
-** =sydml=
-*** =app=
-*** =src=
-*** =test=
-** =presydml=
-** =vendor=
-Vendored dependencies.
-*** =tree-sitter=
-The tree-sitter bindings for Haskell leave a lot to be desired. My patches
-include the following:
-- Add binding to =ts_node_string()=.
-- Add bindings to the "edit" API.
-*** =qbe=
-This library provides a Haskell representation of QBE's IL. Patches include the
-following:
-- Bump the version bounds of =base=, =text=, =bytestring=, and =deepseq=.
-- Add support for allocation instructions. This patch is the work of [[https://todo.sr.ht/~fgaz/qbe-hs/1][Ellis
-  Kesterton]], whose merge request to =qbe-hs= has been idle upstream for over a
-  year.
-*** =compiler-explorer=
-A tool for viewing compiler output and IRS. My patches include:
-- Add a Nix flake.
-- Add support for presydml.
-** =doc=
-Documentation. Currently, this solely serves as a home for the rendered HTML of the README.
-** =tree-sitter-sydml=
-Houses Sydc's parser.
-* Compiler overview
-|          | *Pass*                | *Produced IL*       | *Module type*            |
-|----------+---------------------+-------------------+------------------------|
-| *External* |                     |                   |                        |
-|----------+---------------------+-------------------+------------------------|
-|          |                     | Source            |                        |
-|          | Parse (tree-sitter) | Tree-sitter AST   |                        |
-|----------+---------------------+-------------------+------------------------|
-| *Sydc*     |                     |                   |                        |
-|----------+---------------------+-------------------+------------------------|
-|          | Parse               | [[*SydML][AST]]               | ~Surface.Module Parse~   |
-|          | Rename              | [[*SydML][AST]]               | ~Surface.Module Rename~  |
-|          | Type-check          | [[*SydML][Typed AST]]         | TBD                    |
-|          | Elaborate           | [[*Core][Core]]              | ~Core.Module~            |
-|          | ToANF               | [[*ANF][ANF]]               | ~ANF.Module~             |
-|          | Closure-convert     | [[*ANF][ANF]]               | ~ANF.Module~             |
-|          | LambdaLift          | [[*ANF][Lambda-lifted ANF]] | ~ANF.LambdaLiftedModule~ |
-|          | ToQBE               | [[*QBE][QBE]]               | ~QBE.Program~            |
-|          | Export              |                   |                        |
-|----------+---------------------+-------------------+------------------------|
-| *External* |                     |                   |                        |
-|----------+---------------------+-------------------+------------------------|
-|          | qbe                 | Assembly          |                        |
-|          | ~($CC)~               | Machine           |                        |
-* Languages
-** SydML
-*** Syntax
-- We use Haskell-style layouts, meaning that one can group productions by either
-  alignment, or semicolons and braces.
-** Core
-Core is an explicitly-typed IL based on System F_ω. Internally
-#+begin_src fundamental
-e ::= x                     Variables
-   |  λx:τ. e               Term abstractions
-   |  Λx:κ. e               Type abstractions
-   |  e e                   Term applications
-   |  e @τ                  Type applications
-   |  let x = e in e        Let-bindings
-   |  letrec (x = e)* in e  Recursive let-bindings
-   |  case x of {P → e}*    Case-expressions
-
-τ ::= K                     Type constructors
-   |  τ τ                   Constructor application
-   |  τ → τ                 Function types
-   |  ∀x:k. τ               Universal quantification
-
-k ::= Type                  The kind of all types
-   |  k → k                 Higher kinds
-#+end_src
-** ANF
-** QBE
 * Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
 #+CAPTION: Clock summary at [2024-09-21 Sat 03:26]
@@ -464,6 +384,8 @@ CLOCK: [2024-09-01 Sun 07:02]--[2024-09-01 Sun 10:35] =>  3:33
 :END:
 *** Documentation
 :LOGBOOK:
+CLOCK: [2024-09-21 Sat 11:50]
+CLOCK: [2024-09-21 Sat 11:49]--[2024-09-21 Sat 11:50] =>  0:01
 CLOCK: [2024-09-06 Fri 20:30]--[2024-09-06 Fri 20:40] =>  0:10
 CLOCK: [2024-09-06 Fri 14:23]--[2024-09-06 Fri 14:53] =>  0:30
 CLOCK: [2024-09-03 Tue 10:32]--[2024-09-03 Tue 11:36] =>  1:04

@@ -32,6 +32,8 @@ cabal.project.local~
 # !tree-sitter-sydml/test
 # !tree-sitter-sydml/tree-sitter-sydml.cabal
 
+org-roam.db
+
 result/
 
 TAGS

@@ -1,0 +1,49 @@
+:PROPERTIES:
+:ID:       a6c6f6a6-84b3-4250-8ec2-27d27411b324
+:END:
+#+title: Core (Language)
+#+filetags: :Language:
+
+Core is an explicitly-typed IL based on System F_ω.
+
+* Definition
+** On paper
+#+begin_src fundamental
+e ::= x                     Variables
+   |  λx:τ. e               Term abstractions
+   |  Λx:κ. e               Type abstractions
+   |  e e                   Term applications
+   |  e @τ                  Type applications
+   |  let x = e in e        Let-bindings
+   |  letrec (x = e)* in e  Recursive let-bindings
+   |  case x of {P → e}*    Case-expressions
+
+τ ::= K                     Type constructors
+   |  τ τ                   Constructor application
+   |  τ → τ                 Function types
+   |  ∀x:k. τ               Universal quantification
+
+k ::= Type                  The kind of all types
+   |  k → k                 Higher kinds
+#+end_src
+* Use of the pass parameter
+Core's most notable use of [[id:66209949-56cb-4c10-a572-eea8fe65fdd1][the pass parameter]] is to share the same AST for typed
+and untyped Core.
+
+** Typed/untyped Core
+:PROPERTIES:
+:ID:       9c51c3a6-86fd-4bab-a0b0-2b822d6813f4
+:END:
+#+begin_src haskell
+data TermF p e
+  = AbsF Name.UniqueName e
+  | TyAbsF !(PassTyAbsFAnnotation p) Name.UniqueName e
+  | AppF e e
+  | TyAppF e !(PassType p)
+  | CaseF e (List (CaseAlt p e))
+  | ValF Value
+
+-- | Setting these two extension points to Void completely disables the
+--   constructors.
+type Untyped p = (PassType p ~ Void, PassTyAbsFAnnotation p ~ Void)
+#+end_src

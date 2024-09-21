@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       ba81ebf5-d895-4e7c-b075-b2f505060f5e
+:END:
+#+title: SydML (Language)
+#+filetags: :Language:
+
+SydML is a bit of a misnomer. I was originally going to implement a subset of
+OCaml, before opting for indentation-sensitive syntax and purity, leaving it
+two steps away from Haskell.
+
+* Syntax
+- SydML features Haskell-style layouts, meaning that one can group productions
+  by either alignment, or semicolons and braces.

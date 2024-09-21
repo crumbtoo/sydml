@@ -1,0 +1,30 @@
+:PROPERTIES:
+:ID:       2536d0b2-606c-4dae-b0a3-d0863717b237
+:END:
+#+title: Sydc's Pipeline
+#+filetags: :Implementation:Sydc:
+
+* Overview
+|          | *Pass*                | *Produced IL*       | *Module type*            |
+|----------+---------------------+-------------------+------------------------|
+| *External* |                     |                   |                        |
+|----------+---------------------+-------------------+------------------------|
+|          |                     | Source            |                        |
+|          | Parse (tree-sitter) | Tree-sitter AST   |                        |
+|----------+---------------------+-------------------+------------------------|
+| *Sydc*     |                     |                   |                        |
+|----------+---------------------+-------------------+------------------------|
+|          | Parse               | AST               | ~Surface.Module Parse~   |
+|          | Rename              | AST               | ~Surface.Module Rename~  |
+|          | Type-check          | Typed AST         | TBD                    |
+|          | Elaborate           | [[id:a6c6f6a6-84b3-4250-8ec2-27d27411b324][Core]]              | ~Core.Module~            |
+|          | ToANF               | ANF               | ~ANF.Module~             |
+|          | Closure-convert     | ANF               | ~ANF.Module~             |
+|          | LambdaLift          | Lambda-lifted ANF | ~ANF.LambdaLiftedModule~ |
+|          | ToQBE               | QBE               | ~QBE.Program~            |
+|          | Export              |                   |                        |
+|----------+---------------------+-------------------+------------------------|
+| *External* |                     |                   |                        |
+|----------+---------------------+-------------------+------------------------|
+|          | qbe                 | Assembly          |                        |
+|          | ~$(CC)~               | Machine           |                        |
