@@ -11,10 +11,33 @@
 *** =test=
 ** =presydml=
 ** =vendor=
-Vendored dependencies.
+Vendored dependencies. Frustratingly, /two/ tools essential to my workflow prevent
+the otherwise idiomatic use of Git submodules. My VCS, [[https://github.com/martinvonz/jj][jj]], does not (yet!)
+support Git submodules, and absorbs them into the root repository whenever it
+touches them. Nix's flakes also fail to ergonomically support submodules,
+requiring a hacky ~?submodules=1~ parameter to be passed to each invocation of
+~nix~. While this does work, it is not at all convenient to deal with, and
+arguably orthogonal to "The Nix Way." Here's what Norbert Melzer has to say
+about the submodule problem ([[https://discourse.nixos.org/t/get-nix-flake-to-include-git-submodule/30324/4][source]]):
+#+begin_quote
+The only way I am aware of that would remove the necessity of specifying
+submodules=1 is to remove the submodule.
+#+end_quote
+#+begin_quote
+I do not consider this unintuitive.
+#+end_quote
+#+begin_quote
+I agree that it is not convinient. Still, it is not unintuitive.
+#+end_quote
+#+begin_quote
+*Though my stance remains: the best way to deal with git submodules is to get rid
+of them…*
+#+end_quote
+Reminds me of Elm's Evan Czaplicki...
 *** =tree-sitter=
 The tree-sitter bindings for Haskell leave a lot to be desired. My patches
 include the following:
+- Add isMissing flag.
 - Add binding to =ts_node_string()=.
 - Add bindings to the "edit" API.
 *** =qbe=

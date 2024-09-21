@@ -19,7 +19,7 @@
           # qbe = hlib.doJailbreak prev.qbe;
           qbe = prev.callCabal2nix "qbe" ./vendor/qbe-hs {};
           # missing features, broken tests
-          tree-sitter = hlib.dontCheck (prev.callCabal2nix "tree-sitter" ./vendor/tree-sitter {});
+          tree-sitter = hlib.dontCheck (prev.callCabal2nix "tree-sitter" ./vendor/haskell-tree-sitter/tree-sitter {});
           # broken tests
           dependent-hashmap = hlib.markUnbroken (hlib.dontCheck prev.dependent-hashmap);
           # out of date (we insist on using latest for the sole reason of

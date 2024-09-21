@@ -19,7 +19,7 @@ week-and-a-half ago; consequently, my productivity has plummeted.
 
 #+begin_quote
 His colleague Alfréd Rényi said, "a mathematician is a machine for turning
-coffee into theorems", and Erd  ős drank copious quantities; this quotation is
+coffee into theorems", and Erdős drank copious quantities; this quotation is
 often attributed incorrectly to Erdős, but Erdős himself ascribed it to Rényi.
 After his mother's death in 1971 he started taking antidepressants and
 amphetamines, despite the concern of his friends, one of whom (Ron Graham) bet
@@ -354,6 +354,8 @@ CLOSED: [2024-09-19 Thu 22:48]
 **** TODO Record demo
 *** TODO 3 The Empty Module [0/8]
 :LOGBOOK:
+CLOCK: [2024-09-21 Sat 22:12]
+CLOCK: [2024-09-21 Sat 21:25]--[2024-09-21 Sat 21:35] =>  0:10
 CLOCK: [2024-09-21 Sat 07:00]--[2024-09-21 Sat 07:27] =>  0:27
 CLOCK: [2024-09-21 Sat 03:40]--[2024-09-21 Sat 06:58] =>  3:18
 CLOCK: [2024-09-21 Sat 00:08]--[2024-09-21 Sat 03:24] =>  3:16
@@ -384,7 +386,7 @@ CLOCK: [2024-09-01 Sun 07:02]--[2024-09-01 Sun 10:35] =>  3:33
 :END:
 *** Documentation
 :LOGBOOK:
-CLOCK: [2024-09-21 Sat 11:50]
+CLOCK: [2024-09-21 Sat 11:50]--[2024-09-21 Sat 12:49] =>  0:59
 CLOCK: [2024-09-21 Sat 11:49]--[2024-09-21 Sat 11:50] =>  0:01
 CLOCK: [2024-09-06 Fri 20:30]--[2024-09-06 Fri 20:40] =>  0:10
 CLOCK: [2024-09-06 Fri 14:23]--[2024-09-06 Fri 14:53] =>  0:30

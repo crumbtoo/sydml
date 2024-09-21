@@ -1,0 +1,68 @@
+name: Haskell CI
+
+on:
+  pull_request:
+    branches:
+      - "**"
+  push:
+    branches:
+      - "master"
+
+jobs:
+  generateMatrix:
+    name: "Generate matrix from cabal"
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout base repo
+        uses: actions/checkout@v4
+      - name: Extract the tested GHC versions
+        id: set-matrix
+        uses: kleidukos/get-tested@v0.1.7.0
+        with:
+          cabal-file: tree-sitter/tree-sitter.cabal
+          ubuntu-version: "latest"
+          version: 0.1.7.0
+  build:
+    name: ${{ matrix.ghc }} on ${{ matrix.os }}                                                                         
+    needs: generateMatrix                                                                                               
+    runs-on: ${{ matrix.os }}                                                                                           
+    strategy:                                                                                                           
+      matrix: ${{ fromJSON(needs.generateMatrix.outputs.matrix) }}
+    steps:
+    - name: Checkout base repo
+      uses: actions/checkout@v4
+    - uses: haskell-actions/setup@v2
+      name: Setup Haskell
+      id: setup-haskell
+      with:
+        ghc-version: ${{ matrix.ghc }}
+        cabal-version: "latest"
+    - name: Freeze
+      run: cabal freeze
+    - name: Cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.setup-haskell.outputs.cabal-store }}
+        key: ${{ runner.os }}-ghc-${{ matrix.ghc }}-cabal-${{ hashFiles('**/plan.json') }}
+        restore-keys: ${{ runner.os }}-ghc-${{ matrix.ghc }}-
+    - uses: actions/cache@v4
+      name: Cache dist-newstyle
+      with:
+        path: dist-newstyle
+        key: ${{ runner.os }}-${{ matrix.ghc }}-repo-dist
+    - name: Install dependencies
+      run: |
+        git submodule update -i --recursive
+        cabal update
+        cabal configure --enable-benchmarks --enable-tests --write-ghc-environment-files=always -j2 -O0
+        cabal build --only-dependencies all
+
+    - name: Build & test
+      run: |
+        cabal build all
+        cabal test all
+        cabal haddock all
+        cabal sdist all
+        for p in tree-sitter* ; do echo "$p" ; cd "$p" ; cabal check ; cd ..; done
