@@ -1,4 +1,4 @@
-module Language.Core.LowerToANF
+module Rock.Effectful
   (
   )
   where

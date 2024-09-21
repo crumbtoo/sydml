@@ -13,8 +13,8 @@ semantics.
 Github renders this document very poorly, which conflicts with my style of
 organisation. See the rendered HTML [[https://crumbtoo.github.io/sydml][here]].
 
-** Status
-[2024-09-18 Wed]
+* Notice board
+** [2024-09-18 Wed] Productivity
 I've been off my meds since [2024-08-20 Tue], and caffeine lost its kick about a
 week-and-a-half ago; consequently, my productivity has plummeted.
 
@@ -31,7 +31,8 @@ blank piece of paper. I'd have no ideas, just like an ordinary person. You've
 set mathematics back a month." After he won the bet, he promptly resumed his use
 of Ritalin and Benzedrine.
 #+end_quote
-
+** [2024-09-20 Fri] We're so back!!!
+I am medicated again, for the first time in about a month!
 * Motivation
 ** Demonstrate that I've learned from last year's failures
 The entire project collapsed at the last minute, likely as a result of the
@@ -93,29 +94,31 @@ Documentation. Currently, this solely serves as a home for the rendered HTML of 
 ** =tree-sitter-sydml=
 Houses Sydc's parser.
 * Compiler overview
-| *Pass*            | *Produced IL*       |
-|-----------------+-------------------|
-| Sydc            |                   |
-|-----------------+-------------------|
-|                 | Source            |
-| Parse           | Tree-sitter AST   |
-| Reparse         | AST               |
-| Elaborate       | Core              |
-| Type-check      | Typed Core        |
-| Rename          | Typed Unique Core |
-| Closure-convert | Typed Unique Core |
-| Hoist           | Typed Unique Core |
-| LowerANF        | ANF               |
-| LowerSSA        | SSA               |
-| ToQBE           | QBE               |
-| RenderQBE       | Text              |
-|-----------------+-------------------|
-| External        |                   |
-|-----------------+-------------------|
-| qbe             | Assembly          |
-| cc              | Machine           |
+|          | *Pass*                | *Produced IL*       | *Module type*            |
+|----------+---------------------+-------------------+------------------------|
+| *External* |                     |                   |                        |
+|----------+---------------------+-------------------+------------------------|
+|          |                     | Source            |                        |
+|          | Parse (tree-sitter) | Tree-sitter AST   |                        |
+|----------+---------------------+-------------------+------------------------|
+| *Sydc*     |                     |                   |                        |
+|----------+---------------------+-------------------+------------------------|
+|          | Parse               | [[*SydML][AST]]               | ~Surface.Module Parse~   |
+|          | Rename              | [[*SydML][AST]]               | ~Surface.Module Rename~  |
+|          | Type-check          | [[*SydML][Typed AST]]         | TBD                    |
+|          | Elaborate           | [[*Core][Core]]              | ~Core.Module~            |
+|          | ToANF               | [[*ANF][ANF]]               | ~ANF.Module~             |
+|          | Closure-convert     | [[*ANF][ANF]]               | ~ANF.Module~             |
+|          | LambdaLift          | [[*ANF][Lambda-lifted ANF]] | ~ANF.LambdaLiftedModule~ |
+|          | ToQBE               | [[*QBE][QBE]]               | ~QBE.Program~            |
+|          | Export              |                   |                        |
+|----------+---------------------+-------------------+------------------------|
+| *External* |                     |                   |                        |
+|----------+---------------------+-------------------+------------------------|
+|          | qbe                 | Assembly          |                        |
+|          | ~($CC)~               | Machine           |                        |
 * Languages
-** The SydML language
+** SydML
 *** Syntax
 - We use Haskell-style layouts, meaning that one can group productions by either
   alignment, or semicolons and braces.
@@ -129,6 +132,7 @@ e ::= x                     Variables
    |  e @τ                  Type applications
    |  let x = e in e        Let-bindings
    |  letrec (x = e)* in e  Recursive let-bindings
+   |  case x of {P → e}*    Case-expressions
 
 τ ::= K                     Type constructors
    |  τ τ                   Constructor application
@@ -138,22 +142,25 @@ e ::= x                     Variables
 k ::= Type                  The kind of all types
    |  k → k                 Higher kinds
 #+end_src
+** ANF
+** QBE
 * Progress
 #+BEGIN: clocktable :scope subtree :maxlevel 3
-#+CAPTION: Clock summary at [2024-09-14 Sat 23:26]
-| Headline                          | Time    |          |          |
-|-----------------------------------+---------+----------+----------|
-| *Total time*                        | *3d 5:55* |          |          |
-|-----------------------------------+---------+----------+----------|
-| Progress                          | 3d 5:55 |          |          |
-| \_  Milestones                    |         | 2d 19:04 |          |
-| \_    0 Preemptive Planning [6/6] |         |          |     5:29 |
-| \_    1 Research Toys [7/7]       |         |          | 1d 18:42 |
-| \_    2 Layer 1 [5/7]             |         |          |    18:53 |
-| \_  Other                         |         |    10:51 |          |
-| \_    Nix setup                   |         |          |     7:26 |
-| \_    Documentation               |         |          |     1:44 |
-| \_    GitHub Pages action         |         |          |     0:26 |
+#+CAPTION: Clock summary at [2024-09-21 Sat 03:26]
+| Headline                          | Time     |         |          |
+|-----------------------------------+----------+---------+----------|
+| *Total time*                        | *3d 17:32* |         |          |
+|-----------------------------------+----------+---------+----------|
+| Progress                          | 3d 17:32 |         |          |
+| \_  Milestones                    |          | 3d 6:41 |          |
+| \_    0 Preemptive Planning [6/6] |          |         |     5:29 |
+| \_    1 Research Toys [7/7]       |          |         | 1d 18:42 |
+| \_    2 Layer 1 [6/7]             |          |         |  1d 0:41 |
+| \_    3 The Empty Module [0/8]    |          |         |     5:49 |
+| \_  Other                         |          |   10:51 |          |
+| \_    Nix setup                   |          |         |     7:26 |
+| \_    Documentation               |          |         |     1:44 |
+| \_    GitHub Pages action         |          |         |     0:26 |
 #+END:
 
 ** Milestones
@@ -318,8 +325,9 @@ $ nix-shell -p qbe gcc
 **** DONE Demo
 CLOSED: [2024-09-08 Sun 23:17]
 - Maybe using [[https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/AddingACompiler.md][godbolt]]?
-*** TODO 2 Layer 1 [5/7]
+*** TODO 2 Layer 1 [6/7]
 :LOGBOOK:
+CLOCK: [2024-09-19 Thu 22:39]--[2024-09-19 Thu 22:51] =>  0:12
 CLOCK: [2024-09-18 Wed 02:46]--[2024-09-18 Wed 03:06] =>  0:20
 CLOCK: [2024-09-18 Wed 00:41]--[2024-09-18 Wed 00:54] =>  0:13
 CLOCK: [2024-09-18 Wed 00:25]--[2024-09-18 Wed 00:32] =>  0:07
@@ -420,9 +428,26 @@ CLOSED: [2024-09-14 Sat 12:43]
 CLOSED: [2024-09-14 Sat 12:43]
 **** DONE Tests
 CLOSED: [2024-09-14 Sat 13:46]
-**** TODO CI/CD
+**** DONE CI/CD
+CLOSED: [2024-09-19 Thu 22:48]
 - w/ [[https://omnix.page/om/ci.html][omnix]]
 **** TODO Record demo
+*** TODO 3 The Empty Module [0/8]
+:LOGBOOK:
+CLOCK: [2024-09-21 Sat 03:40]--[2024-09-21 Sat 06:58] =>  3:18
+CLOCK: [2024-09-21 Sat 00:08]--[2024-09-21 Sat 03:24] =>  3:16
+CLOCK: [2024-09-20 Fri 22:27]--[2024-09-20 Fri 23:44] =>  1:17
+CLOCK: [2024-09-20 Fri 00:23]--[2024-09-20 Fri 01:17] =>  0:54
+CLOCK: [2024-09-19 Thu 23:08]--[2024-09-19 Thu 23:30] =>  0:22
+:END:
+**** TODO Parse
+**** TODO Rename
+**** TODO Type-check
+**** TODO Elaborate
+**** TODO Closure-convert
+**** TODO Hoist
+**** TODO LowerANF
+**** TODO ToQBE
 ** Other
 :LOGBOOK:
 CLOCK: [2024-09-07 Sat 11:02]--[2024-09-07 Sat 12:17] =>  1:15
@@ -462,6 +487,8 @@ CLOCK: [2024-09-05 Thu 15:02]--[2024-09-05 Thu 15:28] =>  0:26
 - noted only for its use of recursion schemes.
 - implemented in glorious haskell.
 *** [[https://github.com/Kleidukos/boreal][Hécate — boreal]]
+The lovely Hécate's =boreal= compiler has been an excelent reference. /Many/ of our
+design decisions align, which has been invaluably convenient for myself }:3.
 - [[https://github.com/Kleidukos/boreal/tree/main/boreal-daemon/tree-sitter-boreal][parses with tree-sitter]].
 - [[https://github.com/Kleidukos/boreal/blob/main/boreal-daemon/compiler/Boreal/IR/ANFCore/Types.hs][ANF-based IR]].
 - demand-driven.
