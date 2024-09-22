@@ -40,6 +40,13 @@
             doCheck = true;
           });
 
+        checks.default = (hpkgs.callCabal2nix "sydml-test" ./. {})
+          .overrideAttrs (final: prev: {
+            nativeBuildInputs = [
+              pkgs.tree-sitter
+            ] ++ prev.nativeBuildInputs;
+          });
+
         devShells.default = hpkgs.shellFor {
           packages = p: [
             p.sydml

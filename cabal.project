@@ -1,6 +1,7 @@
 packages:
   ./*.cabal
   ./tree-sitter-sydml/*.cabal
+  ./vendor/haskell-tree-sitter/tree-sitter/*.cabal
   ./vendor/*/*.cabal
 
 source-repository-package

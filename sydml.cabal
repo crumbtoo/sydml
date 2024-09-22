@@ -102,6 +102,7 @@ library
     , free
     , generic-lens               ^>=2.2.0.0
     , hashable
+    , hedn
     , lens                       >=5.3.0     && <6.0.0
     , lifted-base
     , lsp
@@ -136,6 +137,7 @@ executable sydc
   -- other-extensions:
   build-depends:
     , base                  ^>=4.19.1.0
+    , hedn
     , lens
     , optparse-applicative
     , sydml
@@ -148,14 +150,20 @@ test-suite sydml-test
   type:           exitcode-stdio-1.0
   hs-source-dirs: sydml/test
   main-is:        Main.hs
-  other-modules:  SydmlTests.EmptyInput
+
+  -- cabal-fmt: expand sydml/test/ -Main
+  other-modules:
+    SydmlTests.EmptyInput
+    SydmlTests.TreeSitter
+
   build-depends:
-    , base           ^>=4.19.1.0
-    , sydml
-    , tasty          >=1.2.2     && <1.6
-    , tasty-golden   ^>=2.3
-    , tasty-hunit    ^>=0.10
-    , tasty-program  >=1.1       && <1.2.0
+                  base           ^>=4.19.1.0
+                , hedn
+                , sydml
+                , tasty          >=1.2.2     && <1.6
+                , tasty-golden   ^>=2.3
+                , tasty-hunit    ^>=0.10
+                , tasty-program  >=1.1       && <1.2.0
 
 --------------------------------------------------------------------------------
 -- presydc

@@ -1,7 +1,7 @@
 -- | AKA Elaborate.
-module Language.SydML.LowerToCore
-  ( lowerToCoreF
-  , lowerToCore
+module Language.SydML.ToCore
+  ( toCoreF
+  , toCore
   )
   where
 --------------------------------------------------------------------------------
@@ -11,8 +11,8 @@ import qualified Language.Core.Syntax as Core
 import Effect.Unique
 --------------------------------------------------------------------------------
 
-lowerToCoreF :: _
-lowerToCoreF = _
+toCoreF :: _
+toCoreF = _
 
-lowerToCore :: (Unique :> es) => Surface.Module -> Eff es Core.Module
-lowerToCore = _
+-- toCore :: (Unique :> es) => Surface.Module -> Eff es Core.Module
+toCore = _

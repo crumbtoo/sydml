@@ -23,6 +23,7 @@ import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Language.SydML.Syntax as Surface
 import qualified Sydc.Name as Name
+import Data.EDN
 --------------------------------------------------------------------------------
 
 data Parse
