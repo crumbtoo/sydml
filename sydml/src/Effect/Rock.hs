@@ -4,7 +4,7 @@ https://gist.github.com/expipiplus1/cfd5c4fb4a5a40338ccf8642fb3d0f1e
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 {-# LANGUAGE QuantifiedConstraints #-}
-module Rock.Effectful
+module Effect.Rock
   where
 --------------------------------------------------------------------------------
 import Data.Dependent.HashMap (DHashMap)

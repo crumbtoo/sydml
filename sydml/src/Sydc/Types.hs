@@ -14,8 +14,6 @@ data SydOptions = SydOptions
   { debugFlags :: DebugFlags
   , buildDir :: FilePath
   , sourceDirectories :: H.HashSet FilePath
-  -- -- HACK: get rid of this ASAP.
-  -- , stupidHackyCounter :: IORef Natural
   }
   deriving (Generic)
 

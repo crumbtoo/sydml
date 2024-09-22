@@ -15,14 +15,14 @@ data Qualified a = Qualified Namespace a
   deriving (Show, Eq, Generic, Data)
 
 newtype Ident = Ident Text
-  deriving (Show, Eq, Generic, Data)
+  deriving (Show, Eq, Ord, Generic, Data)
 
 type Global = Qualified Ident
 
 instance Hashable Ident
 
 newtype Namespace = Namespace (List1 Ident)
-  deriving (Show, Eq, Generic, Data)
+  deriving (Show, Eq, Generic, Data, Ord)
 
 instance Hashable Namespace
 

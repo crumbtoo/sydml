@@ -11,10 +11,8 @@ import Data.Text.IO                       qualified as T
 import Data.Text.Lazy                     qualified as Lazy
 import Data.Text.Lazy.IO                  qualified as Lazy
 import           Sydc.Query
-import           Rock
--- import Language.SystemF                   qualified as SystemF
--- import Control.Monad.Trans.Writer.CPS     (runWriterT)
-import           Control.Monad.Writer.CPS (runWriter)
+-- import           Rock
+import Effect.Rock
 import           Sydc.Monad
 import           SydPrelude
 import           Sydc (SydOptions)
@@ -27,12 +25,18 @@ import qualified Data.Dependent.HashMap as DHashMap
 import           Data.Functor.Const
 import           Data.Dependent.HashMap (DHashMap)
 import qualified Language.SydML.Parse as Surface
+import Effectful
+import Effectful.Reader.Static
+import Data.Monoid
+import Effectful.Writer.Static.Shared
+import Effect.Unique
+import Control.Lens
 --------------------------------------------------------------------------------
 
-rules :: SydOptions -> GenRules (Writer (List SydError) Query) Query
-rules opts (Writer query) = case query of
-    FileText fp -> fileText fp opts
-    ParsedFile fp -> parsedFile fp opts
+rules :: Rules Query
+rules = \case
+    FileText fp -> fileText fp
+    ParsedFile fp -> parsedFile fp
     -- ParsedFile fp -> do
     --   s <- fetch (FileText fp)
     --   liftIO (parseSydML fp s) >>= \case
@@ -44,39 +48,54 @@ input :: Functor m => m a -> m (a, List SydError)
 input = fmap (,mempty)
 
 --------------------------------------------------------------------------------
--- Rule implementations
+-- Task implementations
 
-type RuleImpl a = SydOptions -> Task Query (a, List SydError)
+type TaskImpl = Eff RockEffects
 
-fileText :: FilePath -> RuleImpl Text
-fileText fp _ = input . liftIO . T.readFile $ fp
-
-parsedFile :: FilePath -> RuleImpl (Surface.Module Surface.Parse)
-parsedFile fp _ = do
+parsedFile :: FilePath -> TaskImpl (Surface.Module Surface.Parse)
+parsedFile fp = do
   s <- fetch (FileText fp)
   liftIO (parseSydML fp s) >>= \case
-    Right m -> input (pure m)
+    Right m -> pure m
     _ -> _
+
+fileText :: FilePath -> TaskImpl Text
+fileText = liftIO . T.readFile
 
 --------------------------------------------------------------------------------
 
-runSydTask :: SydOptions -> Task Query a -> IO a
-runSydTask opts task = do
-  startedVar <- newIORef mempty
-  errorsVar <- newIORef (mempty :: DHashMap Query (Const (List SydError)))
-  depsVar <- newIORef (mempty :: HashMap ThreadId ThreadId)
-  let writeErrors :: Query a -> List SydError -> Task Query ()
-      writeErrors q errs =
-        unless (null errs) $
-          liftIO . atomicModifyIORef' errorsVar $
-            (,()) . DHashMap.insert q (Const errs)
-  let rules' :: Rules Query
-      rules' =
-        memoiseWithCycleDetection startedVar depsVar $
-          writer writeErrors $
-            rules opts
-  Rock.runTask rules' task
+-- runSydTask :: SydOptions ->
+runSydTask = _
 
-compile :: SydOptions -> Task Query ()
-compile opts = do
-  liftIO $ print opts
+-- runSydTask :: SydOptions -> Task Query a -> IO a
+-- runSydTask opts task = do
+--   startedVar <- newIORef mempty
+--   errorsVar <- newIORef (mempty :: DHashMap Query (Const (List SydError)))
+--   depsVar <- newIORef (mempty :: HashMap ThreadId ThreadId)
+--   let writeErrors :: Query a -> List SydError -> Task Query ()
+--       writeErrors q errs =
+--         unless (null errs) $
+--           liftIO . atomicModifyIORef' errorsVar $
+--             (,()) . DHashMap.insert q (Const errs)
+--   let rules' :: Rules Query
+--       rules' =
+--         memoiseWithCycleDetection startedVar depsVar $
+--           writer writeErrors $
+--             rules opts
+--   Rock.runTask rules' task
+
+compile = _
+-- compile :: SydOptions -> Task Query ()
+-- compile opts = do
+--   liftIO $ print opts
+
+test :: ( Reader SydOptions :> es
+        , IOE :> es
+        , Writer (Dual (List SydError)) :> es
+        , Unique :> es
+        )
+     => Eff es Text
+test = runRock rules $ fetch $ FileText "sydml.cabal"
+
+test' :: (IOE :> es) => SydOptions -> Eff es (Text, Dual (List SydError))
+test' opts = runWriter . runUnique . runReader opts $ test
