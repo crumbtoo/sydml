@@ -1,0 +1,28 @@
+:PROPERTIES:
+:ID:       66209949-56cb-4c10-a572-eea8fe65fdd1
+:END:
+#+title: The pass parameter
+#+filetags: :Implementation:Sydc:
+
+Many of the data structures used in Sydc are given a ~p~ parameter, identifying
+the current pass. It's essentially an ad hoc implementation of [[https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/trees-that-grow.pdf][Trees That Grow]],
+justified by the fact that we have no downstream consumers of our ASTs.
+
+Sydc's use of pass parameters boils down to littering the syntax tree with
+various extension points, which can change types per pass via type family
+instances for the pass parameter.
+
+* Examples
+** Lifting join points
+#+begin_src haskell
+data ScDef p = ScDef Ident !(PassTerm p) !(PassScDefAnnotation p)
+
+-- After the initial lowering to ANF, join points are not yet lifted.
+type instance PassScDefAnnotation ToANF = ()
+type instance PassTerm            ToANF = LocatedTerm
+
+-- After lambda-lifting, we have a list of join points attatched to each ScDef.
+type instance PassScDefAnnotation LambdaLift = List Join
+type instance PassTerm            LambdaLift = LocatedTerm
+#+end_src
+** [[id:9c51c3a6-86fd-4bab-a0b0-2b822d6813f4][Typed/untyped Core]]

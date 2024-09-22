@@ -99,7 +99,7 @@ deriving instance (ConstrainPassWith Data p, Data p) => Data (Module p)
 data ToANF
 
 type instance PassTerm            ToANF = LocatedTerm
-type instance PassScDefAnnotation ToANF = Void
+type instance PassScDefAnnotation ToANF = ()
 
 --------------------------------------------------------------------------------
 -- The ClosureConvert pass
@@ -111,7 +111,7 @@ data ClosureConvert
 -- TODO: move to Language.ANF.ClosureConvert
 
 type instance PassTerm            LambdaLift = LocatedTerm
-type instance PassScDefAnnotation LambdaLift = Void
+type instance PassScDefAnnotation LambdaLift = ()
 
 --------------------------------------------------------------------------------
 -- The LambdaLift pass

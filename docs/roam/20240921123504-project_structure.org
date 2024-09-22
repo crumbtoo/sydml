@@ -1,0 +1,59 @@
+:PROPERTIES:
+:ID:       54e201d2-8f06-4072-bf68-f47c8672e48a
+:END:
+#+title: Project structure
+#+filetags: :Sydc:
+
+* Repo structure
+** =sydml=
+*** =app=
+*** =src=
+*** =test=
+** =presydml=
+** =vendor=
+Vendored dependencies. Frustratingly, /two/ tools essential to my workflow prevent
+the otherwise idiomatic use of Git submodules. My VCS, [[https://github.com/martinvonz/jj][jj]], does not (yet!)
+support Git submodules, and absorbs them into the root repository whenever it
+touches them. Nix's flakes also fail to ergonomically support submodules,
+requiring a hacky ~?submodules=1~ parameter to be passed to each invocation of
+~nix~. While this does work, it is not at all convenient to deal with, and
+arguably orthogonal to "The Nix Way." Here's what Norbert Melzer has to say
+about the submodule problem ([[https://discourse.nixos.org/t/get-nix-flake-to-include-git-submodule/30324/4][source]]):
+#+begin_quote
+The only way I am aware of that would remove the necessity of specifying
+submodules=1 is to remove the submodule.
+#+end_quote
+#+begin_quote
+I do not consider this unintuitive.
+#+end_quote
+#+begin_quote
+I agree that it is not convinient. Still, it is not unintuitive.
+#+end_quote
+#+begin_quote
+*Though my stance remains: the best way to deal with git submodules is to get rid
+of them…*
+#+end_quote
+Reminds me of Elm's Evan Czaplicki...
+*** =tree-sitter=
+The tree-sitter bindings for Haskell leave a lot to be desired. My patches
+include the following:
+- Add Nix flake. (un-submoduling the vendored copy of tree-sitter...)
+- Add isMissing flag.
+- Add binding to =ts_node_string()=.
+- Add bindings to the "edit" API.
+*** =qbe=
+This library provides a Haskell representation of QBE's IL. Patches include the
+following:
+- Bump the version bounds of =base=, =text=, =bytestring=, and =deepseq=.
+- Add support for allocation instructions. This patch is the work of [[https://todo.sr.ht/~fgaz/qbe-hs/1][Ellis
+  Kesterton]], whose merge request to =qbe-hs= has been idle upstream for over a
+  year.
+*** =compiler-explorer=
+Commonly known as Godbolt. A tool for viewing compiler output and IRS. My
+patches include:
+- Add a Nix flake.
+- Add support for presydml.
+** =doc=
+Documentation. Currently, this solely serves as a home for the rendered HTML of the README.
+** =tree-sitter-sydml=
+Houses Sydc's parser.
