@@ -7,23 +7,26 @@ import Data.Hashable
 import Data.HashSet qualified as H
 import GHC.Generics
 import SydPrelude
+import Data.IORef
 --------------------------------------------------------------------------------
 
 data SydOptions = SydOptions
   { debugFlags :: DebugFlags
   , buildDir :: FilePath
   , sourceDirectories :: H.HashSet FilePath
+  -- -- HACK: get rid of this ASAP.
+  -- , stupidHackyCounter :: IORef Natural
   }
-  deriving (Show, Generic)
+  deriving (Generic)
 
 data Command = BatchCmd SydBatchOptions
-  deriving (Show, Generic)
+  deriving (Generic)
 
 data SydBatchOptions = SydBatchOptions
   { sydOptions :: SydOptions
   , files :: List FilePath
   }
-  deriving (Show, Generic)
+  deriving (Generic)
 
 --------------------------------------------------------------------------------
 

@@ -418,6 +418,7 @@ design decisions align, which has been invaluably convenient for myself }:3.
 - [[https://github.com/Kleidukos/boreal/tree/main/boreal-daemon/tree-sitter-boreal][parses with tree-sitter]].
 - [[https://github.com/Kleidukos/boreal/blob/main/boreal-daemon/compiler/Boreal/IR/ANFCore/Types.hs][ANF-based IR]].
 - demand-driven.
+- golden testing.
 - haskell-like source language.
 - client-server.
 - targets lua.

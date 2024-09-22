@@ -54,7 +54,6 @@ library
   exposed-modules:
     Data.Located
     Data.PrettyP
-    Effect.Rock
     Effect.Unique
     Language.ANF
     Language.ANF.ClosureConvert
