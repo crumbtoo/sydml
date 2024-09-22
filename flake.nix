@@ -6,7 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { flake-utils, self, nixpkgs }@inputs:
+  outputs = { flake-utils, self, nixpkgs, ... }@inputs:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
@@ -19,7 +19,7 @@
           # qbe = hlib.doJailbreak prev.qbe;
           qbe = prev.callCabal2nix "qbe" ./vendor/qbe-hs {};
           # missing features, broken tests
-          tree-sitter = hlib.dontCheck (prev.callCabal2nix "tree-sitter" ./vendor/haskell-tree-sitter/tree-sitter {});
+          tree-sitter = prev.callCabal2nix "tree-sitter" ./vendor/haskell-tree-sitter/tree-sitter {};
           # broken tests
           dependent-hashmap = hlib.markUnbroken (hlib.dontCheck prev.dependent-hashmap);
           # out of date (we insist on using latest for the sole reason of

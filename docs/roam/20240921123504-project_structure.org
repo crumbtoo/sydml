@@ -37,6 +37,7 @@ Reminds me of Elm's Evan Czaplicki...
 *** =tree-sitter=
 The tree-sitter bindings for Haskell leave a lot to be desired. My patches
 include the following:
+- Add Nix flake. (un-submoduling the vendored copy of tree-sitter...)
 - Add isMissing flag.
 - Add binding to =ts_node_string()=.
 - Add bindings to the "edit" API.
