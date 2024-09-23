@@ -10,6 +10,7 @@ typedef struct Node {
   TSPoint endPoint;
   uint32_t endByte;
   uint32_t childCount;
+  uint32_t namedChildCount;
   const char *fieldName;
   bool     isNamed;
   bool     isExtra;
@@ -31,6 +32,7 @@ static inline void ts_node_poke(const char *fieldName, TSNode node, Node *out) {
   out->endPoint = ts_node_end_point(node);
   out->endByte = ts_node_end_byte(node);
   out->childCount = ts_node_child_count(node);
+  out->namedChildCount = ts_node_named_child_count(node);
   out->fieldName = fieldName;
   out->isNamed = ts_node_is_named(node);
   out->isExtra = ts_node_is_extra(node);
@@ -129,4 +131,9 @@ uint32_t ts_tree_cursor_copy_child_nodes(TSTreeCursor *cursor, Node *outChildNod
 char *ts_node_string_p(TSNode *self) {
   assert(self != NULL);
   return ts_node_string(*self);
+}
+
+TSNode ts_node_named_child_p(Node *self, uint32_t n) {
+  assert(self != NULL);
+  return ts_node_named_child(self->node, n);
 }

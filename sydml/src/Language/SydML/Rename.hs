@@ -1,5 +1,6 @@
 module Language.SydML.Rename
   ( renameModule
+  , Renamed
   )
   where
 --------------------------------------------------------------------------------
@@ -11,16 +12,19 @@ import Sydc.Name (Global)
 import qualified Sydc.Name as Name
 --------------------------------------------------------------------------------
 
-data Rename
+data Renamed
 
-type instance Surface.PassGlobal Rename = Global
-type instance Surface.PassVar Rename = Name.Unique
+type instance Surface.PassGlobal Renamed = Global
+type instance Surface.PassVar Renamed = Name.Unique
 
 renameModule
   :: Unique :> es
   => Surface.Module Parse
-  -> Eff es (Surface.Module Rename)
+  -> Eff es (Surface.Module Renamed)
 renameModule module_ = pure $ Surface.Module
-  { Surface.info = module_.info
+  { Surface.info = renameModuleInfo module_.info
   , Surface.content = []
   }
+
+renameModuleInfo :: Surface.ModuleInfo Parse -> Surface.ModuleInfo Renamed
+renameModuleInfo (Surface.ModuleInfo nm is) = _

@@ -1,0 +1,35 @@
+Right
+    ( Module
+        { info = ModuleInfo
+            { name = Namespace
+                ( Ident "Empty" :| [] )
+            , imports =
+                [ Import
+                    { module_ = Namespace
+                        ( Ident "Thing1" :| [] )
+                    , qualified = Qualified
+                    , as = Nothing
+                    }
+                , Import
+                    { module_ = Namespace
+                        ( Ident "Thing2.This" :| [] )
+                    , qualified = Unqualified
+                    , as = Just
+                        ( Namespace
+                            ( Ident "That" :| [] )
+                        )
+                    }
+                , Import
+                    { module_ = Namespace
+                        ( Ident "Thing3" :| [] )
+                    , qualified = Qualified
+                    , as = Just
+                        ( Namespace
+                            ( Ident "TwingThwee" :| [] )
+                        )
+                    }
+                ]
+            }
+        , content = []
+        }
+    )

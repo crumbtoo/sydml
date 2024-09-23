@@ -22,16 +22,16 @@ import GHC.Generics
 import TreeSitter.Symbol (TSSymbol)
 
 data Node = Node
-  { nodeTSNode     :: !TSNode
-  , nodeType       :: !CString
-  , nodeSymbol     :: !TSSymbol
-  , nodeEndPoint   :: !TSPoint
-  , nodeEndByte    :: !Word32
-  , nodeChildCount :: !Word32
-  , nodeFieldName  :: !CString
-  , nodeIsNamed    :: !CBool
-  , nodeIsExtra    :: !CBool
-  , nodeIsMissing  :: !CBool
+  { nodeTSNode          :: !TSNode
+  , nodeType            :: !CString
+  , nodeSymbol          :: !TSSymbol
+  , nodeEndPoint        :: !TSPoint
+  , nodeEndByte         :: !Word32
+  , nodeChildCount      :: !Word32
+  , nodeFieldName       :: !CString
+  , nodeIsNamed         :: !CBool
+  , nodeIsExtra         :: !CBool
+  , nodeIsMissing       :: !CBool
   }
   deriving (Show, Eq, Generic)
 
@@ -49,7 +49,6 @@ data TSNode = TSNode !Word32 !TSPoint !Word32 !(Ptr ()) !(Ptr ())
 
 newtype FieldId = FieldId { getFieldId :: Word16 }
   deriving (Eq, Ord, Show, Storable)
-
 
 -- | 'Struct' is a strict 'Monad' with automatic alignment & advancing, & inferred type.
 newtype Struct a = Struct { runStruct :: forall b . Ptr b -> IO (a, Ptr a) }
@@ -71,7 +70,6 @@ pokeStruct a = Struct (\ p -> do
   poke aligned a
   pure ((), castPtr aligned `plusPtr` sizeOf a))
 {-# INLINE pokeStruct #-}
-
 
 instance Storable Node where
   alignment _ = alignment (undefined :: TSNode)
@@ -167,7 +165,6 @@ instance Monad Struct where
       fa' `seq` p'' `seq` pure (fa', p'')
     {-# INLINE go #-}
   {-# INLINE (>>=) #-}
-
 
 foreign import ccall unsafe "src/bridge.c ts_node_copy_child_nodes" ts_node_copy_child_nodes :: Ptr TSNode -> Ptr Node -> IO ()
 -- NB: this leaves the field name as NULL.

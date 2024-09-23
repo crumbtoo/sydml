@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       370a0fe5-f2ed-431d-bf5f-5d63204b8bad
+:END:
+#+title: Testing sydc
+
+* TODO test against CLI

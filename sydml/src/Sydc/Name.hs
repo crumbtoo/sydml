@@ -9,6 +9,10 @@ import Data.Hashable (Hashable)
 import Data.Located (SrcSpan)
 import Effect.Unique qualified
 import Effect.Unique (getUnique)
+import Control.Lens
+import Data.Foldable1
+import Prelude hiding (foldr1)
+import Data.String (IsString)
 --------------------------------------------------------------------------------
 
 data Qualified a = Qualified Namespace a
@@ -16,6 +20,7 @@ data Qualified a = Qualified Namespace a
 
 newtype Ident = Ident Text
   deriving (Show, Eq, Ord, Generic, Data)
+  deriving newtype (IsString)
 
 type Global = Qualified Ident
 
@@ -26,12 +31,22 @@ newtype Namespace = Namespace (List1 Ident)
 
 instance Hashable Namespace
 
+namespaceComponents :: Traversal1' Namespace Ident
+namespaceComponents k (Namespace is) = Namespace <$> traversed1 k is
+
 type Module = Namespace
 
 filePathModule :: FilePath -> Maybe Module
 filePathModule
   = fmap (Namespace . fmap (Ident . T.pack))
   . List1.nonEmpty . splitDirectories
+
+moduleFilePath :: Module -> FilePath
+moduleFilePath m
+    = toNonEmptyOf namespaceComponents m
+    & fmap (\(Ident i) -> T.unpack i)
+    & foldr1 (</>)
+    & (`addExtension` ".sydml")
 
 data Unique = Unique
   { original :: !Text

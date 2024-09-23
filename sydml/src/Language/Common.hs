@@ -1,14 +1,19 @@
+{-# LANGUAGE UndecidableInstances #-}
 module Language.Common
   ( Id(..)
   , Value(..)
   , ModuleInfo(..)
   , DataDef(..)
+  -- * Extension points
+  , PassImports
   )
 where
 --------------------------------------------------------------------------------
 import SydPrelude
 import Sydc.Name (Ident)
 import qualified Sydc.Name as Name
+import Data.EDN.Class
+import Data.EDN.ParseFromEDN
 --------------------------------------------------------------------------------
 
 -- if only we had dependent types...
@@ -35,9 +40,24 @@ data Value = IntVal Int
 data ModuleInfo p = ModuleInfo
   { name    :: Name.Module
   -- all names are resolved; all imports unqualified and unaliased.
-  , imports :: List Name.Module
+  , imports :: PassImports p
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving (Generic)
+
+deriving instance Show (PassImports p) => Show (ModuleInfo p)
+deriving instance (Data (PassImports p), Data p) => Data (ModuleInfo p)
+deriving instance Eq (PassImports p) => Eq (ModuleInfo p)
+
+type family PassImports p :: Type
 
 data DataDef p
   deriving (Show, Eq, Generic, Data)
+
+instance (Monoid (PassImports p), FromEDN (PassImports p))
+      => FromEDN (ModuleInfo p) where
+  fromEDN = list . const $ do
+      symbol "module"
+      name <- fromEDN
+      imports <- fmap (fromMaybe mempty) . optional
+              $ keyword "import" *> fromEDN
+      pure $ ModuleInfo name imports

@@ -2,8 +2,6 @@
 The empty file
 ==============
 
-heldsadasda
-
 ---
 
 (source_file)

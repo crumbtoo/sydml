@@ -1,0 +1,4 @@
+(module Empty
+  :import ((Thing1 :qualified)
+           (Thing2.This :as That)
+           (Thing3 :qualified :as TwingThwee)))

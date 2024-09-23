@@ -12,7 +12,7 @@
         pkgs = import nixpkgs { inherit system; };
         hlib = pkgs.haskell.lib.compose;
         hpkgs = pkgs.haskell.packages.ghc98.extend (final: prev: {
-          sydml = final.callCabal2nix "sydml" ./. {};
+          sydml = hlib.dontCheck (final.callCabal2nix "sydml" ./. {});
           # overly strict: base
           monadic-recursion-schemes = hlib.doJailbreak prev.monadic-recursion-schemes;
           # overly strict: base, bytestring, deepseq
@@ -30,22 +30,35 @@
           };
           # tree-sitter-sydml = prev.callCabal2nix "tree-sitter-sydml" ./tree-sitter-sydml {};
         });
-      in {
+      in rec {
         packages.default = (hpkgs.callCabal2nix "sydml" ./. {})
           .overrideAttrs (final: prev: {
             propagatedBuildInputs = with pkgs; [
               qbe
               gcc
             ] ++ prev.propagatedBuildInputs;
-            doCheck = true;
-          });
-
-        checks.default = (hpkgs.callCabal2nix "sydml-test" ./. {})
-          .overrideAttrs (final: prev: {
             nativeBuildInputs = [
               pkgs.tree-sitter
             ] ++ prev.nativeBuildInputs;
+            doCheck = false; # HACK: for convenience of development.
           });
+
+        checks.default = packages.default
+          .overrideAttrs (final: prev: {
+            doCheck = true;
+          });
+
+        checks.tree-sitter-sydml = hpkgs.tree-sitter-sydml
+          .overrideAttrs (final: prev: {
+            doCheck = true;
+          });
+
+        # checks.default = (hpkgs.callCabal2nix "sydml-test" ./. {})
+        #   .overrideAttrs (final: prev: {
+        #     nativeBuildInputs = [
+        #       pkgs.tree-sitter
+        #     ] ++ prev.nativeBuildInputs;
+        #   });
 
         devShells.default = hpkgs.shellFor {
           packages = p: [

@@ -35,5 +35,6 @@ cabal.project.local~
 org-roam.db
 
 result/
+output/*
 
 TAGS
