@@ -9,4 +9,7 @@
      (eval
       . (setq-local org-roam-db-location
                     (expand-file-name "org-roam.db"
-                                      org-roam-directory))))))
+                                      org-roam-directory)))))
+ (c-mode
+  . ((c-basic-offset . 4)
+     (c-default-style . "bsd"))))

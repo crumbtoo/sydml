@@ -81,6 +81,7 @@ type ConstrainPassWith :: (Type -> Constraint) -> Type -> Constraint
 type ConstrainPassWith (c :: Type -> Constraint) p =
   ( c (PassTerm p)
   , c (PassScDefAnnotation p)
+  , c (PassImports p)
   )
 
 deriving instance (ConstrainPassWith Data p, Data p) => Data (ScDef p)

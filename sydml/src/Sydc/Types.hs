@@ -7,6 +7,7 @@ import Data.Hashable
 import Data.HashSet qualified as H
 import GHC.Generics
 import SydPrelude
+import Data.IORef
 --------------------------------------------------------------------------------
 
 data SydOptions = SydOptions
@@ -17,13 +18,13 @@ data SydOptions = SydOptions
   deriving (Show, Generic)
 
 data Command = BatchCmd SydBatchOptions
-  deriving (Show, Generic)
+  deriving (Generic)
 
 data SydBatchOptions = SydBatchOptions
   { sydOptions :: SydOptions
   , files :: List FilePath
   }
-  deriving (Show, Generic)
+  deriving (Generic)
 
 --------------------------------------------------------------------------------
 

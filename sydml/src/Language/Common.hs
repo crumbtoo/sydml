@@ -1,8 +1,11 @@
+{-# LANGUAGE UndecidableInstances #-}
 module Language.Common
   ( Id(..)
   , Value(..)
   , ModuleInfo(..)
   , DataDef(..)
+  -- * Extension points
+  , PassImports
   )
 where
 --------------------------------------------------------------------------------
@@ -35,9 +38,15 @@ data Value = IntVal Int
 data ModuleInfo p = ModuleInfo
   { name    :: Name.Module
   -- all names are resolved; all imports unqualified and unaliased.
-  , imports :: List Name.Module
+  , imports :: PassImports p
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving (Generic)
+
+deriving instance Show (PassImports p) => Show (ModuleInfo p)
+deriving instance (Data (PassImports p), Data p) => Data (ModuleInfo p)
+deriving instance Eq (PassImports p) => Eq (ModuleInfo p)
+
+type family PassImports p :: Type
 
 data DataDef p
   deriving (Show, Eq, Generic, Data)

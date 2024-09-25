@@ -21,6 +21,9 @@ renameModule
   => Surface.Module Parse
   -> Eff es (Surface.Module Rename)
 renameModule module_ = pure $ Surface.Module
-  { Surface.info = module_.info
+  { Surface.info = renameModuleInfo module_.info
   , Surface.content = []
   }
+
+renameModuleInfo :: Surface.ModuleInfo Parse -> Surface.ModuleInfo Rename
+renameModuleInfo (Surface.ModuleInfo nm is) = _

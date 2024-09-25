@@ -1,13 +1,55 @@
 :PROPERTIES:
 :ID:       ba81ebf5-d895-4e7c-b075-b2f505060f5e
 :END:
-#+title: SydML (Language)
+#+title: SydML
 #+filetags: :Language:
 
-SydML is a bit of a misnomer. I was originally going to implement a subset of
-OCaml, before opting for indentation-sensitive syntax and purity, leaving it
-two steps away from Haskell.
+The name 'SydML' is a bit of a misnomer. I was originally going to implement a
+subset of OCaml, before tending towards Haskell, with purity and alternative
+syntax.
 
 * Syntax
-- SydML features Haskell-style layouts, meaning that one can group productions
-  by either alignment, or semicolons and braces.
+** Journal
+*** DONE Who to imitate?
+CLOSED: [2024-09-23 Mon 04:54]
+/Currently/, I believe an S-expression–based syntax is the best choice for the
+following reasons:
+1. Ease of parsing. I don't want to waste my time writing and maintaining a
+   complex parser for a volatile grammar.
+2. Ease of printing. I already had plans to use S-expressions as a textual
+   representation of ILs. Free or low-cost parsing and printing of ILs is
+   a luxury notably offered by GNU Guile. Like the respectable Scheme hackers
+   the Guile developers are, each IL used is easy to interact with, inspect,
+   evaluate, transform, etc. Obviously, such features would be of invaluable aid
+   in debugging, communicating, and testing.
+3. The most important point of all, is that I do not give a fuck, and I cannot
+   continue to allow myself to give a fuck. This is a toy compiler! I am not a
+   victim of backwards compatibility requirements! If I so choose, I can tear
+   everything down to start anew on a dime. Fuck syntax, and fuck parsing! They
+   are completely irrelevant to this project's goals. This is an important
+   revelation for me; I made this mistake last year, and I do not wish to make
+   it again. Let's get to programming, already.
+**** ML
+- Whitespace-insensitive.
+- Easier to implement.
+- Generally popular.
+- My least favourite, aesthetically.
+**** Scheme
+- Aesthetically and technically beautiful.
+- The simplest to implement.
+- Generally unpopular (amongst cowards).
+- Potentially awkward in the context of a curried-by-default culture —
+  cons-lists are right-associative, whilst applications are left-associative.
+  Are we okay with a snoccy Lisp?
+**** Haskell
+- Aesthetically beautiful.
+- My native tongue.
+- The most difficult to implement.
+- [[id:d6532283-3c7a-4eb2-82c0-e4305bee0406][Layouts]] are intuitive.
+- Generally popular.
+* Non-trivial features
+** IDEA Dependent types
+I really want this, but I've never implemented it before.
+** IDEA First-class modules à la Agda
+Modules as records. Combined with dependent types, this allows for parameterised
+modules.

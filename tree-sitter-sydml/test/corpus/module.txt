@@ -1,0 +1,34 @@
+================
+The empty module
+================
+
+;; No imports!
+(module Empty)
+
+;; No declarations!
+
+---
+
+(source_file
+  (list
+    (symbol)
+    (symbol)))
+
+===================
+Module with imports
+===================
+
+(module WithImports
+  :import ((That Thing)
+           (This Thing)))
+
+---
+
+(source_file
+  (list
+    (symbol)
+    (symbol)
+    (keyword)
+    (list
+      (list (symbol) (symbol))
+      (list (symbol) (symbol)))))

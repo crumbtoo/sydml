@@ -14,7 +14,7 @@
 |----------+---------------------+-------------------+------------------------|
 | *Sydc*     |                     |                   |                        |
 |----------+---------------------+-------------------+------------------------|
-|          | Parse               | AST               | ~Surface.Module Parse~   |
+|          | Parse ([[id:ccbc4257-468e-46a6-9bf9-4da6c2dec7a6][Reparse]])     | AST               | ~Surface.Module Parse~   |
 |          | Rename              | AST               | ~Surface.Module Rename~  |
 |          | Type-check          | Typed AST         | TBD                    |
 |          | Elaborate           | [[id:a6c6f6a6-84b3-4250-8ec2-27d27411b324][Core]]              | ~Core.Module~            |

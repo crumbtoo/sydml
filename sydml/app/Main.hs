@@ -22,14 +22,38 @@ parser = info (helper <*> opts) idm
 
 commonOpts :: Parser SydOptions
 commonOpts = do
-  debugFlags <- pure mempty
-  buildDir <- pure "./build"
-  sourceDirectories <- pure mempty
+  debugFlags <- parseDebugFlags
+  buildDir <- parseBuildDir
+  sourceDirectories <- parseSourceDirs
   pure $ SydOptions
     { debugFlags = debugFlags
     , buildDir = buildDir
     , sourceDirectories = sourceDirectories
     }
+
+parseSourceDirs :: Parser (HS.HashSet FilePath)
+parseSourceDirs =
+  foldMap HS.singleton
+  <$> many (option str
+             (  long "source-dir"
+             <> metavar "DIRECTORY"
+             <> help "Compile SydML files in DIRECTORY" ))
+
+parseBuildDir :: Parser FilePath
+parseBuildDir =
+  option str
+    (  long "build-dir"
+    <> metavar "DIRECTORY"
+    <> value "sydc-build"
+    <> help "Litter DIRECTORY with build artifacts" )
+
+parseDebugFlags :: Parser DebugFlags
+parseDebugFlags =
+  foldMap (DebugFlags . HS.singleton)
+  <$> many (option str
+             (  short 'd'
+             <> metavar "FLAG-NAME"
+             <> help "Enable debug flag FLAG-NAME" ))
 
 main :: IO ()
 main = getArgs >>= main'

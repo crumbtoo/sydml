@@ -55,6 +55,7 @@ library
     Data.Located
     Data.PrettyP
     Effect.Rock
+    Effect.Rock.Memo
     Effect.Unique
     Language.ANF
     Language.ANF.ClosureConvert
@@ -70,7 +71,6 @@ library
     Language.SydML.Syntax
     Language.SydML.ToCore
     Language.SydML.Typecheck
-    Rock.Effectful
     Sydc
     Sydc.Command.Batch
     Sydc.Driver
@@ -88,42 +88,44 @@ library
   -- install-includes: tree_sitter/parser.h
   -- cxx-sources:      tree-sitter-sydml/src/parser.c
   build-depends:
-    , base                       ^>=4.19.1.0
-    , bytestring
-    , comonad
-    , containers
-    , data-fix
-    , dependent-hashmap
-    , dependent-sum-template     ^>=0.2.0.1
-    , deriving-compat
-    , directory
-    , effectful
-    , filepath
-    , free
-    , generic-lens               ^>=2.2.0.0
-    , hashable
-    , lens                       >=5.3.0     && <6.0.0
-    , lifted-base
-    , lsp
-    , megaparsec
-    , monadic-recursion-schemes
-    , mtl
-    , parser-combinators
-    , pretty-simple
-    , prettyprinter
-    , qbe
-    , recursion-schemes          >=5.0.0     && <6.0.0.0
-    , rock                       >=0.3.1.0   && <0.4.0.0.0
-    , semigroupoids
-    , some
-    , text                       >=2.0       && <2.2
-    , text-short
-    , these
-    , transformers
-    , tree-sitter
-    , tree-sitter-sydml
-    , unordered-containers
-    , witherable
+                  base                       ^>=4.19.1.0
+                , bytestring
+                , comonad
+                , containers
+                , data-fix
+                , dependent-hashmap
+                , dependent-sum-template     ^>=0.2.0.1
+                , deriving-compat
+                , directory
+                , effectful
+                , filepath
+                , free
+                , generic-lens               ^>=2.2.0.0
+                , hashable
+                , hedn
+                -- , kind-generics-th
+                , lens                       >=5.3.0     && <6.0.0
+                , lifted-base
+                , lsp
+                , megaparsec
+                , monadic-recursion-schemes
+                , mtl
+                , parser-combinators
+                , pretty-simple
+                , prettyprinter
+                , qbe
+                , recursion-schemes          >=5.0.0     && <6.0.0.0
+                , rock                       >=0.3.1.0   && <0.4.0.0.0
+                , semigroupoids
+                , some
+                , text                       >=2.0       && <2.2
+                , text-short
+                , these
+                , transformers
+                , tree-sitter
+                , tree-sitter-sydml
+                , unordered-containers
+                , witherable
 
   hs-source-dirs:   sydml/src
 
@@ -136,6 +138,7 @@ executable sydc
   -- other-extensions:
   build-depends:
     , base                  ^>=4.19.1.0
+    , hedn
     , lens
     , optparse-applicative
     , sydml
@@ -148,9 +151,15 @@ test-suite sydml-test
   type:           exitcode-stdio-1.0
   hs-source-dirs: sydml/test
   main-is:        Main.hs
-  other-modules:  SydmlTests.EmptyInput
+
+  -- cabal-fmt: expand sydml/test/ -Main
+  other-modules:
+    SydmlTests.EmptyInput
+    SydmlTests.TreeSitter
+
   build-depends:
     , base           ^>=4.19.1.0
+    , hedn
     , sydml
     , tasty          >=1.2.2     && <1.6
     , tasty-golden   ^>=2.3

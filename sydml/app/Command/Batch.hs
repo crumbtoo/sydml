@@ -25,8 +25,3 @@ cmd = do
           , files = files
           }
     in batchCompile batchOpts
-
--- doBatch :: SydBatchOptions -> IO ()
--- doBatch opts =
---   forOf_ (#files . each) opts \fp ->
---     hPutStrLn stderr $ "pretending to compile: " <> fp

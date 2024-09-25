@@ -1,4 +1,6 @@
-{ pkgs, ... }:
+{ pkgs
+, ...
+}:
 
 pkgs.stdenv.mkDerivation {
   pname = "tree-sitter-sydml";
@@ -20,8 +22,9 @@ pkgs.stdenv.mkDerivation {
     tree-sitter generate
   '';
 
-  # When both scanner.{c,cc} exist, we should not link both since they may be the same but in
-  # different languages. Just randomly prefer C++ if that happens.
+  # When both scanner.{c,cc} exist, we should not link both since they may be
+  # the same but in different languages. Just randomly prefer C++ if that
+  # happens.
   buildPhase = ''
     runHook preBuild
     if [[ -e src/scanner.cc ]]; then
@@ -45,6 +48,7 @@ pkgs.stdenv.mkDerivation {
     runHook postInstall
   '';
 
+  # FIXME: enabling doCheck fails the build with Permission denied (os error 13).
   doCheck = false;
 
   nativeCheckInputs = with pkgs; [

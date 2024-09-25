@@ -1,0 +1,26 @@
+:PROPERTIES:
+:ID:       ccbc4257-468e-46a6-9bf9-4da6c2dec7a6
+:END:
+#+title: Reparse (Pass)
+#+filetags: :Pass:Implementation:
+
+The Reparse pass makes up the latter half of the greater job of parsing, which
+parses, not text, but the AST that tree-sitter generates.
+
+#+begin_src artist
++-------------------+
+| SydML source code |
++-------------------+
+          |
+          | Parse/Tree-sitter
+          V
+ +-----------------+
+ | Tree-sitter AST |
+ +-----------------+
+          |
+          | Reparse
+          V
+  +---------------+
+  | Internal  AST |
+  +---------------+
+#+end_src

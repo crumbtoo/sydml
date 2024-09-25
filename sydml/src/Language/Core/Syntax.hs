@@ -35,6 +35,7 @@ type ConstrainPassWith (c :: Type -> Constraint) p =
   ( c (PassTerm p)
   , c (PassType p)
   , c (PassTyAbsFAnnotation p)
+  , c (PassImports p)
   )
 
 type Untyped p = (PassType p ~ Void, PassTyAbsFAnnotation p ~ Void)

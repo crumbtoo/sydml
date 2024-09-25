@@ -5,8 +5,6 @@ https://gist.github.com/expipiplus1/cfd5c4fb4a5a40338ccf8642fb3d0f1e
 {-# OPTIONS_GHC -Wno-orphans #-}
 {-# LANGUAGE QuantifiedConstraints #-}
 module Effect.Rock
-  (
-  )
   where
 --------------------------------------------------------------------------------
 import Data.Dependent.HashMap (DHashMap)
@@ -22,6 +20,7 @@ import Effectful (Dispatch (Static), DispatchOf, Eff, Effect, IOE, Subset, injec
 import Effectful.Dispatch.Static (SideEffects (NoSideEffects), StaticRep, evalStaticRep, getStaticRep)
 import Effectful.Timeout (Timeout, timeout)
 import Unsafe.Coerce (unsafeCoerce)
+import SydPrelude
 --------------------------------------------------------------------------------
 
 -- * Types
@@ -108,7 +107,7 @@ transRock f m = do
 -- please don't rely on it.
 --
 -- This is used for using query keys as map keps
-type HideEffects :: ([Effect] -> Type -> Type) -> Type -> Type
+type HideEffects :: (List Effect -> Type -> Type) -> Type -> Type
 data HideEffects f a where
   HideEffects :: forall f b a. f b a -> HideEffects f a
 

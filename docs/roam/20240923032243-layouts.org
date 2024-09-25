@@ -1,0 +1,27 @@
+:PROPERTIES:
+:ID:       d6532283-3c7a-4eb2-82c0-e4305bee0406
+:END:
+#+title: Layouts
+
+/Layouts/, inherited from Haskell, are a convenient and flexible basis for
+whitespace-sensitive syntax. At the core, a production ~Layout S P~ parses token
+~~S~~, followed by a sequence of ~P~ productions, following a few simple rules:
+
+- Each ~P~ must be indented further than the leading token ~S~.
+- All elements ~P~ must be aligned with one another; i.e., every ~P~ is equally
+  indented.
+- Lines indented further than the ~P~ elements are folded into the preceeding
+  element.
+
+* TODO compare & contrast with Python's INDENT/DEDENT tokens
+
+* Use in SydML
+I decided that [[id:ba81ebf5-d895-4e7c-b075-b2f505060f5e][SydML]] will use layouts in the futre, only after considering the
+following pros:
+- I have Haskellbrain.
+- For this kind of task, Tree-sitter requires a hand-written lexer in C. As I
+  haven't written any C in ages, I figured it would be fun. }:)
+
+* Further reading
+- [[https://www.haskell.org/onlinereport/lexemes.html#sect2.7][Section 2.7 of The Haskell 98 Report]]
+- [[https://docs.python.org/3/reference/lexical_analysis.html#line-structure][The Python Language Reference on lexical analysis]]
