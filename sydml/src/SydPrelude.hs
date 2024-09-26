@@ -94,5 +94,6 @@ infixr 9 .:
 tracePretty :: Show a => a -> b -> b
 tracePretty a = trace (view unpacked $ pShow a)
 
+{-# WARNING #-}
 todo :: HasCallStack => String -> a
 todo s = error $ "todo: " <> s

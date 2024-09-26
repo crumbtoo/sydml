@@ -12,6 +12,8 @@ where
 import SydPrelude
 import Sydc.Name (Ident)
 import qualified Sydc.Name as Name
+import Data.EDN.Class
+import Data.EDN.ParseFromEDN
 --------------------------------------------------------------------------------
 
 -- if only we had dependent types...
@@ -50,3 +52,9 @@ type family PassImports p :: Type
 
 data DataDef p
   deriving (Show, Eq, Generic, Data)
+
+instance (PassImports p ~ ()) => FromEDN (ModuleInfo p) where
+  fromEDN = list . const $ do
+    symbol "module"
+    name <- fromEDN
+    pure $ ModuleInfo name ()

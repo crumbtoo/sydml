@@ -17,11 +17,9 @@ module Language.SydML.Syntax
 import SydPrelude
 import Sydc.Name qualified as Name
 import Language.Common as Common
-import Data.EDN
+import Data.EDN.Class
 import Data.Kind
-import Data.EDN.AST.Types (Parser)
 import Control.Lens
-import Data.EDN.Class.Parser (parserError)
 --------------------------------------------------------------------------------
 
 type family PassGlobal p :: Type
@@ -53,8 +51,8 @@ type ConstrainPassWith c p =
 
 deriving instance ConstrainPassWith Show p => Show (Module p)
 
--- | Module subtitutive used to recover from unparsable modules.
-defaultModule ::Name.Module -> PassImports p -> Module p
+-- | Module substitute used to recover from unparsable modules.
+defaultModule :: Name.Module -> PassImports p -> Module p
 defaultModule nm is = Module
   { info = ModuleInfo
     { name = nm
@@ -64,11 +62,3 @@ defaultModule nm is = Module
   }
 
 --------------------------------------------------------------------------------
-
-instance FromEDN (PassImports p) => FromEDN (ModuleInfo p) where
-  parseEDNv = _
-instance FromEDN (Module p) where
-  parseEDNv = _
-
-instance FromEDN (Decl p) where
-  parseEDNv = _

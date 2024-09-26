@@ -5,6 +5,7 @@ module Data.Located
   , SrcSpan(..)
   , Position(..)
   , Loc
+  , bogusSrcSpan
   -- * Optics
   , HasLocation(..)
   , Unlocate(..)
@@ -26,6 +27,7 @@ import Data.Functor.Bind
 import Numeric.Natural
 -- import Text.Megaparsec
 import SydPrelude
+import Prettyprinter
 --------------------------------------------------------------------------------
 
 -- | A position of a single character in a text input. Both fields are
@@ -44,6 +46,16 @@ data SrcSpan = SrcSpan
   , end   :: !Position
   }
   deriving (Eq, Ord, Show, Generic, Data)
+
+-- | A meaningless 'SrcSpan' value, intended only to be used for development.
+{-# WARNING #-}
+bogusSrcSpan :: SrcSpan
+bogusSrcSpan = SrcSpan "BOGUS" (Position 0 0) (Position 0 0)
+
+instance Pretty SrcSpan where
+  pretty ss = hsep [pos $ ss ^. #start, "-", pos $ ss ^. #end]
+    where
+      pos (Position l c) = brackets $ pretty l <> ", " <> pretty c
 
 -- | Take the "hull" of the two spans; i.e., @a <> b@ is the smallest 'SrcSpan'
 -- containing both @a@ and @b@. This is seldom used with spans from different
