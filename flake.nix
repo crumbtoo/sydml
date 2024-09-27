@@ -72,6 +72,11 @@
             hpkgs.cabal-install
             hpkgs.hasktags
             pkgs.tree-sitter
+            (hpkgs.calligraphy.overrideAttrs (final: prev: {
+              propagatedBuildInputs = [
+                pkgs.graphviz
+              ] ++ prev.propagatedBuildInputs;
+            }))
           ];
           propagatedBuildInputs = with pkgs; [
             qbe

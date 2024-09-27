@@ -5,7 +5,7 @@
 #+filetags: :Language:
 
 The name 'SydML' is a bit of a misnomer. I was originally going to implement a
-subset of OCaml, before tending towards Haskell, with purity and alternative
+subset of OCaml, before tending towards Haskell with purity and alternative
 syntax.
 
 * Syntax

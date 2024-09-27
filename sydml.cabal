@@ -133,23 +133,35 @@ library
   -- , kind-generics-th
   hs-source-dirs:   sydml/src
 
-executable sydc
+library sydc-lib
   import:           common
-  main-is:          Main.hs
   default-language: GHC2021
-  other-modules:    Command.Batch
+  hs-source-dirs:   sydml/app
 
   -- other-extensions:
   build-depends:
     , base                  ^>=4.19.1.0
+    , extra
     , lens
     , optparse-applicative
     , sydml
-    , unordered-containers
-    , extra
     , text
+    , unordered-containers
 
-  hs-source-dirs:   sydml/app
+  -- cabal-fmt: expand sydml/app/ -Main
+  exposed-modules:
+    Sydc.CLI.Command.Batch
+    Sydc.CLI.Main
+
+executable sydc
+  import:           common
+  main-is:          Main.hs
+  default-language: GHC2021
+  build-depends:
+    , base      ^>=4.19.1.0
+    , sydc-lib
+
+  hs-source-dirs:   sydml/sydc
 
 test-suite sydml-test
   import:         common
@@ -161,18 +173,22 @@ test-suite sydml-test
   other-modules:
     SydmlTests.EmptyInput
     SydmlTests.TreeSitter
+    SydmlTests.Utils
 
   build-depends:
     , base           ^>=4.19.1.0
     , bytestring
-    , utf8-string
-    , text
+    , directory
+    , filepath
+    , pretty-simple
+    , sydc-lib
     , sydml
     , tasty          >=1.2.2     && <1.6
     , tasty-golden   ^>=2.3
     , tasty-hunit    ^>=0.10
     , tasty-program  >=1.1       && <1.2.0
-    , pretty-simple
+    , text
+    , utf8-string
 
 --------------------------------------------------------------------------------
 -- presydc

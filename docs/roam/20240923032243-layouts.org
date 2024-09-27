@@ -2,10 +2,11 @@
 :ID:       d6532283-3c7a-4eb2-82c0-e4305bee0406
 :END:
 #+title: Layouts
+#+filetags: :Implementation:
 
 /Layouts/, inherited from Haskell, are a convenient and flexible basis for
 whitespace-sensitive syntax. At the core, a production ~Layout S P~ parses token
-~~S~~, followed by a sequence of ~P~ productions, following a few simple rules:
+~S~, followed by a sequence of ~P~ productions, following a few simple rules:
 
 - Each ~P~ must be indented further than the leading token ~S~.
 - All elements ~P~ must be aligned with one another; i.e., every ~P~ is equally
@@ -16,7 +17,7 @@ whitespace-sensitive syntax. At the core, a production ~Layout S P~ parses token
 * TODO compare & contrast with Python's INDENT/DEDENT tokens
 
 * Use in SydML
-I decided that [[id:ba81ebf5-d895-4e7c-b075-b2f505060f5e][SydML]] will use layouts in the futre, only after considering the
+I decided that [[id:ba81ebf5-d895-4e7c-b075-b2f505060f5e][SydML]] will use layouts in the future, only after considering the
 following pros:
 - I have Haskellbrain.
 - For this kind of task, Tree-sitter requires a hand-written lexer in C. As I

@@ -45,6 +45,7 @@ type ConsRockEffects es =
   ': Writer (Seq SydError)
   ': es
 
+type RockEffects :: List Effect
 type RockEffects = ConsRockEffects '[IOE]
 
 runRockEffects
@@ -55,6 +56,7 @@ runRockEffects
 runRockEffects opts = runReader opts . runWriter . runUnique
 
 data Query es a where
+  InputFiles :: Query RockEffects (HashSet FilePath)
   FileText :: FilePath -> Query RockEffects Text
   ParsedFile :: FilePath -> Query RockEffects (Surface.Module Surface.Parse)
   ModuleFile :: Name.Module -> Query RockEffects (Maybe FilePath)

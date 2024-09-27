@@ -1,11 +1,11 @@
 {-# LANGUAGE ApplicativeDo #-}
-module Main where
+module Sydc.CLI.Main where
 --------------------------------------------------------------------------------
 import Data.HashSet qualified as HS
 import Options.Applicative
 import SydPrelude
 import Sydc
-import Command.Batch qualified as Batch
+import Sydc.CLI.Command.Batch qualified as Batch
 import System.Environment (getArgs)
 import System.Posix.Internals (newFilePath)
 import Data.List.Extra

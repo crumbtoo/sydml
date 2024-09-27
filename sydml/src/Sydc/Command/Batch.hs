@@ -19,11 +19,12 @@ import Effectful
 batchCompile :: SydBatchOptions -> IO ()
 batchCompile batchOpts = do
   srcDirs <- batchOpts
-           & foldMapOf (#files . each)
+           & foldMapOf (#inputFiles . each)
                (fmap HS.singleton . sourceDirectoryOfFile)
   let opts = batchOpts.sydOptions
            & #sourceDirectories <>~ srcDirs
-  (_,es) <- runEff $ Driver.runSydTask opts (Driver.compileFiles batchOpts.files)
+  (_,es) <- runEff $ Driver.runSydTask opts
+        (Driver.compileFiles batchOpts.inputFiles)
   for_ es \e ->
     putStrLn $ "error: " <> show e
   pure ()

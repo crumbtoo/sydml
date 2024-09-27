@@ -19,7 +19,7 @@ data Qualified a = Qualified Namespace a
   deriving (Show, Eq, Generic, Data)
 
 newtype Ident = Ident Text
-  deriving (Show, Eq, Ord, Generic, Data)
+  deriving stock (Show, Eq, Ord, Generic, Data)
   deriving newtype (IsString)
 
 type Global = Qualified Ident

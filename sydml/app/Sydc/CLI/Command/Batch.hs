@@ -1,6 +1,6 @@
 {-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE UnicodeSyntax #-}
-module Command.Batch where
+module Sydc.CLI.Command.Batch where
 --------------------------------------------------------------------------------
 import Options.Applicative
 import Sydc
@@ -22,6 +22,6 @@ cmd = do
   pure $ \opts ->
     let batchOpts = SydBatchOptions
           { sydOptions = opts
-          , files = files
+          , inputFiles = files
           }
     in batchCompile batchOpts

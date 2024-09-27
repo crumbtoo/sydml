@@ -1,0 +1,103 @@
+:PROPERTIES:
+:ID:       f951e008-a3e7-4432-9df8-ecf4e3b586f7
+:ROAM_ALIASES: Sixty
+:ROAM_REFS: https://github.com/ollef/sixten https://github.com/ollef/sixty
+:END:
+#+title: Sixten
+#+filetags: :OtherCompiler:
+
+Sixten is a dependently-typed language keen on performance. It's relevance to
+[[id:ba81ebf5-d895-4e7c-b075-b2f505060f5e][SydML]] is found in its [[id:0fbf42cf-3f1d-4226-b0f5-f340cfa3766e][demand-driven]] architecture.
+
+* Implementation details
+:PROPERTIES:
+:ID:       c66a817f-ae43-4b28-8304-889696028061
+:END:
+** Types
+*** Names
+**** =Lowered=
+- Fully qualified.
+- [?] What is the associated integer for?
+- [?] What is =LoweredKind= for?
+**** =Lifted=
+- Fully qualified.
+- [?] What is the associated integer for?
+*** =Scope=
+An alias for =HashMap Name.Surface Entry=
+*** =Entry=
+=Entry= represents members of the scope. Most relevantly, qualified names, and
+sets of ambiguous names.
+** Queries
+*** =ModuleDefinitions=
+#+begin_src haskell
+  ModuleDefinitions :: Name.Module -> Query (OrderedHashSet Name)
+#+end_src
+Given a =Name.Module=, fetch the unresolved names of each definition.
+*** =LambdaLiftedModuleDefinitions=
+#+begin_src haskell
+  LambdaLiftedModuleDefinitions :: Name.Module -> Query (OrderedHashSet Name.Lifted)
+#+end_src
+Given a =Name.Module=, lambda-lift all definitions, and return their
+(fully-qualified!) names.
+#+begin_src haskell
+    LambdaLiftedModuleDefinitions module_ ->
+      noError do
+        names <- fetch $ ModuleDefinitions module_
+        OrderedHashSet.fromList . concat
+          <$> forM (toList names) \name -> do
+            let qualifiedName =
+                 -- Each name from the source module is adorned with the module
+                 -- name.
+                  Name.Qualified module_ name
+            (_, extras) <- fetch $ LambdaLifted qualifiedName
+            -- I'm not sure what's going on with the EnumMap here...
+            pure $ Name.Lifted qualifiedName <$> 0 : EnumMap.keys extras
+#+end_src
+Mysteriously, lambda-lifting occurs /before/ closure-conversion...
+*** =ResolvedName=
+#+begin_src haskell
+  ResolvedName :: Name.Module -> Name.Surface -> Query (Maybe Scope.Entry)
+#+end_src
+Given the module of occurence, and the unresolved name, return the resolved
+under the scope of the given module.
+#+begin_src haskell
+    ResolvedName module_ surfaceName ->
+      noError do
+        -- Notice the particular use of privateScope!
+        (privateScope, _) <- fetch $ ModuleScope module_
+        importedScopeEntry <- fetchImportedName module_ surfaceName
+        pure $ importedScopeEntry <> HashMap.lookup surfaceName privateScope
+#+end_src
+*** =ModuleScope=
+#+begin_src haskell
+  ModuleScope :: Name.Module -> Query (Scope, Scope)
+#+end_src
+=ModuleScope moduleName= is a query returning a pair =(privateScope, publicScope)=.
+** Driver
+See: =src/Compiler.hs=
+Some key takeaways:
+  - The set of source files is fetched with a query.
+  - Source files appear to be processed in arbitrary order, with no regard to
+    dependency graphs. I believe Sixty's [[id:0fbf42cf-3f1d-4226-b0f5-f340cfa3766e][query-based architecture]] is capable of
+    handling dependencies implicitly.
+  - Contrary to the intuition that comes with a background in traditional batch
+    compilers, the "pipeline's" entry point is the query corresponding to the
+    final pass (=LLVMModule=).
+#+begin_src haskell
+-- This code has been heavily modified for brevity!
+compile :: ... -> Task Query ()
+compile = do
+  filePaths <- fetch Query.InputFiles
+  moduleLLVMFiles <- forM (toList filePaths) \filePath -> do
+    (moduleName@(Name.Module moduleNameText), _, _) <- fetch $ Query.ParsedFile filePath
+    when printLowered do
+      {- Debug printing logic omitted. -}
+
+    llvmModule <- fetch $ Query.LLVMModule moduleName
+    let llvmFileName = moduleAssemblyDir </> toS moduleNameText <.> "ll"
+    liftIO $ Lazy.writeFile llvmFileName llvmModule
+    pure llvmFileName
+#+end_src
+** Name resolution
+Name resolution occurs lazily, somewhere between the =ModuleDefinitions= and
+=LambdaLiftedModuleDefinitions= queries.

@@ -29,7 +29,7 @@ data Command = BatchCmd SydBatchOptions
 
 data SydBatchOptions = SydBatchOptions
   { sydOptions :: SydOptions
-  , files :: List FilePath
+  , inputFiles :: List FilePath
   }
   deriving (Generic)
 

@@ -354,6 +354,9 @@ CLOSED: [2024-09-19 Thu 22:48]
 **** TODO Record demo
 *** TODO 3 The Empty Module [1/8]
 :LOGBOOK:
+CLOCK: [2024-09-27 Fri 11:50]
+CLOCK: [2024-09-27 Fri 08:32]--[2024-09-27 Fri 10:43] =>  2:11
+CLOCK: [2024-09-26 Thu 13:11]--[2024-09-26 Thu 13:56] =>  0:45
 CLOCK: [2024-09-26 Thu 06:58]--[2024-09-26 Thu 12:01] =>  5:03
 CLOCK: [2024-09-26 Thu 06:55]--[2024-09-26 Thu 06:57] =>  0:02
 CLOCK: [2024-09-25 Wed 12:25]--[2024-09-25 Wed 20:11] =>  7:46
@@ -490,18 +493,20 @@ Describes ANF and join points as used in GHC.
 *** [[https://www.microsoft.com/en-us/research/wp-content/uploads/2007/10/compilingwithcontinuationscontinued.pdf][Compiling with Continuations, Continued ]]
 *** [[http://code.ouroborus.net/fp-syd/past/2014/2014-08-Sloane-CPS.pdf][Slides implementing Compiling with Continuations, Continued ]]
 *** [[https://jozefg.bitbucket.io/posts/2015-04-30-cps.html][Compiling with CPS]]
-*** [[https://slang.soe.ucsc.edu/cormac/papers/pldi93.pdf][Original ANF paper: The Essence of Compiling with Continuations]]
+*** [[https://legacy.cs.indiana.edu/~sabry/papers/essence-retro.pdf][Original ANF paper: The Essence of Compiling with Continuations]]
 *** [[http://mlton.org/pipermail/mlton/2003-January/023054.html][Email discussing MLton's IR and some history]]
 *** [[https://www.jantar.org/talks/zadarnowski03languages.pdf][Comparing CPS, ANF, and SSA for compiling functional languages]]
 *** [[https://www.jantar.org/papers/chakravarty03perspective.pdf][A Functional Perspective on SSA Optimisation Algorithms]]
-*** [[http://www.ccs.neu.edu/home/matthias/369-s10/Transcript/anf-vs-cps.pdf][The CPS/ANF saga]]
+*** KILL [[http://www.ccs.neu.edu/home/matthias/369-s10/Transcript/anf-vs-cps.pdf][The CPS/ANF saga]]
+CLOSED: [2024-09-26 Thu 14:11]
+Dead link. }:\
 *** [[http://www.dtic.mil/dtic/tr/fulltext/u2/a326493.pdf][Tarditi — Design and Implementation of Code Optimiziations for a Type-Directed Compiler for Standard ML (ANF)]]
-This thesis emphasizes a "pay as you go" compilation strategy
-where simple, monorphic code should not be slower simply because the language
-supports higher-level code. Also, monomorphic functions should get specialized
-to machine-type functions. C compilers focus on loops, so functional compilers
+This thesis emphasizes a "pay as you go" compilation strategy where simple,
+monorphic code should not be slower simply because the language supports
+higher-level code. Also, monomorphic functions should get specialized to
+machine-type functions. C compilers focus on loops, so functional compilers
 should focus on recursive functions. Explains lots of optimizations with a
-lambda calculus IR
+λ-calculus IR.
 *** [[https://pdfs.semanticscholar.org/55bc/5ceee768223f4b233de568a7181297eb2c4d.pdf][Paper summarizing the Tarditi thesis]]
 *** [[ftp://mumble.net/~kelsey/papers/cps-ssa.ps.gz][A Correspondence between CPS and SSA]]
 *** [X] [[https://compiler.club/compiling-lambda-calculus/][Colin — Compiling the λ-calculus]]
@@ -518,7 +523,7 @@ CLOSED: [2024-09-12 Thu 04:20]
 *** [[https://www.youtube.com/watch?v=S2dK5lLFD_0][Making Fast Incremental Compiler for Huge Codebase]] :TALK:
 *** [[https://www.youtube.com/watch?v=vVFEROmdCkQ][How to load 1m lines of Ruby in 5s]] :TALK:
 *** [[https://www.youtube.com/watch?v=WxyyJyB_Ssc)][Compilers are Databases]] :TALK:
-*** [[https://www.youtube.com/watch?v=wSdV1M7n4gQ)][Anders Hejlsberg on Modern Compiler Construction]] :TALK:
+*** [X] [[https://www.youtube.com/watch?v=wSdV1M7n4gQ)][Anders Hejlsberg on Modern Compiler Construction]] :TALK:
 *** [[https://www.youtube.com/watch?v=N6b44kMS6OM))][Responsive compilers]] :TALK:
 ** Miscellaneous
 *** [-] [#A] [[https://borretti.me/article/lessons-writing-compiler][Lessons from Writing a Compiler]]

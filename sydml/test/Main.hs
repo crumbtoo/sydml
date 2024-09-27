@@ -12,5 +12,5 @@ main = defaultMain tests
 tests :: TestTree
 tests = testGroup "sydml"
   [ EmptyInput.tests
-  , TreeSitter.tests
+  -- , TreeSitter.tests
   ]

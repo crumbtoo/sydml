@@ -74,7 +74,7 @@ parsedFile fp = do
   s <- fetch (FileText fp)
   case parseSydML fp s of
     Right m -> do
-      printToDebugFlag "dump-parsed" $ view strict (pShow m)
+      printToDebugFlag "dump-parsed" $ view strict (pShowNoColor m)
       pure m
     Left es -> addErrors es $> Surface.defaultModule nm []
       where
@@ -85,14 +85,14 @@ fileText = liftIO . T.readFile
 
 renamedModule :: Name.Module -> TaskImpl (Surface.Module Surface.Renamed)
 renamedModule nm = do
-  fp <- fetch $ ModuleFile nm
-  parsed <- fetch $ ParsedFile fp
-  pure _
+  fetch (ModuleFile nm) >>= \case
+    Just fp -> do
+      parsed <- fetch $ ParsedFile fp
+      pure _
 
 moduleFile :: Name.Module -> TaskImpl (Maybe FilePath)
 moduleFile nm = do
-  (srcDirs :: List FilePath) <-
-    asks @SydOptions (toListOf $ #sourceDirectories . folded)
+  srcDirs <- asks @SydOptions (toListOf $ #sourceDirectories . folded)
   foundFiles <- liftIO (findFiles srcDirs (Name.moduleFilePath nm))
   case foundFiles of
     [fp] -> pure $ Just fp

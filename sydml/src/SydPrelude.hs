@@ -5,6 +5,7 @@ module SydPrelude
   , Void, void
   , Type
   , Natural
+  , Set, HashSet, HashMap
   -- ** Lists
   , List, List1, NE.NonEmpty((:|))
   -- * Effectful
@@ -81,6 +82,9 @@ import Debug.Trace
 import Numeric.Natural
 import Effectful.Dispatch.Dynamic (HasCallStack)
 import Data.Data (Data)
+import Data.HashMap.Strict (HashMap)
+import Data.HashSet (HashSet)
+import Data.Set (Set)
 --------------------------------------------------------------------------------
 
 type List1 = NE.NonEmpty

@@ -1,0 +1,36 @@
+:PROPERTIES:
+:ID:       0fbf42cf-3f1d-4226-b0f5-f340cfa3766e
+:ROAM_ALIASES: "Query-based architecture"
+:END:
+#+title: Demand-driven compilation
+
+Demand-driven compilation, demand-driven computation, or query-based
+architectures appear to be a current trend in the compilers/langdev community.
+This new model intends to makes IDEs performant and easier to implement, by
+rejecting the traditional pipeline approach to compilers, in favour of lazy
+(lazy as in non-strict *and* caching) computation. Laziness allows the user to
+make a small change to a single file, before requesting "compile my entire
+project." A demand-driven compiler might take this request, and further request
+"parse each file in this project." For each parse request, the query handler
+will recognise which files have changed, and simply return the cached ASTs for
+those which haven't. This request/cache model is used for all kinds of tasks
+within the compiler, including every pass.
+
+* Examples
+** rustc
+See [[https://rustc-dev-guide.rust-lang.org/query.html][Rust's documentation]].
+** Sixten/Sixty
+See: [[id:c66a817f-ae43-4b28-8304-889696028061][Demand-driven compilation in Sixten]].
+
+* Further reading
+- [[https://rustc-dev-guide.rust-lang.org/query.html][rustc demand-driven-compilation]]
+- [X] [[https://ollef.github.io/blog/posts/query-based-compilers.html][Query-based compiler architectures]]
+- [X] [[https://rust-analyzer.github.io/blog/2020/07/20/three-architectures-for-responsive-ide.html][Three Architectures for a Responsive IDE]]
+- [[https://www2.eecs.berkeley.edu/Pubs/TechRpts/1997/CSD-97-946.pdf][Practical Algorithms for Incremental Software Development Environments]]
+- [[https://youtu.be/3D-ngGIP4fQ][Query-based compiler architectures]]
+- [[https://www.youtube.com/watch?v=DSuX-LIAU-I][A journey through incremental computation]]
+- [[https://www.youtube.com/watch?v=S2dK5lLFD_0][Making Fast Incremental Compiler for Huge Codebase]]
+- [[https://www.youtube.com/watch?v=vVFEROmdCkQ][How to load 1m lines of Ruby in 5s]]
+- [[https://www.youtube.com/watch?v=WxyyJyB_Ssc)][Compilers are Databases]]
+- [X] [[https://www.youtube.com/watch?v=wSdV1M7n4gQ)][Anders Hejlsberg on Modern Compiler Construction]]
+- [[https://www.youtube.com/watch?v=N6b44kMS6OM))][Responsive compilers]]
